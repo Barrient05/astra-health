@@ -1,0 +1,17 @@
+# Estado de la misión: lo genera la app sola al arrancar
+datos/estado.json
+datos/donki.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Editores y sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
