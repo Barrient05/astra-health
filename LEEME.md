@@ -90,7 +90,7 @@ Si no hay internet, la página explica el motivo y conserva la última consulta 
 ## Idiomas
 
 El selector de la cabecera (ES / EN / PT / FR) cambia toda la página: textos, reglas, guía, fuentes, mensajes
-y lo que escribe JavaScript. El idioma elegido se guarda en la sesión, así que se mantiene al navegar y al enviar
+y lo que escribe JavaScript. La app abre en inglés y el idioma elegido se guarda en la sesión, así que se mantiene al navegar y al enviar
 formularios. También se puede compartir un enlace con el idioma: `http://127.0.0.1:5000/?lang=en`.
 
 Cómo funciona:

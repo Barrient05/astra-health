@@ -5,8 +5,9 @@ from pathlib import Path
 
 from flask import g, has_request_context
 
-IDIOMAS = {"es": "Español", "en": "English", "pt": "Português", "fr": "Français"}
+IDIOMAS = {"en": "English", "es": "Español", "pt": "Português", "fr": "Français"}
 POR_DEFECTO = "es"
+INICIAL = "en"
 
 CARPETA = Path(__file__).parent / "traducciones"
 CATALOGOS = {}

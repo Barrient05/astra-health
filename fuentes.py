@@ -66,12 +66,6 @@ FUENTES = {
         "url": "https://ntrs.nasa.gov/citations/20240000994", "tipo": "nasa",
         "dato": "El aislamiento y el confinamiento son el peligro del vuelo espacial que más riesgo representa para la salud conductual en misiones largas. En órbita hay conferencias psicológicas privadas cada dos semanas, donde se revisa sueño, carga de trabajo, ánimo propio, relación con la tripulación y relación con tierra.",
     },
-    "nasa_bhp_tb": {
-        "titulo": "OCHMO-TB-016 Behavioral Health and Performance (NASA-STD-3001)",
-        "autor": "NASA OCHMO", "anio": "2023",
-        "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf", "tipo": "nasa",
-        "dato": "El apoyo conductual de NASA se organiza en seis frentes: selección, entrenamiento, apoyo psicológico en vuelo, monitoreo neurocognitivo en vuelo, apoyo a la familia y reintegración al regresar. La prueba cognitiva WinSCAT se aplica cada 30 días en vuelo y se compara contra la línea base de cada astronauta antes de volar. En misiones de más de 30 días se exige un espacio privado individual para cada tripulante.",
-    },
     "mars500": {
         "titulo": "Mars 520-d mission simulation reveals protracted crew hypokinesis and alterations of sleep duration and timing",
         "autor": "M. Basner y col., PNAS", "anio": "2013",
@@ -232,7 +226,7 @@ FUENTES = {
         "titulo": "OCHMO-TB-016 Behavioral Health and Performance (NASA-STD-3001)",
         "autor": "NASA OCHMO", "anio": "2023",
         "url": "https://www.nasa.gov/wp-content/uploads/2023/12/ochmo-tb-016-behavioral-health.pdf", "tipo": "nasa",
-        "dato": "Condiciones comunes: estrés, depresión, ansiedad, problemas de relación con la tripulación y duelo; factores de riesgo: poco sueño, exceso de trabajo y CO₂ alto.",
+        "dato": "Condiciones comunes: estrés, depresión, ansiedad, problemas de relación con la tripulación y duelo; factores de riesgo: poco sueño, exceso de trabajo y CO₂ alto. El apoyo conductual se organiza en seis frentes: selección, entrenamiento, apoyo psicológico en vuelo, monitoreo neurocognitivo en vuelo, apoyo a la familia y reintegración al regresar. La prueba cognitiva WinSCAT se aplica cada 30 días en vuelo y se compara contra la línea base de cada astronauta antes de volar; en misiones de más de 30 días se exige un espacio privado individual para cada tripulante.",
     },
     "nasa_cognitivo": {
         "titulo": "Risk of Adverse Cognitive or Behavioral Conditions and Psychiatric Disorders (Evidence Report)",

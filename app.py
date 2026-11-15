@@ -19,7 +19,7 @@ from dictado import interpretar
 from entornos import ENTORNOS, entorno_de, fase_del_dia
 from fuentes import FUENTES, TIPOS
 from guia import GUIA
-from idiomas import IDIOMAS, POR_DEFECTO, _, minuscula_inicial, numero, textos_js
+from idiomas import IDIOMAS, INICIAL, _, minuscula_inicial, numero, textos_js
 from catalogo_acerca import RIDGE, SISTEMA_RIDGE, ZONAS
 from riesgos_nasa import COBERTURA, RIESGOS, URL_HRP, URL_VTE, riesgos_de
 from salud import ETIQUETAS_MAPA, LIMITE_RADIACION, Analisis, nivel_de
@@ -37,7 +37,7 @@ def elegir_idioma():
     pedido = request.args.get("lang")
     if pedido in IDIOMAS:
         session["idioma"] = pedido
-    g.idioma = session.get("idioma", POR_DEFECTO)
+    g.idioma = session.get("idioma", INICIAL)
     if MULTIUSUARIO and "sid" not in session:
         session["sid"] = uuid4().hex
         session.permanent = False

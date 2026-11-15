@@ -98,7 +98,7 @@ GUIA = {
         "prevencion": ["Dejarla agendada a la misma hora, aunque la semana haya ido bien.",
                        "Un lugar privado de verdad: NASA exige espacio individual en misiones de más de 30 días.",
                        "Contacto con la familia entre una revisión y otra."],
-        "fuentes": ["nasa_bhp", "nasa_bhp_tb", "mars500"],
+        "fuentes": ["nasa_bhp", "nasa_conducta_tb016", "nasa_cognitivo", "mars500"],
     },
     "ejercicio": {
         "titulo": "Ejercicio de resistencia y aeróbico",

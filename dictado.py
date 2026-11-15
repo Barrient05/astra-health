@@ -40,7 +40,7 @@ def _palabras_a_numeros(texto):
         if not es_num(tok):
             salida.append(tok); i += 1
             continue
-        valor = 0
+        valor, compuesto = 0, False
         while i < len(tokens):
             tok = tokens[i]
             if tok == "mil":
@@ -51,14 +51,18 @@ def _palabras_a_numeros(texto):
                 valor += DECENAS[tok]; i += 1
                 if i + 1 < len(tokens) and tokens[i] == "y" and tokens[i + 1] in UNIDADES and UNIDADES[tokens[i + 1]] < 10:
                     valor += UNIDADES[tokens[i + 1]]; i += 2
+                    compuesto = True
+                    break
             elif tok in UNIDADES:
                 valor += UNIDADES[tok]; i += 1
             else:
                 break
         decimal = ""
-        if i + 1 < len(tokens) and tokens[i] in ("punto", "coma") and (tokens[i + 1] in UNIDADES or tokens[i + 1].isdigit()):
+        if i + 1 < len(tokens) and tokens[i] in ("punto", "coma", "con") and (tokens[i + 1] in UNIDADES or tokens[i + 1].isdigit()):
             d = tokens[i + 1]
             decimal = "." + (d if d.isdigit() else str(UNIDADES[d])); i += 2
+        elif compuesto and i < len(tokens) and tokens[i] in UNIDADES and UNIDADES[tokens[i]] < 10:
+            decimal = "." + str(UNIDADES[tokens[i]]); i += 1
         salida.append(f"{valor}{decimal}")
     texto = " ".join(salida)
     texto = re.sub(r"(\d+(?:\.\d+)?)\s+(litros?|horas?|l)\s+y\s+medi[oa]",
@@ -76,12 +80,15 @@ REGLAS = [
     ("fc", r"pulso|frecuencia|latidos|pulsaciones|lpm|corazon", NUM, (30, 200)),
     ("sueno", r"dormi|sueno|descanse|horas de sueno", NUM + r"\s*(?:horas?|h)\b", (0, 16)),
     ("agua", r"agua|litros?|tome|bebi|hidrat|liquidos", NUM + r"\s*(?:litros?|l)\b", (0, 8)),
-    ("calorias", r"calorias|kcal", NUM + r"\s*(?:calorias|kcal)", (300, 6000)),
+    ("calorias", r"calorias|kcal", NUM + r"\s*(?:calorias|kcal)?", (300, 6000)),
     ("peso", r"\bpeso\b|\bpese\b|kilos|kilogramos|\bkg\b", NUM + r"\s*(?:kilos?|kilogramos?|kg)?", (30, 200)),
     ("animo", r"animo|humor", NUM, (1, 10)),
     ("estres", r"estres|estresad|ansiedad", NUM, (1, 10)),
-    ("resistencia", r"resistencia|pesas|fuerza|ared|sentadillas", NUM + r"\s*(?:minutos|min)\b", (0, 300)),
-    ("aerobico", r"aerobic|caminadora|bicicleta|cicloergometro|correr|corri|trote", NUM + r"\s*(?:minutos|min)\b", (0, 300)),
+    ("contacto", r"sin contacto|sin hablar con|sin llamar|contacto personal|sin noticias", NUM + r"\s*(?:dias?|d)?\b", (0, 60)),
+    ("cohesion", r"tripulacion|convivencia|companeros|equipo|relacion con", NUM, (1, 10)),
+    ("actividad", r"activ|en movimiento|de pie|moviendome", NUM + r"\s*(?:horas?|h)?\b", (0, 24)),
+    ("resistencia", r"resistencia|pesas|fuerza|ared|sentadillas", NUM + r"\s*(?:minutos|min)?\b", (0, 300)),
+    ("aerobico", r"aerobic|caminadora|bicicleta|cicloergometro|correr|corri|trote", NUM + r"\s*(?:minutos|min)?\b", (0, 300)),
 ]
 
 def _nombre(campo):
