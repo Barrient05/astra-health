@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Registro diario") }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+<div class="pagina">
+  <h1>{{ _("Registro diario de {nombre}", nombre=astro.nombre) }}</h1>
+  <p class="entrada">{{ _("Anota tus indicadores del día {dia}. Los campos ya traen los valores de hoy: cambia los que hayas medido. Al guardar, Python recalcula tu riesgo y tus protocolos.", dia=mision.dia) }}</p>
+
+  <form class="formulario-registro" method="post" action="{{ url_for('registro') }}">
+
+    <fieldset class="grupo grupo-dictado">
+      <legend>{{ _("Dicta cómo te sientes") }}</legend>
+      <p class="ayuda">{{ _("Di o escribe tus mediciones y síntomas con tus palabras, por ejemplo:") }}
+        <em>{{ _("«Pulso 72, presión 118 sobre 76, dormí seis horas, tomé dos litros de agua. Me duele la cabeza, sin mareo.»") }}</em>
+        {{ _("La app llena el formulario por ti y tú revisas antes de guardar.") }}</p>
+      <label class="campo" for="dictado">{{ _("Lo que dictaste") }}
+        <textarea id="dictado" rows="3" maxlength="2000" placeholder="{{ _('Pulsa Dictar y habla, o escribe aquí') }}"></textarea>
+      </label>
+      <div class="acciones">
+        <button type="button" class="boton boton-secundario" id="btn-dictar" aria-pressed="false">{{ _("Dictar") }}</button>
+        <button type="button" class="boton" id="btn-interpretar">{{ _("Llenar el formulario") }}</button>
+        <span class="estado-dictado" id="dictado-estado" role="status" aria-live="polite"></span>
+      </div>
+      <div class="resultado-dictado" id="dictado-resultado" hidden></div>
+      <p class="ayuda tenue">{{ _("La interpretación del texto se hace dentro de la app (dictado.py) y funciona sin internet. El botón Dictar usa el reconocimiento de voz del navegador; sin él, escribe el texto.") }}</p>
+    </fieldset>
+
+    <fieldset class="grupo">
+      <legend>{{ _("Signos vitales") }}</legend>
+      <div class="campos">
+        {% for clave in ['fc', 'pa_sis', 'pa_dia', 'spo2', 'temp'] %}{% set ind = indicadores[clave] %}
+        <label class="campo">{{ _(ind[0]) }} ({{ _(ind[1]) }})
+          <input type="number" name="{{ clave }}" id="campo-{{ clave }}" value="{{ hoy[clave] }}" step="{{ '0.1' if ind[3] else '1' }}" inputmode="decimal">
+          <small>{{ _("Rango habitual: {min} a {max}.", min=ind[2][0], max=ind[2][1]) }}{% if clave in astro.linea_base %} {{ _("Tu base: {v}.", v=astro.linea_base[clave]) }}{% endif %}</small>
+          <small class="campo-fuente">{{ _("Fuente:") }} {% with claves=fuentes_indicador[clave] %}{% include "partes/cita.html" %}{% endwith %}</small>
+          <a class="como-medir" href="{{ url_for('guia') }}#guia-{{ guia_indicador[clave] }}">{{ _("¿Cómo se mide?") }}</a>
+        </label>
+        {% endfor %}
+      </div>
+
+      <div class="pulso-bt" id="pulso-bt" data-base="{{ astro.linea_base.fc }}">
+        <div class="pulso-bt-cabeza">
+          <strong>{{ _("Pulso desde tu reloj o banda (Bluetooth)") }}</strong>
+          <span class="pulso-bt-lectura"><span class="pulso-bt-corazon" aria-hidden="true"></span><span id="bt-lpm">–</span> <small>{{ _("lpm") }}</small></span>
+        </div>
+        <p class="ayuda">{{ _("Funciona con relojes y bandas que transmiten la frecuencia cardiaca con el estándar de Bluetooth (en muchos hay que activar «transmitir frecuencia cardiaca»). Usa Chrome o Edge.") }}</p>
+        <svg class="pulso-bt-grafica" id="bt-grafica" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="acciones">
+          <button type="button" class="boton boton-secundario" id="bt-conectar">{{ _("Conectar reloj") }}</button>
+          <button type="button" class="boton boton-texto" id="bt-simular">{{ _("Probar sin reloj (simulación)") }}</button>
+          <button type="button" class="boton boton-secundario" id="bt-desconectar" hidden>{{ _("Desconectar") }}</button>
+          <button type="button" class="boton" id="bt-usar" disabled>{{ _("Usar como pulso en reposo") }}</button>
+        </div>
+        <p class="ayuda" id="bt-estado" role="status"></p>
+        <p class="ayuda tenue" id="bt-promedio"></p>
+        <p class="ayuda tenue" id="bt-detalle"></p>
+        <input type="hidden" name="dispositivo" id="campo-dispositivo" value="{{ hoy.dispositivo or '' }}">
+      </div>
+
+      <div class="medidor-pulso" id="medidor-pulso">
+        <strong>{{ _("¿Sin sensor? Mide tu pulso a mano") }}</strong>
+        <p class="ayuda">{{ _("Coloca dos dedos en tu muñeca o cuello. Pulsa Empezar y cuenta los latidos durante 15 segundos.") }}</p>
+        <div class="acciones">
+          <button type="button" class="boton boton-secundario" id="btn-pulso">{{ _("Empezar") }}</button>
+          <span class="cuenta" id="cuenta-pulso" aria-live="polite">15</span>
+        </div>
+        <label class="campo" id="campo-latidos" hidden>{{ _("¿Cuántos latidos contaste?") }}
+          <input type="number" id="latidos" min="5" max="60" inputmode="numeric">
+        </label>
+        <button type="button" class="boton boton-mini" id="btn-usar-pulso" hidden>{{ _("Usar como pulso en reposo") }}</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="grupo">
+      <legend>{{ _("Aislamiento y convivencia") }}</legend>
+      <div class="campos">
+        {% for clave in ['contacto', 'cohesion', 'actividad'] %}{% set ind = indicadores[clave] %}
+        <label class="campo">{{ _(ind[0]) }} ({{ _(ind[1]) }})
+          <input type="number" name="{{ clave }}" id="campo-{{ clave }}" value="{{ hoy[clave] }}" step="{{ '0.1' if ind[3] else '1' }}" inputmode="decimal">
+          <small>{% if clave == 'cohesion' %}{{ _("1 = muy mal, 10 = muy bien.") }}{% elif clave == 'contacto' %}{{ _("Días desde tu última llamada o mensaje personal.") }}{% else %}{{ _("Horas del día en movimiento, sin contar dormir.") }}{% endif %}{% if clave in astro.linea_base %} {{ _("Tu base: {v}.", v=astro.linea_base[clave]) }}{% endif %}</small>
+          <small class="campo-fuente">{{ _("Fuente:") }} {% with claves=fuentes_indicador[clave] %}{% include "partes/cita.html" %}{% endwith %}</small>
+          <a class="como-medir" href="{{ url_for('guia') }}#guia-{{ guia_indicador[clave] }}">{{ _("¿Cómo se mide?") }}</a>
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="grupo">
+      <legend>{{ _("Sueño, ánimo, ejercicio y alimentación") }}</legend>
+      <div class="campos">
+        {% for clave in ['sueno', 'animo', 'estres', 'resistencia', 'aerobico', 'agua', 'calorias'] %}{% set ind = indicadores[clave] %}
+        <label class="campo">{{ _(ind[0]) }} ({{ _(ind[1]) }})
+          <input type="number" name="{{ clave }}" id="campo-{{ clave }}" value="{{ hoy[clave] }}" step="{{ '0.1' if ind[3] else '1' }}" inputmode="decimal">
+          <small>{% if clave in ['animo', 'estres'] %}{{ _("1 = muy bajo, 10 = muy alto.") }}{% else %}{{ _("Rango habitual: {min} a {max}.", min=ind[2][0], max=ind[2][1]) }}{% endif %}{% if clave in astro.linea_base %} {{ _("Tu base: {v}.", v=astro.linea_base[clave]) }}{% endif %}</small>
+          <small class="campo-fuente">{{ _("Fuente:") }} {% with claves=fuentes_indicador[clave] %}{% include "partes/cita.html" %}{% endwith %}</small>
+          <a class="como-medir" href="{{ url_for('guia') }}#guia-{{ guia_indicador[clave] }}">{{ _("¿Cómo se mide?") }}</a>
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="grupo">
+      <legend>{{ _("Prueba de reacción (atención)") }}</legend>
+      <p class="ayuda">{{ _("Mide tu atención como lo hace NASA en la Estación Espacial (prueba PVT-B). Cuando aparezca el contador, pulsa la barra espaciadora o toca el recuadro lo más rápido que puedas. No te adelantes. Hazla cada 4 días o si dormiste mal.") }}
+        <a href="{{ url_for('guia') }}#guia-reaccion">{{ _("¿Para qué sirve?") }}</a></p>
+      <div class="pvt-controles">
+        <label class="campo campo-corto">{{ _("Duración") }}
+          <select id="pvt-duracion">
+            <option value="180">{{ _("3 minutos (como NASA)") }}</option>
+            <option value="30">{{ _("30 segundos (para practicar)") }}</option>
+          </select>
+        </label>
+        <button type="button" class="boton boton-secundario" id="btn-pvt">{{ _("Empezar prueba") }}</button>
+      </div>
+      <div class="pvt-area" id="pvt-area" tabindex="0" role="button" aria-label="{{ _('Área de la prueba de reacción') }}" aria-describedby="pvt-estado">
+        <span class="pvt-numero" id="pvt-numero" aria-hidden="true"></span>
+        <span class="pvt-estado" id="pvt-estado" aria-live="polite">{{ _("Pulsa Empezar prueba.") }}</span>
+      </div>
+      <div class="campos">
+        <label class="campo">{{ _("Tiempo de reacción promedio") }} ({{ _("ms") }})
+          <input type="number" name="reaccion" id="campo-reaccion" value="{{ hoy.reaccion or '' }}" step="1" inputmode="numeric">
+          <small>{{ _("Se llena al terminar la prueba.") }}{% if astro.linea_base.reaccion %} {{ _("Tu base: {v}.", v=astro.linea_base.reaccion) }}{% endif %}</small>
+          <small class="campo-fuente">{{ _("Fuente:") }} {% with claves=["jones_sueno"] %}{% include "partes/cita.html" %}{% endwith %}</small>
+        </label>
+        <label class="campo">{{ _("Lapsos (reacciones de 355 ms o más)") }}
+          <input type="number" name="lapsos" id="campo-lapsos" value="{{ hoy.lapsos if hoy.lapsos is not none else '' }}" step="1" inputmode="numeric">
+          <small>{{ _("Menos es mejor. Descansado, lo normal es 0 a 2.") }}</small>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="grupo">
+      <legend>{{ _("Peso y ultrasonido") }}</legend>
+      <div class="campos">
+        <label class="campo">{{ _("Peso (kg, cada semana)") }}
+          <input type="number" name="peso" id="campo-peso" step="0.1" value="{{ hoy.peso if hoy.peso else '' }}" placeholder="{{ _('Al inicio: {v}', v=astro.linea_base.peso) }}">
+          <small>{{ _("Perder 5 % desde el inicio preocupa a los médicos. Déjalo vacío si hoy no te pesaste.") }}</small>
+          <small class="campo-fuente">{{ _("Fuente:") }} {% with claves=["sciencenews_dieta"] %}{% include "partes/cita.html" %}{% endwith %}</small>
+        </label>
+        <label class="campo">{{ _("Ultrasonido de la vena yugular") }}
+          <select name="eco" id="campo-eco">
+            <option value="">{{ _("No me lo hice hoy") }}</option>
+            {% for clave, nombre in eco.items() %}<option value="{{ clave }}" {% if hoy.eco == clave %}selected{% endif %}>{{ _(nombre) }}</option>{% endfor %}
+          </select>
+          <small class="campo-fuente">{{ _("Fuente:") }} {% with claves=["nasa_vte"] %}{% include "partes/cita.html" %}{% endwith %}</small>
+          <a class="como-medir" href="{{ url_for('guia') }}#guia-eco_yugular">{{ _("¿Cómo se hace?") }}</a>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="grupo">
+      <legend>{{ _("Prueba de pie") }}</legend>
+      <p class="ayuda">{% if entorno.gravedad > 0 %}{{ _("Estás en un entorno con gravedad: hazla los primeros 3 días y luego cada semana.") }}{% else %}{{ _("En microgravedad no aplica (no hay «de pie»): se hace al llegar a la Luna, a Marte o al volver a la Tierra.") }}{% endif %}
+        {{ _("Mide tus signos acostado después de 5 minutos, ponte de pie 3 minutos y anota aquí la presión y el pulso de pie.") }}
+        <a href="{{ url_for('guia') }}#guia-ortostatica">{{ _("¿Cómo se hace?") }}</a></p>
+      <div class="campos">
+        {% for clave in ['pa_sis_pie', 'pa_dia_pie', 'fc_pie'] %}{% set pr = pruebas[clave] %}
+        <label class="campo">{{ _(pr[0]) }} ({{ _(pr[1]) }})
+          <input type="number" name="{{ clave }}" id="campo-{{ clave }}" value="{{ hoy[clave] if hoy[clave] is not none else '' }}" step="1" inputmode="numeric">
+        </label>
+        {% endfor %}
+      </div>
+      <p class="campo-fuente">{{ _("Fuente:") }} {% with claves=["aafp_orto", "scirep_cardio2024"] %}{% include "partes/cita.html" %}{% endwith %}</p>
+    </fieldset>
+
+    <fieldset class="grupo">
+      <legend>{{ _("Síntomas de hoy") }}</legend>
+      <div class="sintomas">
+        {% for clave, nombre in sintomas.items() %}
+        <label class="opcion"><input type="checkbox" name="sintomas" value="{{ clave }}" {% if clave in hoy.sintomas %}checked{% endif %}> {{ _(nombre) }}</label>
+        {% endfor %}
+      </div>
+      <label class="campo" style="margin-top:14px">{{ _("Nota para el equipo médico (opcional)") }}
+        <textarea name="nota" rows="3" maxlength="500">{{ hoy.nota or '' }}</textarea>
+      </label>
+    </fieldset>
+
+    <div class="acciones">
+      <button class="boton">{{ _("Guardar registro") }}</button>
+      <span class="ayuda">{% if hoy.fuente == 'registro' %}{{ _("Hoy ya hay un registro manual.") }}{% if hoy.dispositivo %} {{ _("Pulso medido con {dispositivo}.", dispositivo=hoy.dispositivo) }}{% endif %}{% else %}{{ _("Los valores de hoy son simulados.") }}{% endif %}</span>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>window.SINTOMAS = {{ sintomas | tojson }};</script>
+<script src="{{ url_for('static', filename='js/registro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pulso_bluetooth.js') }}"></script>
+{% endblock %}

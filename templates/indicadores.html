@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Indicadores") }} · {{ astro.nombre }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+<div class="pagina pagina-ancha">
+  <h1>{{ _("Indicadores de {nombre}", nombre=astro.nombre) }}</h1>
+  <p class="entrada">{{ _("Cada indicador del día {dia}: su valor, tu línea base, el promedio de 7 días y hacia dónde va. Toca una fila para ver su gráfica y cómo se mide.", dia=mision.dia) }}</p>
+
+  <div class="envoltura-tabla">
+  <table class="tabla-indicadores">
+    <thead>
+      <tr>
+        <th>{{ _("Indicador") }}</th><th>{{ _("Hoy") }}</th><th>{{ _("Tu base") }}</th>
+        <th>{{ _("Promedio 7 días") }}</th><th>{{ _("Cambio") }}</th><th>{{ _("Rango habitual") }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in filas %}
+      <tr onclick="location.href='{{ url_for('indicadores', astronauta=astro.id, indicador=f.clave) }}'"
+          {% if f.clave == elegido %}aria-selected="true"{% endif %}>
+        <td><a href="{{ url_for('indicadores', astronauta=astro.id, indicador=f.clave) }}">{{ f.nombre }}</a> <span class="tenue">{{ f.unidad }}</span></td>
+        <td>{% if f.valor is not none %}<strong{% if f.fuera %} style="color: var(--vigilar)"{% endif %}>{{ f.valor | numero(",.%df" % f.decimales) }}</strong>{% else %}–{% endif %}</td>
+        <td class="tenue">{{ f.base | numero(",.%df" % f.decimales) if f.base is not none else "–" }}</td>
+        <td>{{ f.prom7 | numero(",.%df" % (f.decimales + 1)) if f.prom7 is not none else "–" }}</td>
+
+        <td>{% if f.cambio is none %}–{% else %}
+          <span class="{% if f.cambio > 0.05 %}sube{% elif f.cambio < -0.05 %}baja{% endif %}">
+            {% if f.cambio > 0.05 %}↑{% elif f.cambio < -0.05 %}↓{% else %}→{% endif %} {{ f.cambio | abs | numero(".1f") }}
+          </span>{% endif %}</td>
+        <td class="tenue">{{ f.rango[0] | numero(",.%df" % f.decimales) }}–{{ f.rango[1] | numero(",.%df" % f.decimales) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+  {% if sintomas_hoy %}<p class="ayuda" style="margin-top:10px">{{ _("Síntomas de hoy: {sintomas}.", sintomas=sintomas_hoy | join("; ")) }}</p>{% endif %}
+
+  <h2 class="subtitulo">{{ grafica.nombre }} ({{ grafica.unidad }})</h2>
+  <div class="grafica-media"><canvas id="grafica-indicador" role="img" aria-label="{{ _('Gráfica de {indicador}', indicador=grafica.nombre) }}"></canvas></div>
+
+  {% set g = guia[guia_indicador[elegido]] %}
+  <div class="explicacion">
+    <div class="explicacion-cabeza">
+      <h3>{{ _("Sobre {medicion}", medicion=_(g.titulo) | minuscula) }}</h3>
+      <a href="{{ url_for('guia') }}#guia-{{ guia_indicador[elegido] }}">{{ _("Ver en la guía") }}</a>
+    </div>
+    <div class="explicacion-cuerpo">
+      <section>
+        <h4>{{ _("Cómo medirlo") }}</h4>
+        <p class="tenue">{{ _(g.equipo) }} {{ _(g.frecuencia) }}.</p>
+        <ol>{% for paso in g.como %}<li>{{ _(paso) }}</li>{% endfor %}</ol>
+      </section>
+      <section>
+        <h4>{{ _("Por qué importa") }}</h4><p>{{ _(g.por_que) }}</p>
+        <h4>{{ _("Cómo lo afecta el vuelo espacial") }}</h4><p>{{ _(g.efecto_vuelo) }}</p>
+      </section>
+      <section>
+        <h4>{{ _("Cuándo avisar") }}</h4>
+        <p class="aviso aviso-tripulacion"><strong>{{ _("Avisa a tu tripulación") }}</strong> {{ _(g.tripulacion) }}</p>
+        <p class="aviso aviso-tierra"><strong>{{ _("Avisa a los médicos de vuelo en Tierra") }}</strong> {{ _(g.tierra) }}</p>
+        {% if g.fuentes %}<p class="fuentes-entrada"><strong>{{ _("Fuentes:") }}</strong> {% with claves=g.fuentes %}{% include "partes/cita.html" %}{% endwith %}.</p>{% endif %}
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>window.GRAFICA_INDICADOR = {{ grafica | tojson }};</script>
+<script src="{{ url_for('static', filename='js/chart.umd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/indicadores.js') }}"></script>
+{% endblock %}

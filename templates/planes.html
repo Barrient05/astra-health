@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Planes") }} · {{ astro.nombre }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+<div class="pagina">
+  <h1>{{ _("Planes de acción de {nombre}", nombre=astro.nombre) }}</h1>
+  <p class="entrada">{{ _("Un plan cambia el pronóstico y los días que se simulen después. La adherencia es qué tanto lo cumples: con 90 % el efecto es casi completo.") }}</p>
+
+  <ul class="lista-planes">
+    {% for p in astro.planes %}
+    <li class="plan">
+      <span class="plan-nombre">{{ _(planes[p.tipo][0]) }}</span>
+      <span class="plan-detalle">{{ _("Días {inicio} a {fin}, adherencia {pct} %", inicio=p.inicio, fin=p.inicio + p.duracion - 1, pct=(p.adherencia * 100) | round | int) }}
+        {% if p.inicio > mision.dia %}· {{ _("empieza en {n} días", n=p.inicio - mision.dia) }}{% elif p.inicio + p.duracion - 1 < mision.dia %}· {{ _("terminado") }}{% else %}· {{ _("activo") }}{% endif %}</span>
+      <form method="post" action="{{ url_for('quitar_plan') }}">
+        <input type="hidden" name="indice" value="{{ loop.index0 }}">
+        <button class="boton boton-texto">{{ _("Quitar") }}</button>
+      </form>
+    </li>
+    {% else %}
+    <li class="vacio">{{ _("Sin planes registrados. Crea uno desde un protocolo o con el formulario.") }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2 class="subtitulo">{{ _("Crear un plan") }}</h2>
+  <form class="formulario-plan" method="post" action="{{ url_for('crear_plan') }}">
+    <label>{{ _("Plan") }}
+      <select name="tipo" id="plan-tipo" required>
+        <option value="">{{ _("Elige un plan…") }}</option>
+        {% for clave, p in planes.items() %}
+        <option value="{{ clave }}" {% if clave == sugerido %}selected{% endif %} data-descripcion="{{ _(descripciones[clave]) }}">{{ _(p[0]) }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <p class="ayuda" id="plan-descripcion">{% if sugerido %}{{ _(descripciones[sugerido]) }}{% endif %}</p>
+    <div class="fila-campos">
+      <label>{{ _("Empieza el día") }} <input type="number" name="inicio" value="{{ mision.dia + 1 }}" min="1" max="{{ mision.dias_totales }}"></label>
+      <label>{{ _("Duración (días)") }} <input type="number" name="duracion" value="30" min="1" max="180"></label>
+      <label>{{ _("Adherencia (%)") }} <input type="number" name="adherencia" value="90" min="10" max="100"></label>
+    </div>
+    <button class="boton">{{ _("Guardar plan") }}</button>
+  </form>
+
+  <h2 class="subtitulo">{{ _("Qué hace cada plan") }}</h2>
+  <ul>
+    {% for clave, p in planes.items() %}
+    <li><strong>{{ _(p[0]) }}:</strong> {{ _(descripciones[clave]) }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Al elegir un plan, mostrar su descripción (sin recargar la página)
+  const sel = document.getElementById("plan-tipo");
+  sel.addEventListener("change", () => {
+    const op = sel.selectedOptions[0];
+    document.getElementById("plan-descripcion").textContent = op ? op.dataset.descripcion || "" : "";
+  });
+</script>
+{% endblock %}

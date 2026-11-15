@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Guía de salud") }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+
+<div class="pagina pagina-ancha"><section class="seccion-pagina" id="guia" aria-labelledby="t-guia">
+  <h1 id="t-guia">{{ _("Guía de salud") }}</h1>
+  <p class="entrada">{{ _("Qué puedes medir a bordo, cómo hacerlo, por qué importa y cuándo pedir ayuda. Toca una medición para abrirla.") }}</p>
+  <div class="guia-rejilla">
+    {% for clave, g in guia.items() %}
+    <details class="tarjeta-guia" id="guia-{{ clave }}">
+      <summary><span class="guia-titulo">{{ _(g.titulo) }}</span><span class="guia-cuando">{{ _(g.frecuencia) }}</span></summary>
+      <dl class="datos-guia">
+        <div><dt>{{ _("Equipo") }}</dt><dd>{{ _(g.equipo) }}</dd></div>
+        <div><dt>{{ _("Cuándo") }}</dt><dd>{{ _(g.frecuencia) }}</dd></div>
+      </dl>
+      <h3>{{ _("Cómo medirlo") }}</h3>
+      <ol>{% for paso in g.como %}<li>{{ _(paso) }}</li>{% endfor %}</ol>
+      <h3>{{ _("Por qué importa") }}</h3>
+      <p>{{ _(g.por_que) }}</p>
+      <h3>{{ _("Cómo lo afecta el vuelo espacial") }}</h3>
+      <p>{{ _(g.efecto_vuelo) }}</p>
+      <div class="avisos-guia">
+        <p class="aviso aviso-tripulacion"><strong>{{ _("Avisa a tu tripulación") }}</strong> {{ _(g.tripulacion) }}</p>
+        <p class="aviso aviso-tierra"><strong>{{ _("Avisa a los médicos de vuelo en Tierra") }}</strong> {{ _(g.tierra) }}</p>
+      </div>
+      <h3>{{ _("Para prevenir") }}</h3>
+      <ul>{% for p in g.prevencion %}<li>{{ _(p) }}</li>{% endfor %}</ul>
+      {% if g.fuentes %}<p class="fuentes-entrada"><strong>{{ _("Fuentes:") }}</strong> {% with claves=g.fuentes %}{% include "partes/cita.html" %}{% endwith %}.</p>{% endif %}
+    </details>
+    {% endfor %}
+  </div>
+  <p class="ayuda">{{ _("Umbrales orientativos del prototipo. No sustituyen el criterio del equipo médico de la misión.") }}</p>
+</section></div>
+{% endblock %}

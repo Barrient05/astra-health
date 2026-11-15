@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Fuentes") }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+
+<div class="pagina"><section class="seccion-pagina" id="fuentes" aria-labelledby="t-fuentes">
+  <h1 id="t-fuentes">{{ _("Fuentes") }}</h1>
+  <p class="entrada">{{ _("De aquí salen los rangos, umbrales y parámetros. Damos prioridad a NASA; los rangos clínicos generales (presión, pulso, oxígeno, fiebre) vienen de referencias médicas porque NASA no los publica como umbrales.") }} {{ _("Los títulos de las fuentes se dejan en su idioma original.") }}</p>
+  {% for g in grupos_fuentes %}
+  <div class="grupo-fuentes">
+    <h2>{{ g.nombre }}</h2>
+    <ol class="lista-fuentes">
+      {% for f in g.fuentes %}
+      <li id="fuente-{{ f.id }}">
+        <p class="fuente-ref">{{ _(f.autor) }} ({{ f.anio }}). <cite>{{ f.titulo }}</cite>.{% if f.url %} <a href="{{ f.url }}" target="_blank" rel="noopener">{{ _("Abrir fuente") }}</a>{% endif %}</p>
+        <p class="fuente-dato"><strong>{{ _("Dato usado:") }}</strong> {{ _(f.dato) }}</p>
+        <p class="fuente-usos"><strong>{{ _("Dónde se usa:") }}</strong> {{ f.usos | join('; ') }}.</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% endfor %}
+</section></div>
+{% endblock %}

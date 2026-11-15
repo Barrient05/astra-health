@@ -1,0 +1,1 @@
+{% for k in claves %}{% set f = fuentes[k] %}{% if f.url %}<a href="{{ f.url }}" target="_blank" rel="noopener" title="{{ f.titulo }}">{{ _(f.autor) }} ({{ f.anio }})</a>{% else %}{{ _(f.autor) }} ({{ f.anio }}){% endif %}{% if not loop.last %}; {% endif %}{% endfor %}

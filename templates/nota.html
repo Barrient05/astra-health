@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Nota para médicos") }} · {{ astro.nombre }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+<div class="pagina">
+  <h1>{{ _("Nota clínica para médicos de vuelo") }}</h1>
+  <p class="entrada">{{ _("La app redacta la nota con tu registro y el análisis del día, en formato SOAP (subjetivo, objetivo, evaluación y plan). Es compacta porque cada mensaje a la Tierra tarda varios minutos. Revísala antes de enviarla.") }}</p>
+
+  <p class="nota-prioridad {% if nota.encabezado.urgente %}nota-urgente{% endif %}">{{ nota.encabezado.prioridad }}</p>
+  <p class="ayuda">{{ nota.encabezado.astronauta }} · {{ _("Día {dia}", dia=nota.encabezado.dia) }} · {{ nota.encabezado.entorno }}
+     · {{ _("retraso de comunicación {retraso}", retraso=nota.encabezado.retraso) }} · {{ _("{n} caracteres", n=nota.caracteres) }}</p>
+
+  {% for s in nota.secciones %}
+  <section class="nota-seccion">
+    <h3><span class="nota-letra">{{ s.letra }}</span> {{ s.titulo }}</h3>
+    <ul>{% for linea in s.lineas %}<li>{{ linea }}</li>{% endfor %}</ul>
+  </section>
+  {% endfor %}
+
+  <div class="acciones" style="margin-top:18px">
+
+    <button type="button" class="boton" id="btn-copiar"
+            data-ok="{{ _('Nota copiada.') }}" data-manual="{{ _('Selecciona el texto y cópialo con Ctrl+C.') }}">{{ _("Copiar nota") }}</button>
+    <span class="ayuda" id="copiado" role="status"></span>
+  </div>
+  <label class="campo" style="margin-top:14px">{{ _("Texto para enviar") }}
+    <textarea id="nota-texto" rows="12" readonly>{{ nota.texto }}</textarea>
+  </label>
+  <p class="ayuda">{{ _("Formato SOAP:") }} {% with claves=["soap", "astra_health"] %}{% include "partes/cita.html" %}{% endwith %}.</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Copiar la nota al portapapeles
+  const boton = document.getElementById("btn-copiar");
+  boton.addEventListener("click", async () => {
+    const aviso = document.getElementById("copiado");
+    try {
+      await navigator.clipboard.writeText(document.getElementById("nota-texto").value);
+      aviso.textContent = boton.dataset.ok;
+    } catch {
+      document.getElementById("nota-texto").select();   // algunos navegadores no permiten copiar solos
+      aviso.textContent = boton.dataset.manual;
+    }
+  });
+</script>
+{% endblock %}

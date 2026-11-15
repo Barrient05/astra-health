@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="{{ idioma }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}{{ app_nombre }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/curso.css') }}">
+</head>
+<body>
+
+<header class="cabecera">
+  <a class="marca" href="{{ url_for('panel') }}">
+    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="13" cy="13" r="4" fill="#4FC48D"/></svg>
+    {{ app_nombre }}
+  </a>
+
+  <nav class="navegacion" aria-label="{{ _('Secciones') }}">
+    {% for clave, ruta, texto in [
+        ('panel', 'panel', _('Panel')), ('registro', 'registro', _('Registro diario')),
+        ('rutina', 'rutina', _('Rutina')), ('indicadores', 'indicadores', _('Indicadores')),
+        ('planes', 'planes', _('Planes')), ('guia', 'guia', _('Guía de salud')),
+        ('fuentes', 'fuentes', _('Fuentes')), ('acerca', 'acerca', _('Cómo funciona'))] %}
+    <a href="{{ url_for(ruta) }}" {% if pagina == clave %}aria-current="page"{% endif %}>{{ texto }}</a>
+    {% endfor %}
+  </nav>
+
+  <nav class="selector-idioma" aria-label="{{ _('Idioma') }}">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    {% for codigo, nombre in idiomas.items() %}
+    <a href="{{ url_for(request.endpoint or 'panel', lang=codigo, **request.view_args or {}) }}"
+       lang="{{ codigo }}" hreflang="{{ codigo }}" title="{{ nombre }}" aria-label="{{ nombre }}"
+       {% if codigo == idioma %}aria-current="true"{% endif %}>{{ codigo | upper }}</a>
+    {% endfor %}
+  </nav>
+</header>
+
+<main id="contenido">
+
+  {% with mensajes = get_flashed_messages() %}
+    {% for m in mensajes %}<p class="aviso-curso" role="status">{{ m }}</p>{% endfor %}
+  {% endwith %}
+  {% if mensaje_error %}
+  <div class="pagina">
+    <h1>{{ mensaje_error }}</h1>
+    {% if detalle_error %}<p>{{ detalle_error }}</p>{% endif %}
+    {% if ofrecer_reinicio %}
+    <form method="post" action="{{ url_for('reiniciar') }}" class="grupo-reinicio">
+      <button class="boton" name="dia" value="1">{{ _("Empezar en el día 1") }}</button>
+      <button class="boton boton-secundario" name="dia" value="120">{{ _("Empezar en el día 120") }}</button>
+    </form>
+    {% endif %}
+    <p><a href="{{ url_for('panel') }}">{{ _("Volver al panel") }}</a></p>
+  </div>
+  {% endif %}
+
+  {% block tripulacion %}
+  {% if tarjetas %}
+
+  <nav class="tripulacion" aria-label="{{ _('Tripulación') }}">
+    {% for t in tarjetas %}
+    <a class="tripulante" href="{{ url_for(request.endpoint, astronauta=t.id) }}" {% if t.id == astro.id %}aria-current="true"{% endif %}>
+      <span class="tripulante-nombre">{{ t.nombre }}</span>
+      <span class="tripulante-rol">{{ _("{rol}. Mayor riesgo: {sistema}", rol=t.rol, sistema=t.peor) }}</span>
+      <span class="tripulante-puntaje"><i class="punto {{ t.nivel.clave }}"></i>{{ t.general }}</span>
+    </a>
+    {% endfor %}
+  </nav>
+  {% endif %}
+  {% endblock %}
+
+  {% block contenido %}{% endblock %}
+</main>
+
+<footer class="pie">{{ _("Prototipo para NASA Space Apps Challenge 2026 (versión del curso). Datos de salud simulados; no sustituye el criterio del equipo médico.") }}</footer>
+
+<script>window.TEXTOS = {{ textos_js | tojson }};</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

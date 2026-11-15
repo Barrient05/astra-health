@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Rutina") }} · {{ astro.nombre }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+<div class="pagina">
+  <h1>{{ _("Rutina de {nombre}", nombre=astro.nombre) }}</h1>
+  <p class="entrada">{{ _("Las tareas de salud del día {dia}. Algunas se marcan solas con tu registro; otras las marcas tú. Cada tarea da puntos, sube tu nivel y mantiene tu racha.", dia=r.dia) }}</p>
+
+  <div class="marcador">
+    <div class="marcador-nivel">
+      <span class="nivel-numero">{{ r.nivel }}</span>
+      <span class="nivel-texto">{{ _("nivel") }}<br><span class="tenue">{{ _("{puntos} puntos", puntos=r.puntos | numero(",")) }}</span></span>
+    </div>
+    <div class="marcador-racha">
+      <span class="racha-numero">{{ r.racha }}</span>
+      <span class="nivel-texto">{{ _("días de racha") }}<br><span class="tenue">{{ _("rutina básica completa") }}</span></span>
+    </div>
+  </div>
+  <div class="barra-nivel" role="progressbar" aria-label="{{ _('Progreso al siguiente nivel') }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ (100 * r.en_nivel / r.por_nivel) | round | int }}">
+    <div class="barra-nivel-relleno" style="width: {{ (100 * r.en_nivel / r.por_nivel) | round | int }}%"></div>
+  </div>
+  <p class="ayuda">{{ _("{hechos} de {posibles} puntos hoy. Faltan {faltan} para el nivel {siguiente}.", hechos=r.puntos_hoy, posibles=r.puntos_posibles_hoy, faltan=r.por_nivel - r.en_nivel, siguiente=r.nivel + 1) }}</p>
+
+  <h2 class="subtitulo" id="tareas">{{ _("Tareas de hoy") }}</h2>
+  <ul class="lista-tareas">
+    {% for t in r.tareas %}
+    <li class="tarea{% if t.hecho %} hecha{% endif %}">
+      {% if t.manual %}
+
+      <form method="post" action="{{ url_for('marcar_tarea') }}" id="forma-{{ t.id }}"></form>
+      <input type="checkbox" form="forma-{{ t.id }}" id="tarea-{{ t.id }}" {% if t.hecho %}checked{% endif %} onchange="this.form.submit()">
+      <input type="hidden" form="forma-{{ t.id }}" name="tarea" value="{{ t.id }}">
+      <input type="hidden" form="forma-{{ t.id }}" name="hecho" value="{{ 0 if t.hecho else 1 }}">
+      {% else %}
+
+      <span class="marca-auto{% if t.hecho %} cumplida{% endif %}"
+            title="{{ _('Se marca sola con tu registro.') }}">{{ "✓" if t.hecho else "○" }}</span>
+      {% endif %}
+      <label {% if t.manual %}for="tarea-{{ t.id }}"{% endif %}>
+        <span class="tarea-titulo">{{ t.titulo }}</span>
+        <small>{{ t.detalle }} {% if t.manual %}{{ _("Márcala tú.") }}{% else %}{{ _("Se marca sola con tu registro.") }}{% endif %}
+          <a href="{{ url_for('guia') }}#guia-{{ t.guia }}">{{ _("¿Cómo se mide?") }}</a></small>
+      </label>
+      <span class="tarea-puntos">+{{ t.puntos }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <h2 class="subtitulo">{{ _("Próximos exámenes") }}</h2>
+  <ul class="lista-proximos">
+    {% for x in r.proximos %}
+    <li><a href="{{ url_for('guia') }}#guia-{{ x.guia }}">{{ x.titulo }}</a>
+      <span class="tenue">{% if x.en_dias == 1 %}{{ _("mañana") }}{% else %}{{ _("en {n} días", n=x.en_dias) }}{% endif %}</span></li>
+    {% endfor %}
+  </ul>
+
+  <h2 class="subtitulo">{{ _("Insignias") }}</h2>
+  <ul class="lista-insignias">
+    {% for i in r.insignias %}
+    <li class="insignia{% if i.ganada %} ganada{% endif %}">
+      <span class="insignia-nombre">{{ i.nombre }}</span>
+      <div class="insignia-barra"><i style="width: {{ (100 * i.progreso / i.meta) | round | int }}%"></i></div>
+      <small>{% if i.ganada %}{{ _("Ganada.") }}{% else %}{{ _("{progreso} de {meta}.", progreso=i.progreso, meta=i.meta) }}{% endif %} {{ i.descripcion }}</small>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="ayuda">{{ _("Los puntos y las insignias son del prototipo: buscan que el autocuidado se vuelva hábito, que es lo que más protege en una misión larga.") }}</p>
+</div>
+{% endblock %}

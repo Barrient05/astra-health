@@ -1,0 +1,3252 @@
+{
+ "origen": "Exportación de un reloj inteligente (Mi Fitness)",
+ "archivos": [
+  "frecuencia_cardiaca.csv"
+ ],
+ "lecturas_totales": 72324,
+ "metodo": "Pulso en reposo por día: mediana del cuarto más bajo de las lecturas de 00:00 a 06:00; si ese día no hubo lecturas de madrugada, percentil 5 de todo el día.",
+ "linea_base": 65,
+ "dias": [
+  {
+   "fecha": "2025-07-02",
+   "reposo": 71,
+   "media": 91,
+   "maximo": 124,
+   "lecturas": 84
+  },
+  {
+   "fecha": "2025-07-03",
+   "reposo": 67,
+   "media": 88,
+   "maximo": 114,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2025-07-04",
+   "reposo": 70,
+   "media": 91,
+   "maximo": 118,
+   "lecturas": 179
+  },
+  {
+   "fecha": "2025-07-05",
+   "reposo": 71,
+   "media": 87,
+   "maximo": 129,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-07-06",
+   "reposo": 67,
+   "media": 82,
+   "maximo": 116,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2025-07-07",
+   "reposo": 66,
+   "media": 83,
+   "maximo": 105,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-07-08",
+   "reposo": 66,
+   "media": 83,
+   "maximo": 127,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2025-07-09",
+   "reposo": 64,
+   "media": 78,
+   "maximo": 105,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-07-10",
+   "reposo": 60,
+   "media": 79,
+   "maximo": 104,
+   "lecturas": 131
+  },
+  {
+   "fecha": "2025-07-11",
+   "reposo": 62,
+   "media": 86,
+   "maximo": 111,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-07-12",
+   "reposo": 64,
+   "media": 82,
+   "maximo": 108,
+   "lecturas": 130
+  },
+  {
+   "fecha": "2025-07-13",
+   "reposo": 66,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 50
+  },
+  {
+   "fecha": "2025-07-14",
+   "reposo": 59,
+   "media": 78,
+   "maximo": 103,
+   "lecturas": 139
+  },
+  {
+   "fecha": "2025-07-15",
+   "reposo": 61,
+   "media": 81,
+   "maximo": 106,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2025-07-16",
+   "reposo": 65,
+   "media": 82,
+   "maximo": 110,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-07-17",
+   "reposo": 63,
+   "media": 81,
+   "maximo": 109,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2025-07-18",
+   "reposo": 62,
+   "media": 81,
+   "maximo": 107,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-07-19",
+   "reposo": 64,
+   "media": 83,
+   "maximo": 117,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2025-07-20",
+   "reposo": 64,
+   "media": 80,
+   "maximo": 110,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2025-07-21",
+   "reposo": 62,
+   "media": 91,
+   "maximo": 115,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-07-22",
+   "reposo": 68,
+   "media": 92,
+   "maximo": 123,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2025-07-23",
+   "reposo": 65,
+   "media": 91,
+   "maximo": 130,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2025-07-24",
+   "reposo": 62,
+   "media": 88,
+   "maximo": 116,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-07-25",
+   "reposo": 65,
+   "media": 89,
+   "maximo": 120,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-07-26",
+   "reposo": 69,
+   "media": 87,
+   "maximo": 124,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2025-07-27",
+   "reposo": 65,
+   "media": 88,
+   "maximo": 115,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2025-07-28",
+   "reposo": 75,
+   "media": 86,
+   "maximo": 104,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-07-29",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 106,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-07-30",
+   "reposo": 66,
+   "media": 85,
+   "maximo": 108,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2025-07-31",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 108,
+   "lecturas": 134
+  },
+  {
+   "fecha": "2025-08-01",
+   "reposo": 67,
+   "media": 88,
+   "maximo": 116,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2025-08-02",
+   "reposo": 75,
+   "media": 91,
+   "maximo": 118,
+   "lecturas": 178
+  },
+  {
+   "fecha": "2025-08-03",
+   "reposo": 71,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2025-08-04",
+   "reposo": 66,
+   "media": 91,
+   "maximo": 123,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-08-05",
+   "reposo": 72,
+   "media": 89,
+   "maximo": 109,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2025-08-06",
+   "reposo": 68,
+   "media": 89,
+   "maximo": 111,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-08-07",
+   "reposo": 68,
+   "media": 89,
+   "maximo": 114,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2025-08-08",
+   "reposo": 69,
+   "media": 91,
+   "maximo": 117,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2025-08-09",
+   "reposo": 73,
+   "media": 88,
+   "maximo": 115,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2025-08-10",
+   "reposo": 67,
+   "media": 90,
+   "maximo": 111,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2025-08-11",
+   "reposo": 66,
+   "media": 87,
+   "maximo": 105,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2025-08-12",
+   "reposo": 64,
+   "media": 87,
+   "maximo": 110,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2025-08-13",
+   "reposo": 68,
+   "media": 88,
+   "maximo": 116,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-08-14",
+   "reposo": 66,
+   "media": 90,
+   "maximo": 120,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2025-08-15",
+   "reposo": 64,
+   "media": 86,
+   "maximo": 105,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-08-16",
+   "reposo": 66,
+   "media": 82,
+   "maximo": 106,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2025-08-17",
+   "reposo": 61,
+   "media": 80,
+   "maximo": 111,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-08-18",
+   "reposo": 58,
+   "media": 82,
+   "maximo": 105,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-08-19",
+   "reposo": 62,
+   "media": 85,
+   "maximo": 125,
+   "lecturas": 185
+  },
+  {
+   "fecha": "2025-08-20",
+   "reposo": 61,
+   "media": 82,
+   "maximo": 109,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-08-21",
+   "reposo": 63,
+   "media": 85,
+   "maximo": 111,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-08-22",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 104,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2025-08-23",
+   "reposo": 66,
+   "media": 84,
+   "maximo": 112,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-08-24",
+   "reposo": 64,
+   "media": 83,
+   "maximo": 107,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-08-25",
+   "reposo": 61,
+   "media": 83,
+   "maximo": 110,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-08-26",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 105,
+   "lecturas": 131
+  },
+  {
+   "fecha": "2025-08-27",
+   "reposo": 64,
+   "media": 82,
+   "maximo": 110,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2025-08-28",
+   "reposo": 63,
+   "media": 86,
+   "maximo": 116,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-08-29",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 105,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2025-08-30",
+   "reposo": 63,
+   "media": 81,
+   "maximo": 107,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-08-31",
+   "reposo": 61,
+   "media": 79,
+   "maximo": 106,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2025-09-01",
+   "reposo": 61,
+   "media": 82,
+   "maximo": 103,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-09-02",
+   "reposo": 64,
+   "media": 87,
+   "maximo": 118,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-09-03",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 117,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-09-04",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 112,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-09-05",
+   "reposo": 65,
+   "media": 90,
+   "maximo": 121,
+   "lecturas": 173
+  },
+  {
+   "fecha": "2025-09-06",
+   "reposo": 69,
+   "media": 83,
+   "maximo": 105,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2025-09-07",
+   "reposo": 66,
+   "media": 84,
+   "maximo": 115,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-09-08",
+   "reposo": 65,
+   "media": 75,
+   "maximo": 118,
+   "lecturas": 579
+  },
+  {
+   "fecha": "2025-09-09",
+   "reposo": 69,
+   "media": 90,
+   "maximo": 148,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2025-09-10",
+   "reposo": 66,
+   "media": 86,
+   "maximo": 122,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-09-11",
+   "reposo": 64,
+   "media": 75,
+   "maximo": 111,
+   "lecturas": 593
+  },
+  {
+   "fecha": "2025-09-12",
+   "reposo": 63,
+   "media": 74,
+   "maximo": 131,
+   "lecturas": 592
+  },
+  {
+   "fecha": "2025-09-13",
+   "reposo": 66,
+   "media": 76,
+   "maximo": 111,
+   "lecturas": 678
+  },
+  {
+   "fecha": "2025-09-14",
+   "reposo": 61,
+   "media": 71,
+   "maximo": 124,
+   "lecturas": 648
+  },
+  {
+   "fecha": "2025-09-15",
+   "reposo": 61,
+   "media": 82,
+   "maximo": 119,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2025-09-16",
+   "reposo": 63,
+   "media": 78,
+   "maximo": 109,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2025-09-17",
+   "reposo": 59,
+   "media": 83,
+   "maximo": 120,
+   "lecturas": 167
+  },
+  {
+   "fecha": "2025-09-18",
+   "reposo": 60,
+   "media": 83,
+   "maximo": 102,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-09-19",
+   "reposo": 60,
+   "media": 86,
+   "maximo": 114,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-09-20",
+   "reposo": 63,
+   "media": 82,
+   "maximo": 114,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2025-09-21",
+   "reposo": 62,
+   "media": 80,
+   "maximo": 119,
+   "lecturas": 139
+  },
+  {
+   "fecha": "2025-09-22",
+   "reposo": 61,
+   "media": 86,
+   "maximo": 115,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2025-09-23",
+   "reposo": 66,
+   "media": 85,
+   "maximo": 105,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2025-09-24",
+   "reposo": 64,
+   "media": 87,
+   "maximo": 123,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-09-25",
+   "reposo": 72,
+   "media": 86,
+   "maximo": 111,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-09-26",
+   "reposo": 63,
+   "media": 79,
+   "maximo": 105,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2025-09-27",
+   "reposo": 61,
+   "media": 76,
+   "maximo": 98,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-09-28",
+   "reposo": 61,
+   "media": 81,
+   "maximo": 106,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2025-09-29",
+   "reposo": 62,
+   "media": 92,
+   "maximo": 134,
+   "lecturas": 202
+  },
+  {
+   "fecha": "2025-09-30",
+   "reposo": 67,
+   "media": 88,
+   "maximo": 114,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-10-01",
+   "reposo": 66,
+   "media": 85,
+   "maximo": 122,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2025-10-02",
+   "reposo": 66,
+   "media": 82,
+   "maximo": 109,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-10-03",
+   "reposo": 63,
+   "media": 83,
+   "maximo": 111,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2025-10-04",
+   "reposo": 63,
+   "media": 81,
+   "maximo": 106,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2025-10-05",
+   "reposo": 65,
+   "media": 77,
+   "maximo": 100,
+   "lecturas": 132
+  },
+  {
+   "fecha": "2025-10-06",
+   "reposo": 65,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-10-07",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 112,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-10-08",
+   "reposo": 68,
+   "media": 85,
+   "maximo": 105,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-10-09",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 115,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-10-10",
+   "reposo": 68,
+   "media": 85,
+   "maximo": 116,
+   "lecturas": 165
+  },
+  {
+   "fecha": "2025-10-11",
+   "reposo": 66,
+   "media": 82,
+   "maximo": 114,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-10-12",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 107,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-10-13",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 103,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-10-14",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 107,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2025-10-15",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 128,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-10-16",
+   "reposo": 62,
+   "media": 84,
+   "maximo": 115,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-10-17",
+   "reposo": 64,
+   "media": 88,
+   "maximo": 121,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2025-10-18",
+   "reposo": 65,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-10-19",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 108,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-10-20",
+   "reposo": 64,
+   "media": 87,
+   "maximo": 117,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2025-10-21",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 116,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-10-22",
+   "reposo": 67,
+   "media": 85,
+   "maximo": 112,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2025-10-23",
+   "reposo": 64,
+   "media": 83,
+   "maximo": 101,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-10-24",
+   "reposo": 64,
+   "media": 86,
+   "maximo": 114,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-10-25",
+   "reposo": 61,
+   "media": 81,
+   "maximo": 105,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-10-26",
+   "reposo": 64,
+   "media": 83,
+   "maximo": 116,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2025-10-27",
+   "reposo": 65,
+   "media": 90,
+   "maximo": 130,
+   "lecturas": 342
+  },
+  {
+   "fecha": "2025-10-28",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 113,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-10-29",
+   "reposo": 66,
+   "media": 81,
+   "maximo": 119,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2025-10-30",
+   "reposo": 68,
+   "media": 88,
+   "maximo": 118,
+   "lecturas": 164
+  },
+  {
+   "fecha": "2025-10-31",
+   "reposo": 75,
+   "media": 92,
+   "maximo": 128,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-11-01",
+   "reposo": 74,
+   "media": 89,
+   "maximo": 109,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-11-02",
+   "reposo": 67,
+   "media": 84,
+   "maximo": 112,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2025-11-03",
+   "reposo": 67,
+   "media": 89,
+   "maximo": 120,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-11-04",
+   "reposo": 69,
+   "media": 89,
+   "maximo": 112,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2025-11-05",
+   "reposo": 68,
+   "media": 83,
+   "maximo": 114,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-11-06",
+   "reposo": 71,
+   "media": 89,
+   "maximo": 115,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-11-07",
+   "reposo": 70,
+   "media": 93,
+   "maximo": 119,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2025-11-08",
+   "reposo": 75,
+   "media": 85,
+   "maximo": 109,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-11-09",
+   "reposo": 70,
+   "media": 82,
+   "maximo": 107,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2025-11-10",
+   "reposo": 70,
+   "media": 88,
+   "maximo": 113,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-11-11",
+   "reposo": 72,
+   "media": 88,
+   "maximo": 110,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-11-12",
+   "reposo": 70,
+   "media": 87,
+   "maximo": 109,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2025-11-13",
+   "reposo": 70,
+   "media": 85,
+   "maximo": 110,
+   "lecturas": 136
+  },
+  {
+   "fecha": "2025-11-14",
+   "reposo": 67,
+   "media": 87,
+   "maximo": 135,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2025-11-15",
+   "reposo": 65,
+   "media": 80,
+   "maximo": 102,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-11-16",
+   "reposo": 64,
+   "media": 80,
+   "maximo": 109,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2025-11-17",
+   "reposo": 64,
+   "media": 71,
+   "maximo": 94,
+   "lecturas": 63
+  },
+  {
+   "fecha": "2025-11-18",
+   "reposo": 67,
+   "media": 89,
+   "maximo": 129,
+   "lecturas": 116
+  },
+  {
+   "fecha": "2025-11-19",
+   "reposo": 65,
+   "media": 83,
+   "maximo": 111,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-11-20",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 120,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2025-11-21",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 110,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2025-11-22",
+   "reposo": 62,
+   "media": 81,
+   "maximo": 105,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2025-11-23",
+   "reposo": 63,
+   "media": 77,
+   "maximo": 101,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-11-24",
+   "reposo": 62,
+   "media": 79,
+   "maximo": 103,
+   "lecturas": 139
+  },
+  {
+   "fecha": "2025-11-25",
+   "reposo": 64,
+   "media": 83,
+   "maximo": 125,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2025-11-26",
+   "reposo": 67,
+   "media": 93,
+   "maximo": 123,
+   "lecturas": 173
+  },
+  {
+   "fecha": "2025-11-27",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 125,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2025-11-28",
+   "reposo": 67,
+   "media": 78,
+   "maximo": 101,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2025-11-29",
+   "reposo": 64,
+   "media": 82,
+   "maximo": 106,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-11-30",
+   "reposo": 65,
+   "media": 83,
+   "maximo": 117,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-12-01",
+   "reposo": 69,
+   "media": 85,
+   "maximo": 112,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2025-12-02",
+   "reposo": 68,
+   "media": 84,
+   "maximo": 115,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2025-12-03",
+   "reposo": 66,
+   "media": 81,
+   "maximo": 101,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2025-12-04",
+   "reposo": 69,
+   "media": 82,
+   "maximo": 101,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-12-05",
+   "reposo": 76,
+   "media": 90,
+   "maximo": 124,
+   "lecturas": 172
+  },
+  {
+   "fecha": "2025-12-06",
+   "reposo": 68,
+   "media": 82,
+   "maximo": 108,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2025-12-07",
+   "reposo": 66,
+   "media": 81,
+   "maximo": 107,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-12-08",
+   "reposo": 66,
+   "media": 82,
+   "maximo": 118,
+   "lecturas": 140
+  },
+  {
+   "fecha": "2025-12-09",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 122,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2025-12-10",
+   "reposo": 69,
+   "media": 81,
+   "maximo": 110,
+   "lecturas": 133
+  },
+  {
+   "fecha": "2025-12-11",
+   "reposo": 64,
+   "media": 80,
+   "maximo": 112,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2025-12-12",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 120,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2025-12-13",
+   "reposo": 69,
+   "media": 87,
+   "maximo": 108,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2025-12-14",
+   "reposo": 72,
+   "media": 87,
+   "maximo": 110,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2025-12-15",
+   "reposo": 70,
+   "media": 81,
+   "maximo": 104,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2025-12-16",
+   "reposo": 67,
+   "media": 82,
+   "maximo": 106,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2025-12-17",
+   "reposo": 67,
+   "media": 82,
+   "maximo": 111,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-12-18",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 105,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-12-19",
+   "reposo": 68,
+   "media": 83,
+   "maximo": 116,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-12-20",
+   "reposo": 68,
+   "media": 87,
+   "maximo": 119,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2025-12-21",
+   "reposo": 66,
+   "media": 83,
+   "maximo": 103,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2025-12-22",
+   "reposo": 64,
+   "media": 80,
+   "maximo": 111,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-12-23",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 116,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2025-12-24",
+   "reposo": 63,
+   "media": 82,
+   "maximo": 108,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2025-12-25",
+   "reposo": 70,
+   "media": 81,
+   "maximo": 107,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-12-26",
+   "reposo": 68,
+   "media": 83,
+   "maximo": 110,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2025-12-27",
+   "reposo": 66,
+   "media": 82,
+   "maximo": 109,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2025-12-28",
+   "reposo": 67,
+   "media": 81,
+   "maximo": 101,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2025-12-29",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 122,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2025-12-30",
+   "reposo": 70,
+   "media": 92,
+   "maximo": 116,
+   "lecturas": 166
+  },
+  {
+   "fecha": "2025-12-31",
+   "reposo": 76,
+   "media": 89,
+   "maximo": 107,
+   "lecturas": 139
+  },
+  {
+   "fecha": "2026-01-01",
+   "reposo": 77,
+   "media": 92,
+   "maximo": 118,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2026-01-02",
+   "reposo": 78,
+   "media": 89,
+   "maximo": 109,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-01-03",
+   "reposo": 72,
+   "media": 94,
+   "maximo": 118,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2026-01-04",
+   "reposo": 72,
+   "media": 92,
+   "maximo": 112,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2026-01-05",
+   "reposo": 80,
+   "media": 91,
+   "maximo": 111,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-01-06",
+   "reposo": 79,
+   "media": 91,
+   "maximo": 113,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2026-01-07",
+   "reposo": 79,
+   "media": 96,
+   "maximo": 125,
+   "lecturas": 169
+  },
+  {
+   "fecha": "2026-01-08",
+   "reposo": 80,
+   "media": 88,
+   "maximo": 107,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-01-09",
+   "reposo": 76,
+   "media": 93,
+   "maximo": 121,
+   "lecturas": 180
+  },
+  {
+   "fecha": "2026-01-10",
+   "reposo": 75,
+   "media": 89,
+   "maximo": 107,
+   "lecturas": 126
+  },
+  {
+   "fecha": "2026-01-11",
+   "reposo": 78,
+   "media": 88,
+   "maximo": 104,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2026-01-12",
+   "reposo": 76,
+   "media": 86,
+   "maximo": 104,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-01-13",
+   "reposo": 78,
+   "media": 91,
+   "maximo": 108,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2026-01-14",
+   "reposo": 78,
+   "media": 91,
+   "maximo": 108,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2026-01-15",
+   "reposo": 78,
+   "media": 88,
+   "maximo": 103,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2026-01-16",
+   "reposo": 74,
+   "media": 88,
+   "maximo": 123,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-01-17",
+   "reposo": 76,
+   "media": 87,
+   "maximo": 106,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-01-18",
+   "reposo": 76,
+   "media": 88,
+   "maximo": 106,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2026-01-19",
+   "reposo": 73,
+   "media": 90,
+   "maximo": 114,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-01-20",
+   "reposo": 70,
+   "media": 87,
+   "maximo": 111,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-01-21",
+   "reposo": 72,
+   "media": 90,
+   "maximo": 109,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-01-22",
+   "reposo": 74,
+   "media": 88,
+   "maximo": 112,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2026-01-23",
+   "reposo": 69,
+   "media": 88,
+   "maximo": 115,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-01-24",
+   "reposo": 71,
+   "media": 89,
+   "maximo": 111,
+   "lecturas": 174
+  },
+  {
+   "fecha": "2026-01-25",
+   "reposo": 67,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-01-26",
+   "reposo": 66,
+   "media": 86,
+   "maximo": 117,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-01-27",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 109,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-01-28",
+   "reposo": 68,
+   "media": 86,
+   "maximo": 112,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2026-01-29",
+   "reposo": 66,
+   "media": 86,
+   "maximo": 108,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-01-30",
+   "reposo": 70,
+   "media": 90,
+   "maximo": 120,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2026-01-31",
+   "reposo": 71,
+   "media": 88,
+   "maximo": 122,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-02-01",
+   "reposo": 66,
+   "media": 87,
+   "maximo": 111,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-02-02",
+   "reposo": 70,
+   "media": 92,
+   "maximo": 115,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-02-03",
+   "reposo": 72,
+   "media": 88,
+   "maximo": 104,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-02-04",
+   "reposo": 71,
+   "media": 87,
+   "maximo": 116,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-02-05",
+   "reposo": 68,
+   "media": 86,
+   "maximo": 107,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-02-06",
+   "reposo": 67,
+   "media": 87,
+   "maximo": 118,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-02-07",
+   "reposo": 71,
+   "media": 90,
+   "maximo": 107,
+   "lecturas": 164
+  },
+  {
+   "fecha": "2026-02-08",
+   "reposo": 72,
+   "media": 84,
+   "maximo": 105,
+   "lecturas": 136
+  },
+  {
+   "fecha": "2026-02-09",
+   "reposo": 69,
+   "media": 91,
+   "maximo": 116,
+   "lecturas": 166
+  },
+  {
+   "fecha": "2026-02-10",
+   "reposo": 71,
+   "media": 88,
+   "maximo": 109,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2026-02-11",
+   "reposo": 73,
+   "media": 98,
+   "maximo": 138,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-02-12",
+   "reposo": 75,
+   "media": 92,
+   "maximo": 114,
+   "lecturas": 129
+  },
+  {
+   "fecha": "2026-02-13",
+   "reposo": 76,
+   "media": 91,
+   "maximo": 111,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2026-02-14",
+   "reposo": 74,
+   "media": 89,
+   "maximo": 108,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2026-02-15",
+   "reposo": 75,
+   "media": 88,
+   "maximo": 121,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-02-16",
+   "reposo": 73,
+   "media": 89,
+   "maximo": 111,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-02-17",
+   "reposo": 72,
+   "media": 93,
+   "maximo": 122,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-02-18",
+   "reposo": 72,
+   "media": 87,
+   "maximo": 114,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-02-19",
+   "reposo": 66,
+   "media": 88,
+   "maximo": 130,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-02-20",
+   "reposo": 68,
+   "media": 90,
+   "maximo": 123,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-02-21",
+   "reposo": 67,
+   "media": 84,
+   "maximo": 118,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-02-22",
+   "reposo": 65,
+   "media": 81,
+   "maximo": 109,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-02-23",
+   "reposo": 65,
+   "media": 80,
+   "maximo": 107,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2026-02-24",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 117,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-02-25",
+   "reposo": 67,
+   "media": 88,
+   "maximo": 122,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2026-02-26",
+   "reposo": 64,
+   "media": 88,
+   "maximo": 123,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-02-27",
+   "reposo": 64,
+   "media": 85,
+   "maximo": 109,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-02-28",
+   "reposo": 71,
+   "media": 87,
+   "maximo": 116,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2026-03-01",
+   "reposo": 65,
+   "media": 80,
+   "maximo": 111,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-03-02",
+   "reposo": 65,
+   "media": 87,
+   "maximo": 129,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-03-03",
+   "reposo": 68,
+   "media": 87,
+   "maximo": 110,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-03-04",
+   "reposo": 68,
+   "media": 86,
+   "maximo": 112,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-03-05",
+   "reposo": 70,
+   "media": 85,
+   "maximo": 106,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-03-06",
+   "reposo": 63,
+   "media": 86,
+   "maximo": 120,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2026-03-07",
+   "reposo": 63,
+   "media": 83,
+   "maximo": 117,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2026-03-08",
+   "reposo": 65,
+   "media": 81,
+   "maximo": 112,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-03-09",
+   "reposo": 66,
+   "media": 87,
+   "maximo": 130,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-03-10",
+   "reposo": 71,
+   "media": 90,
+   "maximo": 108,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-03-11",
+   "reposo": 68,
+   "media": 91,
+   "maximo": 109,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-03-12",
+   "reposo": 67,
+   "media": 87,
+   "maximo": 112,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-03-13",
+   "reposo": 67,
+   "media": 92,
+   "maximo": 115,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2026-03-14",
+   "reposo": 69,
+   "media": 88,
+   "maximo": 116,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-03-15",
+   "reposo": 68,
+   "media": 89,
+   "maximo": 113,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2026-03-16",
+   "reposo": 74,
+   "media": 84,
+   "maximo": 108,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-03-17",
+   "reposo": 71,
+   "media": 90,
+   "maximo": 119,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2026-03-18",
+   "reposo": 73,
+   "media": 89,
+   "maximo": 107,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-03-19",
+   "reposo": 73,
+   "media": 89,
+   "maximo": 107,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-03-20",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 119,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2026-03-21",
+   "reposo": 70,
+   "media": 87,
+   "maximo": 105,
+   "lecturas": 124
+  },
+  {
+   "fecha": "2026-03-22",
+   "reposo": 73,
+   "media": 88,
+   "maximo": 108,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-03-23",
+   "reposo": 68,
+   "media": 85,
+   "maximo": 107,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-03-24",
+   "reposo": 66,
+   "media": 84,
+   "maximo": 105,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2026-03-25",
+   "reposo": 65,
+   "media": 88,
+   "maximo": 117,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-03-26",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 112,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-03-27",
+   "reposo": 67,
+   "media": 91,
+   "maximo": 122,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2026-03-28",
+   "reposo": 67,
+   "media": 84,
+   "maximo": 107,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-03-29",
+   "reposo": 65,
+   "media": 80,
+   "maximo": 109,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-03-30",
+   "reposo": 64,
+   "media": 83,
+   "maximo": 120,
+   "lecturas": 141
+  },
+  {
+   "fecha": "2026-03-31",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 115,
+   "lecturas": 170
+  },
+  {
+   "fecha": "2026-04-01",
+   "reposo": 66,
+   "media": 86,
+   "maximo": 116,
+   "lecturas": 169
+  },
+  {
+   "fecha": "2026-04-02",
+   "reposo": 65,
+   "media": 82,
+   "maximo": 111,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2026-04-03",
+   "reposo": 64,
+   "media": 86,
+   "maximo": 135,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-04-04",
+   "reposo": 66,
+   "media": 87,
+   "maximo": 116,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-04-05",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 115,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-04-06",
+   "reposo": 65,
+   "media": 88,
+   "maximo": 123,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2026-04-07",
+   "reposo": 68,
+   "media": 87,
+   "maximo": 110,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-04-08",
+   "reposo": 70,
+   "media": 88,
+   "maximo": 112,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2026-04-09",
+   "reposo": 65,
+   "media": 89,
+   "maximo": 109,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2026-04-10",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 107,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-04-11",
+   "reposo": 69,
+   "media": 83,
+   "maximo": 117,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-04-12",
+   "reposo": 64,
+   "media": 82,
+   "maximo": 116,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2026-04-13",
+   "reposo": 69,
+   "media": 88,
+   "maximo": 123,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-04-14",
+   "reposo": 68,
+   "media": 90,
+   "maximo": 116,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-04-15",
+   "reposo": 68,
+   "media": 89,
+   "maximo": 108,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-04-16",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 107,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2026-04-17",
+   "reposo": 68,
+   "media": 91,
+   "maximo": 118,
+   "lecturas": 165
+  },
+  {
+   "fecha": "2026-04-18",
+   "reposo": 71,
+   "media": 89,
+   "maximo": 112,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2026-04-19",
+   "reposo": 70,
+   "media": 84,
+   "maximo": 110,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2026-04-20",
+   "reposo": 68,
+   "media": 87,
+   "maximo": 112,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-04-21",
+   "reposo": 70,
+   "media": 86,
+   "maximo": 105,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-04-22",
+   "reposo": 70,
+   "media": 93,
+   "maximo": 130,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2026-04-23",
+   "reposo": 75,
+   "media": 90,
+   "maximo": 116,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-04-24",
+   "reposo": 72,
+   "media": 98,
+   "maximo": 130,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2026-04-25",
+   "reposo": 75,
+   "media": 89,
+   "maximo": 107,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-04-26",
+   "reposo": 70,
+   "media": 84,
+   "maximo": 107,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-04-27",
+   "reposo": 70,
+   "media": 85,
+   "maximo": 111,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-04-28",
+   "reposo": 68,
+   "media": 88,
+   "maximo": 112,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-04-29",
+   "reposo": 66,
+   "media": 85,
+   "maximo": 112,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-04-30",
+   "reposo": 65,
+   "media": 87,
+   "maximo": 109,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-05-01",
+   "reposo": 62,
+   "media": 85,
+   "maximo": 118,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-05-02",
+   "reposo": 67,
+   "media": 89,
+   "maximo": 131,
+   "lecturas": 168
+  },
+  {
+   "fecha": "2026-05-03",
+   "reposo": 67,
+   "media": 78,
+   "maximo": 99,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2026-05-04",
+   "reposo": 62,
+   "media": 87,
+   "maximo": 109,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2026-05-05",
+   "reposo": 62,
+   "media": 83,
+   "maximo": 107,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2026-05-06",
+   "reposo": 62,
+   "media": 82,
+   "maximo": 113,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-05-07",
+   "reposo": 61,
+   "media": 89,
+   "maximo": 133,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2026-05-08",
+   "reposo": 65,
+   "media": 87,
+   "maximo": 115,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2026-05-09",
+   "reposo": 66,
+   "media": 89,
+   "maximo": 129,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2026-05-10",
+   "reposo": 63,
+   "media": 80,
+   "maximo": 111,
+   "lecturas": 137
+  },
+  {
+   "fecha": "2026-05-11",
+   "reposo": 62,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-05-12",
+   "reposo": 65,
+   "media": 87,
+   "maximo": 119,
+   "lecturas": 168
+  },
+  {
+   "fecha": "2026-05-13",
+   "reposo": 63,
+   "media": 85,
+   "maximo": 121,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2026-05-14",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 111,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-05-15",
+   "reposo": 66,
+   "media": 84,
+   "maximo": 107,
+   "lecturas": 164
+  },
+  {
+   "fecha": "2026-05-16",
+   "reposo": 65,
+   "media": 84,
+   "maximo": 111,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-05-17",
+   "reposo": 67,
+   "media": 80,
+   "maximo": 109,
+   "lecturas": 54
+  },
+  {
+   "fecha": "2026-05-18",
+   "reposo": 66,
+   "media": 80,
+   "maximo": 105,
+   "lecturas": 79
+  },
+  {
+   "fecha": "2026-05-19",
+   "reposo": 66,
+   "media": 91,
+   "maximo": 109,
+   "lecturas": 87
+  },
+  {
+   "fecha": "2026-05-20",
+   "reposo": 66,
+   "media": 86,
+   "maximo": 122,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-05-21",
+   "reposo": 68,
+   "media": 90,
+   "maximo": 117,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-05-22",
+   "reposo": 71,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-05-23",
+   "reposo": 66,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-05-24",
+   "reposo": 66,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-05-25",
+   "reposo": 67,
+   "media": 90,
+   "maximo": 130,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2026-05-26",
+   "reposo": 72,
+   "media": 87,
+   "maximo": 127,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-05-27",
+   "reposo": 71,
+   "media": 93,
+   "maximo": 126,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-05-28",
+   "reposo": 64,
+   "media": 83,
+   "maximo": 108,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-05-29",
+   "reposo": 68,
+   "media": 86,
+   "maximo": 121,
+   "lecturas": 131
+  },
+  {
+   "fecha": "2026-05-30",
+   "reposo": 69,
+   "media": 90,
+   "maximo": 111,
+   "lecturas": 165
+  },
+  {
+   "fecha": "2026-05-31",
+   "reposo": 69,
+   "media": 87,
+   "maximo": 110,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-06-01",
+   "reposo": 72,
+   "media": 86,
+   "maximo": 116,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-06-02",
+   "reposo": 70,
+   "media": 86,
+   "maximo": 114,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-06-03",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 120,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2026-06-04",
+   "reposo": 63,
+   "media": 78,
+   "maximo": 110,
+   "lecturas": 135
+  },
+  {
+   "fecha": "2026-06-05",
+   "reposo": 62,
+   "media": 83,
+   "maximo": 107,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-06-06",
+   "reposo": 65,
+   "media": 88,
+   "maximo": 105,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-06-07",
+   "reposo": 68,
+   "media": 92,
+   "maximo": 142,
+   "lecturas": 183
+  },
+  {
+   "fecha": "2026-06-08",
+   "reposo": 70,
+   "media": 97,
+   "maximo": 142,
+   "lecturas": 191
+  },
+  {
+   "fecha": "2026-06-09",
+   "reposo": 67,
+   "media": 89,
+   "maximo": 120,
+   "lecturas": 164
+  },
+  {
+   "fecha": "2026-06-10",
+   "reposo": 66,
+   "media": 88,
+   "maximo": 127,
+   "lecturas": 170
+  },
+  {
+   "fecha": "2026-06-11",
+   "reposo": 65,
+   "media": 83,
+   "maximo": 116,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-06-12",
+   "reposo": 66,
+   "media": 90,
+   "maximo": 120,
+   "lecturas": 168
+  },
+  {
+   "fecha": "2026-06-13",
+   "reposo": 69,
+   "media": 83,
+   "maximo": 110,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-06-14",
+   "reposo": 67,
+   "media": 86,
+   "maximo": 107,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2026-06-15",
+   "reposo": 66,
+   "media": 93,
+   "maximo": 127,
+   "lecturas": 178
+  },
+  {
+   "fecha": "2026-06-16",
+   "reposo": 67,
+   "media": 91,
+   "maximo": 114,
+   "lecturas": 170
+  },
+  {
+   "fecha": "2026-06-17",
+   "reposo": 69,
+   "media": 93,
+   "maximo": 132,
+   "lecturas": 173
+  },
+  {
+   "fecha": "2026-06-18",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 174,
+   "lecturas": 178
+  },
+  {
+   "fecha": "2026-06-19",
+   "reposo": 70,
+   "media": 96,
+   "maximo": 129,
+   "lecturas": 178
+  },
+  {
+   "fecha": "2026-06-20",
+   "reposo": 75,
+   "media": 90,
+   "maximo": 127,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2026-06-21",
+   "reposo": 72,
+   "media": 89,
+   "maximo": 123,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-06-22",
+   "reposo": 71,
+   "media": 95,
+   "maximo": 128,
+   "lecturas": 164
+  },
+  {
+   "fecha": "2026-06-23",
+   "reposo": 71,
+   "media": 95,
+   "maximo": 121,
+   "lecturas": 183
+  },
+  {
+   "fecha": "2026-06-24",
+   "reposo": 76,
+   "media": 94,
+   "maximo": 117,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2026-06-25",
+   "reposo": 72,
+   "media": 95,
+   "maximo": 134,
+   "lecturas": 174
+  },
+  {
+   "fecha": "2026-06-26",
+   "reposo": 76,
+   "media": 93,
+   "maximo": 112,
+   "lecturas": 164
+  },
+  {
+   "fecha": "2026-06-27",
+   "reposo": 78,
+   "media": 86,
+   "maximo": 110,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-06-28",
+   "reposo": 71,
+   "media": 86,
+   "maximo": 106,
+   "lecturas": 130
+  },
+  {
+   "fecha": "2026-06-29",
+   "reposo": 67,
+   "media": 89,
+   "maximo": 121,
+   "lecturas": 172
+  },
+  {
+   "fecha": "2026-06-30",
+   "reposo": 71,
+   "media": 90,
+   "maximo": 114,
+   "lecturas": 165
+  },
+  {
+   "fecha": "2026-07-01",
+   "reposo": 69,
+   "media": 91,
+   "maximo": 118,
+   "lecturas": 171
+  },
+  {
+   "fecha": "2026-07-02",
+   "reposo": 71,
+   "media": 89,
+   "maximo": 112,
+   "lecturas": 171
+  },
+  {
+   "fecha": "2026-07-03",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 120,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2026-07-04",
+   "reposo": 72,
+   "media": 87,
+   "maximo": 152,
+   "lecturas": 166
+  },
+  {
+   "fecha": "2026-07-05",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 130,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-07-06",
+   "reposo": 68,
+   "media": 86,
+   "maximo": 111,
+   "lecturas": 113
+  },
+  {
+   "fecha": "2026-07-08",
+   "reposo": 67,
+   "media": 85,
+   "maximo": 108,
+   "lecturas": 41
+  },
+  {
+   "fecha": "2026-07-09",
+   "reposo": 65,
+   "media": 88,
+   "maximo": 111,
+   "lecturas": 165
+  },
+  {
+   "fecha": "2026-07-10",
+   "reposo": 69,
+   "media": 90,
+   "maximo": 128,
+   "lecturas": 182
+  },
+  {
+   "fecha": "2026-07-11",
+   "reposo": 73,
+   "media": 85,
+   "maximo": 122,
+   "lecturas": 145
+  },
+  {
+   "fecha": "2026-07-12",
+   "reposo": 65,
+   "media": 86,
+   "maximo": 147,
+   "lecturas": 135
+  },
+  {
+   "fecha": "2026-07-13",
+   "reposo": 69,
+   "media": 94,
+   "maximo": 123,
+   "lecturas": 174
+  },
+  {
+   "fecha": "2026-07-14",
+   "reposo": 74,
+   "media": 100,
+   "maximo": 138,
+   "lecturas": 192
+  },
+  {
+   "fecha": "2026-07-15",
+   "reposo": 92,
+   "media": 112,
+   "maximo": 144,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2026-07-16",
+   "reposo": 79,
+   "media": 100,
+   "maximo": 139,
+   "lecturas": 166
+  },
+  {
+   "fecha": "2026-07-17",
+   "reposo": 73,
+   "media": 93,
+   "maximo": 122,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-07-18",
+   "reposo": 75,
+   "media": 92,
+   "maximo": 128,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2026-07-19",
+   "reposo": 73,
+   "media": 91,
+   "maximo": 118,
+   "lecturas": 166
+  },
+  {
+   "fecha": "2026-07-20",
+   "reposo": 72,
+   "media": 97,
+   "maximo": 130,
+   "lecturas": 184
+  },
+  {
+   "fecha": "2026-07-21",
+   "reposo": 75,
+   "media": 96,
+   "maximo": 115,
+   "lecturas": 176
+  },
+  {
+   "fecha": "2026-07-22",
+   "reposo": 77,
+   "media": 96,
+   "maximo": 129,
+   "lecturas": 185
+  },
+  {
+   "fecha": "2026-07-23",
+   "reposo": 75,
+   "media": 94,
+   "maximo": 119,
+   "lecturas": 163
+  },
+  {
+   "fecha": "2026-07-24",
+   "reposo": 75,
+   "media": 100,
+   "maximo": 157,
+   "lecturas": 176
+  },
+  {
+   "fecha": "2026-07-25",
+   "reposo": 78,
+   "media": 96,
+   "maximo": 133,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-07-26",
+   "reposo": 73,
+   "media": 86,
+   "maximo": 128,
+   "lecturas": 136
+  },
+  {
+   "fecha": "2026-07-27",
+   "reposo": 70,
+   "media": 90,
+   "maximo": 121,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2026-07-28",
+   "reposo": 72,
+   "media": 86,
+   "maximo": 134,
+   "lecturas": 148
+  },
+  {
+   "fecha": "2026-07-29",
+   "reposo": 71,
+   "media": 93,
+   "maximo": 157,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2026-07-30",
+   "reposo": 73,
+   "media": 90,
+   "maximo": 128,
+   "lecturas": 133
+  },
+  {
+   "fecha": "2026-07-31",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 125,
+   "lecturas": 135
+  },
+  {
+   "fecha": "2026-08-01",
+   "reposo": 73,
+   "media": 83,
+   "maximo": 120,
+   "lecturas": 165
+  },
+  {
+   "fecha": "2026-08-02",
+   "reposo": 68,
+   "media": 80,
+   "maximo": 101,
+   "lecturas": 138
+  },
+  {
+   "fecha": "2026-08-03",
+   "reposo": 68,
+   "media": 81,
+   "maximo": 112,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2026-08-04",
+   "reposo": 69,
+   "media": 80,
+   "maximo": 102,
+   "lecturas": 128
+  },
+  {
+   "fecha": "2026-08-05",
+   "reposo": 70,
+   "media": 80,
+   "maximo": 114,
+   "lecturas": 134
+  },
+  {
+   "fecha": "2026-08-06",
+   "reposo": 70,
+   "media": 82,
+   "maximo": 105,
+   "lecturas": 132
+  },
+  {
+   "fecha": "2026-08-07",
+   "reposo": 70,
+   "media": 79,
+   "maximo": 111,
+   "lecturas": 134
+  },
+  {
+   "fecha": "2026-08-08",
+   "reposo": 66,
+   "media": 73,
+   "maximo": 86,
+   "lecturas": 38
+  },
+  {
+   "fecha": "2026-08-12",
+   "reposo": 67,
+   "media": 79,
+   "maximo": 101,
+   "lecturas": 136
+  },
+  {
+   "fecha": "2026-08-13",
+   "reposo": 64,
+   "media": 78,
+   "maximo": 99,
+   "lecturas": 132
+  },
+  {
+   "fecha": "2026-08-14",
+   "reposo": 70,
+   "media": 81,
+   "maximo": 112,
+   "lecturas": 114
+  },
+  {
+   "fecha": "2026-09-18",
+   "reposo": 70,
+   "media": 88,
+   "maximo": 113,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2026-09-19",
+   "reposo": 68,
+   "media": 92,
+   "maximo": 117,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2026-09-20",
+   "reposo": 71,
+   "media": 86,
+   "maximo": 113,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-09-21",
+   "reposo": 72,
+   "media": 95,
+   "maximo": 131,
+   "lecturas": 152
+  },
+  {
+   "fecha": "2026-09-22",
+   "reposo": 72,
+   "media": 88,
+   "maximo": 125,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-09-23",
+   "reposo": 72,
+   "media": 90,
+   "maximo": 121,
+   "lecturas": 159
+  },
+  {
+   "fecha": "2026-09-24",
+   "reposo": 70,
+   "media": 84,
+   "maximo": 107,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2026-09-25",
+   "reposo": 69,
+   "media": 91,
+   "maximo": 123,
+   "lecturas": 154
+  },
+  {
+   "fecha": "2026-09-26",
+   "reposo": 73,
+   "media": 94,
+   "maximo": 143,
+   "lecturas": 169
+  },
+  {
+   "fecha": "2026-09-27",
+   "reposo": 71,
+   "media": 84,
+   "maximo": 109,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-09-28",
+   "reposo": 71,
+   "media": 90,
+   "maximo": 131,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2026-09-29",
+   "reposo": 72,
+   "media": 90,
+   "maximo": 120,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2026-09-30",
+   "reposo": 76,
+   "media": 101,
+   "maximo": 136,
+   "lecturas": 165
+  },
+  {
+   "fecha": "2026-10-01",
+   "reposo": 83,
+   "media": 97,
+   "maximo": 123,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2026-10-02",
+   "reposo": 78,
+   "media": 93,
+   "maximo": 109,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2026-10-03",
+   "reposo": 76,
+   "media": 92,
+   "maximo": 109,
+   "lecturas": 144
+  },
+  {
+   "fecha": "2026-10-04",
+   "reposo": 75,
+   "media": 86,
+   "maximo": 106,
+   "lecturas": 137
+  },
+  {
+   "fecha": "2026-10-05",
+   "reposo": 69,
+   "media": 88,
+   "maximo": 109,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-10-06",
+   "reposo": 74,
+   "media": 94,
+   "maximo": 118,
+   "lecturas": 166
+  },
+  {
+   "fecha": "2026-10-07",
+   "reposo": 75,
+   "media": 90,
+   "maximo": 117,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2026-10-08",
+   "reposo": 67,
+   "media": 94,
+   "maximo": 134,
+   "lecturas": 178
+  },
+  {
+   "fecha": "2026-10-09",
+   "reposo": 71,
+   "media": 90,
+   "maximo": 110,
+   "lecturas": 168
+  },
+  {
+   "fecha": "2026-10-10",
+   "reposo": 71,
+   "media": 87,
+   "maximo": 127,
+   "lecturas": 158
+  },
+  {
+   "fecha": "2026-10-11",
+   "reposo": 61,
+   "media": 77,
+   "maximo": 133,
+   "lecturas": 96
+  },
+  {
+   "fecha": "2026-10-12",
+   "reposo": 64,
+   "media": 85,
+   "maximo": 111,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-10-13",
+   "reposo": 67,
+   "media": 89,
+   "maximo": 108,
+   "lecturas": 153
+  },
+  {
+   "fecha": "2026-10-14",
+   "reposo": 70,
+   "media": 88,
+   "maximo": 124,
+   "lecturas": 172
+  },
+  {
+   "fecha": "2026-10-15",
+   "reposo": 67,
+   "media": 85,
+   "maximo": 110,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-10-16",
+   "reposo": 65,
+   "media": 88,
+   "maximo": 115,
+   "lecturas": 168
+  },
+  {
+   "fecha": "2026-10-17",
+   "reposo": 67,
+   "media": 81,
+   "maximo": 106,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2026-10-18",
+   "reposo": 64,
+   "media": 84,
+   "maximo": 124,
+   "lecturas": 156
+  },
+  {
+   "fecha": "2026-10-19",
+   "reposo": 66,
+   "media": 85,
+   "maximo": 109,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2026-10-20",
+   "reposo": 70,
+   "media": 89,
+   "maximo": 110,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-10-21",
+   "reposo": 72,
+   "media": 87,
+   "maximo": 108,
+   "lecturas": 142
+  },
+  {
+   "fecha": "2026-10-22",
+   "reposo": 69,
+   "media": 86,
+   "maximo": 108,
+   "lecturas": 155
+  },
+  {
+   "fecha": "2026-10-23",
+   "reposo": 70,
+   "media": 91,
+   "maximo": 123,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-10-24",
+   "reposo": 70,
+   "media": 86,
+   "maximo": 117,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-10-25",
+   "reposo": 67,
+   "media": 81,
+   "maximo": 102,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-10-26",
+   "reposo": 66,
+   "media": 84,
+   "maximo": 116,
+   "lecturas": 143
+  },
+  {
+   "fecha": "2026-10-27",
+   "reposo": 70,
+   "media": 85,
+   "maximo": 117,
+   "lecturas": 161
+  },
+  {
+   "fecha": "2026-10-28",
+   "reposo": 71,
+   "media": 89,
+   "maximo": 112,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-10-29",
+   "reposo": 72,
+   "media": 86,
+   "maximo": 111,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-10-30",
+   "reposo": 70,
+   "media": 93,
+   "maximo": 123,
+   "lecturas": 167
+  },
+  {
+   "fecha": "2026-10-31",
+   "reposo": 77,
+   "media": 92,
+   "maximo": 119,
+   "lecturas": 177
+  },
+  {
+   "fecha": "2026-11-01",
+   "reposo": 71,
+   "media": 85,
+   "maximo": 106,
+   "lecturas": 147
+  },
+  {
+   "fecha": "2026-11-02",
+   "reposo": 71,
+   "media": 89,
+   "maximo": 115,
+   "lecturas": 157
+  },
+  {
+   "fecha": "2026-11-03",
+   "reposo": 70,
+   "media": 87,
+   "maximo": 104,
+   "lecturas": 160
+  },
+  {
+   "fecha": "2026-11-04",
+   "reposo": 71,
+   "media": 91,
+   "maximo": 128,
+   "lecturas": 162
+  },
+  {
+   "fecha": "2026-11-05",
+   "reposo": 69,
+   "media": 84,
+   "maximo": 105,
+   "lecturas": 150
+  },
+  {
+   "fecha": "2026-11-06",
+   "reposo": 69,
+   "media": 88,
+   "maximo": 111,
+   "lecturas": 173
+  },
+  {
+   "fecha": "2026-11-07",
+   "reposo": 72,
+   "media": 95,
+   "maximo": 138,
+   "lecturas": 207
+  },
+  {
+   "fecha": "2026-11-08",
+   "reposo": 69,
+   "media": 87,
+   "maximo": 131,
+   "lecturas": 164
+  },
+  {
+   "fecha": "2026-11-09",
+   "reposo": 69,
+   "media": 87,
+   "maximo": 107,
+   "lecturas": 146
+  },
+  {
+   "fecha": "2026-11-10",
+   "reposo": 66,
+   "media": 85,
+   "maximo": 117,
+   "lecturas": 151
+  },
+  {
+   "fecha": "2026-11-11",
+   "reposo": 70,
+   "media": 92,
+   "maximo": 125,
+   "lecturas": 173
+  },
+  {
+   "fecha": "2026-11-12",
+   "reposo": 71,
+   "media": 83,
+   "maximo": 106,
+   "lecturas": 149
+  },
+  {
+   "fecha": "2026-11-13",
+   "reposo": 68,
+   "media": 87,
+   "maximo": 117,
+   "lecturas": 170
+  },
+  {
+   "fecha": "2026-11-14",
+   "reposo": 74,
+   "media": 87,
+   "maximo": 120,
+   "lecturas": 121
+  }
+ ]
+}

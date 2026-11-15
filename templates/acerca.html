@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Cómo funciona") }} · {{ app_nombre }}{% endblock %}
+{% block contenido %}
+<div class="pagina texto-largo">
+  <h1>{{ _("Cómo funciona") }}</h1>
+  <p class="entrada">{{ _("En una misión a Marte, un mensaje tarda hasta 22 minutos en llegar a la Tierra. {app} ayuda a cada astronauta a detectar cambios en su salud y a decidir qué hacer sin esperar respuesta del equipo médico.", app=app_nombre) }}</p>
+
+  {% if reloj %}
+  <h2 class="subtitulo">{{ _("Datos reales y datos simulados") }}</h2>
+  <p>{{ _("Casi todos los datos de esta demostración son simulados, porque no existen series públicas y continuas de signos vitales de astronautas. Hay una excepción, y la app la marca con la etiqueta REAL:") }}</p>
+  <p><strong>{{ _("El pulso en reposo de {nombre} no se simula.", nombre="Jesús Barrientos") }}</strong>
+     {{ _("Son {lecturas:,} lecturas tomadas por un reloj inteligente entre el {desde} y el {hasta}: {dias} días con al menos 30 lecturas cada uno. Los {total} días de la misión usan los últimos {total} días medidos, en orden.", lecturas=reloj.lecturas, desde=reloj.desde, hasta=reloj.hasta, dias=reloj.dias, total=mision_dias) }}</p>
+  <p class="ayuda">{{ _("Método: el pulso en reposo de cada día es la mediana del cuarto más bajo de las lecturas de 00:00 a 06:00, que es como lo calculan los relojes comerciales; si ese día no hubo lecturas de madrugada, se usa el percentil 5 de todo el día.") }}
+     {{ _("Su línea base ({v} lpm) es la mediana de sus primeros 30 días, no un número elegido a mano.", v=reloj.linea_base) }}</p>
+  <p class="ayuda">{{ _("El archivo original viene incluido en datos/reloj/ y el cálculo se rehace con herramientas/importar_reloj.py, para que cualquiera pueda comprobarlo.") }}</p>
+  {% endif %}
+
+  <h2>{{ _("El ciclo") }}</h2>
+  <ol class="ciclo">
+    <li><strong>{{ _("Registrar") }}</strong>{{ _("Signos vitales, sueño, ánimo, ejercicio y síntomas, a mano, dictados o desde un reloj Bluetooth.") }}</li>
+    <li><strong>{{ _("Comparar") }}</strong>{{ _("Cada valor se compara con tu línea base personal. La temperatura, que en vuelo sube cerca de 1 °C, se compara con tu normal en vuelo.") }}</li>
+    <li><strong>{{ _("Evaluar") }}</strong>{{ _("Un puntaje de riesgo por sistema del cuerpo, visible en el mapa corporal.") }}</li>
+    <li><strong>{{ _("Actuar") }}</strong>{{ _("Protocolos con pasos concretos y quién debe actuar.") }}</li>
+    <li><strong>{{ _("Ajustar") }}</strong>{{ _("Los planes de acción cambian el pronóstico y los datos de los días siguientes.") }}</li>
+  </ol>
+
+  <h2>{{ _("Cómo se calcula el riesgo") }}</h2>
+  <p>{{ _("Cada sistema recibe un puntaje de 0 a 100 que combina dos tipos de señales: qué tanto te alejas de tu propia línea base en los últimos 7 días (pulso, sueño, SpO₂, ánimo, estrés) y la exposición acumulada a lo largo de la misión (días sin gravedad, dosis de radiación, pérdida de hueso y músculo estimadas según el ejercicio que hiciste).") }}</p>
+  <p>{{ _("El pronóstico a 30 días usa la tendencia de los últimos 21 días, amortiguada hacia adelante para no exagerar el ruido. Cuando hay un plan activo, el modelo reduce el empeoramiento de los sistemas en los que ese plan actúa. Es un modelo estadístico explicable: cada número se puede rastrear hasta los datos que lo produjeron (salud.py).") }}</p>
+  <table class="tabla-simple">
+    <thead><tr><th>{{ _("Sistema") }}</th><th>{{ _("Señales principales") }}</th></tr></thead>
+    <tbody>
+      <tr><td>{{ sistemas.cardiovascular }}</td><td>{{ _("Pulso contra tu línea base, presión arterial, ejercicio aeróbico, SpO₂, palpitaciones y prueba de pie (con gravedad)") }}</td></tr>
+      <tr><td>{{ sistemas.trombosis }}</td><td>{{ _("Resultado del ultrasonido de la vena yugular; hinchazón de cuello, cara y párpados") }}</td></tr>
+      <tr><td>{{ sistemas.respiratorio }}</td><td>{{ _("SpO₂, CO₂ en cabina, congestión") }}</td></tr>
+      <tr><td>{{ sistemas.oseo }}</td><td>{{ _("Pérdida ósea estimada (NASA reporta 1–1.5 % al mes), dolor de espalda") }}</td></tr>
+      <tr><td>{{ sistemas.muscular }}</td><td>{{ _("Pérdida muscular estimada, minutos de ejercicio") }}</td></tr>
+      <tr><td>{{ sistemas.urinario }}</td><td>{{ _("Agua consumida (meta de NASA: 2.5 L al día), pérdida ósea estimada, dolor en el costado, ardor o dificultad al orinar") }}</td></tr>
+      <tr><td>{{ sistemas.mental }}</td><td>{{ _("Ánimo, estrés y horas de sueño contra tu línea base; noches seguidas con menos de 6 h; prueba de reacción de 3 minutos") }}</td></tr>
+      <tr><td>{{ sistemas.ojos }}</td><td>{{ _("Días sin gravedad, visión borrosa, dolor de cabeza, CO₂") }}</td></tr>
+      <tr><td>{{ sistemas.inmune }}</td><td>{{ _("Dosis de radiación acumulada, sueño, estrés, temperatura sobre tu normal en vuelo, erupciones en la piel") }}</td></tr>
+      <tr><td>{{ sistemas.nutricion }}</td><td>{{ _("Calorías contra tu meta diaria y peso semanal contra tu peso al inicio (5 % y 10 % de pérdida)") }}</td></tr>
+    </tbody>
+  </table>
+
+  <h2>{{ _("Los 5 peligros del vuelo espacial (RIDGE)") }}</h2>
+  <p>{{ _("NASA agrupa los peligros del vuelo espacial humano en cinco, con el acrónimo RIDGE. Los peligros se suman y empeoran entre sí; por eso la app cruza indicadores en lugar de vigilarlos por separado.") }}</p>
+  <table class="tabla-simple">
+    <thead><tr><th>{{ _("Peligro") }}</th><th>{{ _("Sistemas del cuerpo que vigila la app") }}</th></tr></thead>
+    <tbody>
+      {% for letra, nombre in ridge.items() %}
+      <tr><td><strong>{{ letra }}</strong> · {{ _(nombre) }}</td>
+        <td>{% for s, letras in sistema_ridge.items() if letra in letras %}{{ sistemas[s] }}{% if not loop.last %}, {% endif %}{% endfor %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="ayuda">{{ _("Fuente:") }} {% with claves=["nasa_ridge"] %}{% include "partes/cita.html" %}{% endwith %}.</p>
+
+  <h2>{{ _("Reglas combinadas") }}</h2>
+  <p>{{ _("Una sola señal puede ser ruido; dos o tres juntas son una alerta más confiable. Algunos ejemplos que usa la app:") }}</p>
+  <ul>
+    <li><strong>{{ _("Infección:") }}</strong> {{ _("temperatura 0.5 °C sobre tu normal en vuelo, más poco sueño o estrés alto, es un aviso; 1 °C con erupción o fatiga escala a los médicos.") }}</li>
+    <li><strong>{{ _("Sueño y atención:") }}</strong> {{ _("menos de 6 h dos noches seguidas es un aviso; tres noches, o una de menos de 5 h, pide actuar. La prueba de reacción confirma si ya afecta tu atención (lapso: 355 ms o más).") }}</li>
+    <li><strong>{{ _("Ánimo:") }}</strong> {{ _("3 puntos abajo de tu normal o 4 o menos tres días seguidos pide apoyo; 3 o menos cinco días seguidos avisa al psicólogo de la misión.") }}</li>
+    <li><strong>{{ _("Al ponerte de pie:") }}</strong> {{ _("si la presión baja 20/10 mmHg o el pulso sube 30 lpm al pararte, hay intolerancia ortostática; con mareo, avisa a Tierra.") }}</li>
+    <li><strong>{{ _("Nutrición:") }}</strong> {{ _("comer menos del 80 % de tu meta 3 días o perder 5 % de peso pide actuar; perder 10 % es crítico.") }}</li>
+  </ul>
+  <p class="ayuda">{{ _("Los umbrales combinados son propuestas del prototipo basadas en la literatura citada en Fuentes; deben validarse con un médico.") }}</p>
+
+  <h2>{{ _("Dónde está la tripulación") }}</h2>
+  <p>{{ _("El entorno cambia tres cosas: la gravedad (afecta hueso, músculo y ojos, y permite la prueba de pie), la dosis de radiación de cada día y el retraso de comunicación con la Tierra, que decide si el astronauta debe actuar por su cuenta.") }}</p>
+  <table class="tabla-simple">
+    <thead><tr><th>{{ _("Entorno") }}</th><th>{{ _("Gravedad") }}</th><th>{{ _("Dosis (mSv al día)") }}</th><th>{{ _("Retraso") }}</th></tr></thead>
+    <tbody>
+      {% for clave, e in entornos.items() %}
+      <tr><td>{{ _(e.nombre) }}</td><td>{{ _(e.gravedad_txt) }}</td><td>{{ e.dosis | numero }}</td><td>{{ _(e.retraso_txt) }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p>{{ _("La misión simulada es un viaje de 180 días a Marte. Los cuatro entornos están para comparar qué le pasaría a la misma tripulación en otro destino: al cambiarlos, la app recalcula desde ese día la gravedad, la radiación y el retraso con la Tierra. No son etapas del viaje.") }}</p>
+  <p class="ayuda">{{ _("NASA indica que aún no se sabe si la gravedad parcial (Luna, Marte) frena la pérdida ósea. Aquí se supone, como hipótesis del prototipo, que la reduce de forma proporcional.") }}</p>
+
+  <h2>{{ _("Trombosis venosa en el vuelo espacial") }}</h2>
+  <p>{{ _("NASA ha encontrado coágulos que obstruyen la vena yugular interna en un número muy pequeño de tripulantes. Pueden no dar síntomas. Se relacionan con el desplazamiento de fluidos hacia la cabeza en microgravedad, el flujo lento y el flujo retrógrado, es decir, sangre que regresa hacia el cerebro.") }}</p>
+  <p>{{ _("Los síntomas descritos son hinchazón visible del cuello, cara más hinchada de lo habitual, párpados hinchados y dolor de cabeza. El algoritmo de NASA se apoya en ultrasonidos tempranos de la vena yugular interna izquierda. Por eso la app registra el resultado del ultrasonido y los síntomas, y sugiere vigilancia semanal cuando el flujo es anormal. Las decisiones de tratamiento quedan en manos del equipo médico.") }}</p>
+  <p class="ayuda">{{ _("Fuente:") }} <a href="{{ url_vte }}" target="_blank" rel="noopener">NASA OCHMO, Risk of Venous Thromboembolism During Spaceflight</a>.</p>
+
+  <h2>{{ _("Riesgos de NASA que cubre la app") }}</h2>
+  <p>{{ _("El Human Research Program de NASA define los riesgos de salud de los vuelos espaciales. Esta es la cobertura del prototipo:") }}</p>
+  <table class="tabla-simple">
+    <thead><tr><th>{{ _("Riesgo de NASA") }}</th><th>{{ _("Cobertura") }}</th><th>{{ _("Cómo") }}</th></tr></thead>
+    <tbody>
+      {% for clave, (estado, nota) in cobertura.items() %}
+      <tr>
+        <td><a href="{{ riesgos[clave][2] }}" target="_blank" rel="noopener">{{ _(riesgos[clave][0]) }}</a></td>
+        <td><span class="cobertura {{ estado }}">{% if estado == 'cubierto' %}{{ _("Cubierto") }}{% elif estado == 'parcial' %}{{ _("Parcial") }}{% else %}{{ _("No cubierto") }}{% endif %}</span></td>
+        <td>{{ _(nota) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="ayuda">{{ _("Fuente:") }} <a href="{{ url_hrp }}" target="_blank" rel="noopener">NASA Human Research Program Risks</a>.</p>
+
+  <h2>{{ _("Radiación por zona espacial") }}</h2>
+  <p>{{ _("La dosis diaria depende de dónde está la nave. Valores medidos de referencia:") }}</p>
+  <table class="tabla-simple">
+    <thead><tr><th>{{ _("Zona") }}</th><th>{{ _("Dosis (mSv al día)") }}</th><th>{{ _("Fuente") }}</th></tr></thead>
+    <tbody>{% for z in zonas %}<tr><td>{{ _(z.zona) }}</td><td>{{ z.tasa }}</td><td>{% with claves=[z.fuente] %}{% include "partes/cita.html" %}{% endwith %}</td></tr>{% endfor %}</tbody>
+  </table>
+  <p>{{ _("La dosis acumulada se compara con el límite de carrera de NASA de {limite} mSv. Como referencia, en la Tierra una persona recibe unos 3 mSv al año de radiación natural.", limite=limite) }}</p>
+  <p><strong>{{ _("Clima espacial real.") }}</strong> {{ _("La app consulta el servicio DONKI de NASA. Con el modo de clima real activo, si DONKI reporta un evento de partículas solares en las últimas 72 horas, la app avisa a la tripulación que vaya al refugio y, al avanzar la misión, suma la dosis del evento a quien no se resguarda. Con el plan de refugio la dosis baja. Una fulguración fuerte (clase X, o M5 o más) genera un aviso previo. Si no hay tormenta en curso, se puede ensayar el protocolo con el último evento real.") }}</p>
+  <p class="ayuda">{{ _("DONKI observa el Sol desde la Tierra: un evento que llega a la Tierra no siempre llega a una nave en otra parte del Sistema Solar. La dosis extra por evento (30 mSv al día sin refugio durante 2 días, menos en la Estación o en Marte) es un supuesto del prototipo.") }}</p>
+
+  <h2>{{ _("Dictado y nota clínica") }}</h2>
+  <p>{{ _("En misiones largas el astronauta tiene poco tiempo para escribir reportes. Por eso la app incluye dos funciones inspiradas en los escribas clínicos con IA:") }}</p>
+  <ul>
+    <li><strong>{{ _("Dictado en el registro diario:") }}</strong> {{ _("el astronauta describe su día con sus palabras («pulso 72, dormí seis horas, me arde al orinar») y la app llena los campos y los síntomas. Las frases negadas («sin mareo») no se marcan. Siempre revisa antes de guardar.") }}</li>
+    <li><strong>{{ _("Nota para médicos de vuelo:") }}</strong> {{ _("la app redacta una nota en formato SOAP (subjetivo, objetivo, evaluación y plan) con el registro, los sistemas en riesgo, las alertas y los planes activos.") }}</li>
+  </ul>
+  <p>{{ _("A diferencia de esos servicios, que trabajan en la nube, la interpretación se hace dentro de la app con reglas en español (dictado.py) y funciona sin internet, algo necesario lejos de la Tierra. Solo el reconocimiento de voz del navegador puede necesitar conexión.") }}</p>
+
+  <h2>{{ _("Datos") }}</h2>
+  <ul>
+    <li><strong>{{ _("Datos de salud:") }}</strong> {{ _("simulados. No existen datos públicos y continuos de astronautas, así que se generan con patrones conocidos de los vuelos largos (datos.py).") }}</li>
+    <li><strong>{{ _("Clima espacial:") }}</strong> {{ _("NASA DONKI, consultado en vivo desde Python (clima.py).") }}</li>
+    <li><strong>{{ _("Riesgos de salud:") }}</strong> <a href="{{ url_hrp }}" target="_blank" rel="noopener">NASA Human Research Program Risks</a>.</li>
+    <li><strong>{{ _("Parámetros y rangos:") }}</strong> {{ _("documentos técnicos de NASA, mediciones del instrumento RAD y referencias clínicas.") }} <a href="{{ url_for('fuentes') }}">{{ _("Ver la lista completa de fuentes") }}</a>.</li>
+  </ul>
+
+  <h2>{{ _("Límites y aviso") }}</h2>
+  <p>{{ _("Este es un prototipo educativo. Los umbrales son aproximados y no sustituyen el criterio del equipo médico de la misión.") }}</p>
+</div>
+{% endblock %}

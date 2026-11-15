@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+{% block titulo %}{{ _("Panel") }} · {{ astro.nombre }} · {{ app_nombre }}{% endblock %}
+
+{% block tripulacion %}{% endblock %}
+
+{% block contenido %}
+
+<!-- ==================================================================== MISIÓN -->
+<section class="mision" aria-label="{{ _('Control de la misión') }}">
+  <div class="mision-info">
+    <h1 class="mision-nombre">{{ _("Misión de larga duración (simulación)") }}</h1>
+    <p class="mision-fase">
+      <span id="mision-dia">{{ _("Día {dia} de {total}", dia=dia, total=mision.dias_totales) }}</span>
+      <span class="separador" aria-hidden="true">/</span> {{ _(entorno.nombre) }}
+      <span class="separador" aria-hidden="true">/</span> {{ _("retraso de comunicación {retraso}", retraso=_(entorno.retraso_txt)) }}
+    </p>
+  </div>
+  <div class="mision-controles">
+
+    <form method="post" action="{{ url_for('cambiar_entorno') }}">
+      <label class="campo campo-corto">{{ _("Entorno") }}
+        <select name="entorno" onchange="this.form.submit()">
+          {% for clave, e in entornos.items() %}
+          <option value="{{ clave }}" {% if clave == mision.entorno %}selected{% endif %}>{{ _(e.nombre) }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <noscript><button class="boton boton-mini">{{ _("Cambiar") }}</button></noscript>
+    </form>
+
+    <label class="control-dia">
+      <span>{{ _("Ver día") }}</span>
+      <input type="range" id="slider-dia" min="1" max="{{ mision.dia }}" value="{{ dia }}"
+             aria-describedby="mision-dia" {% if mision.dia <= 1 %}disabled
+             title="{{ _('Solo hay un día registrado: avanza la misión para poder recorrerla.') }}"{% endif %}>
+    </label>
+    <button type="button" class="boton boton-secundario" id="btn-reproducir"
+            data-reproducir="{{ _('Reproducir misión') }}" data-pausar="{{ _('Pausar') }}">{{ _("Reproducir misión") }}</button>
+
+    {% if mision.dia >= mision.dias_totales %}
+    <p class="fin-mision">{{ _("La misión llegó a su último día: reinicia para volver a avanzar.") }}</p>
+    {% else %}
+    <form method="post" action="{{ url_for('avanzar') }}">
+      <input type="hidden" name="dias" value="1">
+      <button class="boton">{{ _("Avanzar un día") }}</button>
+    </form>
+    <form method="post" action="{{ url_for('avanzar') }}">
+      <input type="hidden" name="dias" value="7">
+      <button class="boton boton-secundario">{{ _("Avanzar 7 días") }}</button>
+    </form>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('reiniciar') }}" class="grupo-reinicio">
+      <span class="etiqueta-reinicio">{{ _("Reiniciar en") }}</span>
+      <button class="boton boton-texto" name="dia" value="1" title="{{ _('La misión empieza desde cero: sin historial, todos los indicadores en su línea base.') }}">{{ _("Día 1") }}</button>
+      <button class="boton boton-texto" name="dia" value="{{ mision.dias_totales // 2 + 30 }}" title="{{ _('Empieza a la mitad del viaje, con 120 días ya registrados: así se ve la app después de meses de misión.') }}">{{ _("Día 120") }}</button>
+    </form>
+  </div>
+</section>
+
+<p class="nota-entorno">
+  <strong>{{ _(entorno.gravedad_txt) }}.</strong> {{ _(entorno.nota) }}
+  <span class="tenue">{{ _("Los cuatro entornos son escenarios para comparar: al cambiarlos, la app recalcula gravedad, radiación y retraso desde ese día. La misión simulada es el viaje a Marte.") }}</span>
+</p>
+
+{% if nave %}
+<p class="barra-nave">
+  <span class="etiqueta-nave">{{ _("La nave hoy") }}</span>
+  {% for l in nave %}
+  <a class="lectura-nave nivel-{{ l.nivel }}" href="{{ url_for('indicadores') }}#ind-{{ l.clave }}">
+    <b>{{ l.nombre }}</b> {{ l.valor | numero }} {{ l.unidad }} <small>({{ l.limite }})</small>
+  </a>
+  {% endfor %}
+</p>
+{% endif %}
+
+<div class="linea-mision" title="{{ _('Línea de la misión') }}">
+  {% for t in linea.tramos %}
+  <div class="segmento" style="left:{{ t.left }}%; width:{{ t.width }}%" title="{{ t.nombre }} ({{ _("días {a} a {b}", a=t.inicio, b=t.fin) }})"></div>
+  {% endfor %}
+  <div class="pasado" style="width:{{ linea.pasado }}%"></div>
+  {% for e in linea.eventos %}
+  <div class="evento" style="left:{{ e.left }}%" title="{{ _("Evento de partículas solares") }} · {{ _("día {dia}", dia=e.dia) }}{% if e.real %} (NASA DONKI){% endif %}"></div>
+  {% endfor %}
+  <div class="hoy" style="left:{{ linea.visto }}%" title="{{ _("Día {dia} de {total}", dia=dia, total=mision.dias_totales) }}"></div>
+</div>
+
+{% if alerta %}
+
+<div class="alerta-clima {% if alerta.tipo == 'flr' %}alerta-flr{% endif %}" role="alert">
+  {% if alerta.tipo == 'sep' %}
+  <strong>{{ _("Tormenta solar: ve al refugio") }}{% if alerta.origen != 'real' %} <span class="marca-simulado">{{ _("SIMULADO") if alerta.origen == 'simulado' else _("ENSAYO") }}</span>{% endif %}</strong>
+  <p>{% if alerta.origen == 'real' %}{{ _("Evento real de partículas solares del {fecha} UTC.", fecha=alerta.evento.fecha) }}
+     {% elif alerta.origen == 'simulado' %}{{ _("Evento SIMULADO para la demostración, fechado el {fecha} UTC.", fecha=alerta.evento.fecha) }}
+     {% else %}{{ _("Ensayo con el evento real del {fecha} UTC.", fecha=alerta.evento.fecha) }}{% endif %}
+     {{ _("Al avanzar la misión sumará hasta {dosis:.0f} mSv al día sin refugio.", dosis=alerta.dosis_extra) }}</p>
+  {% else %}
+  <strong>{{ _("Fulguración solar fuerte") }}{% if alerta.origen == 'simulado' %} <span class="marca-simulado">{{ _("SIMULADO") }}</span>{% endif %}</strong>
+  <p>{{ _("Fulguración clase {clase} el {fecha} UTC (NASA DONKI).", clase=alerta.evento.clase, fecha=alerta.evento.fecha) }}
+     {{ _("Las fulguraciones fuertes pueden anticipar un evento de partículas en horas.") }}</p>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if not es_hoy %}
+<p class="aviso-curso">{{ _("Estás viendo el día {dia}. Los datos y los protocolos son los de ese día.", dia=dia) }}
+  <a href="{{ url_for('panel', astronauta=astro.id) }}">{{ _("Volver a hoy") }}</a></p>
+{% endif %}
+
+<nav class="tripulacion" aria-label="{{ _('Tripulación') }}">
+  {% for t in tarjetas %}
+  <a class="tripulante" href="{{ url_for('panel', astronauta=t.id) }}" {% if t.id == astro.id %}aria-current="true"{% endif %}>
+    <span class="tripulante-nombre">{{ t.nombre }}</span>
+    <span class="tripulante-rol">{{ _("{rol}. Mayor riesgo: {sistema}", rol=t.rol, sistema=t.peor) }}</span>
+    <span class="tripulante-puntaje"><i class="punto {{ t.nivel.clave }}"></i>{{ t.general }}</span>
+  </a>
+  {% endfor %}
+</nav>
+
+<div class="tablero tablero-curso">
+  <!-- ================================================================== SIGNOS DE HOY -->
+  <section class="bloque bloque-signos" aria-label="{{ _('Signos de hoy') }}">
+    <ul class="lista-signos">
+      {% for s in signos %}
+      <li><div class="signo signo-{{ s.nivel }}{% if s.medido %} signo-medido{% endif %}" data-signo
+               {% if s.medido %}title="{{ s.medido }}"{% endif %}>
+        <span class="signo-nombre">{{ s.nombre }}{% if s.medido %} <b class="marca-real">{{ _("REAL") }}</b>{% endif %}</span>
+        <span class="signo-valor"><b>{{ s.valor }}</b><small> {{ s.unidad }}</small></span>
+        <span class="signo-sub">{% if s.medido %}{{ s.medido }}{% else %}{{ s.referencia }}{% endif %}</span>
+      </div></li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- ================================================================== MAPA CORPORAL -->
+  <section class="bloque bloque-escotilla" aria-labelledby="t-cuerpo">
+    <div class="cabecera-escotilla">
+      <h2 id="t-cuerpo">{{ _("Mapa corporal") }}</h2>
+      <p class="ayuda">{{ _("Toca un órgano para ver su tendencia.") }}</p>
+    </div>
+    <div class="escotilla">
+      <svg viewBox="0 0 560 560" role="img" aria-label="{{ _('Mapa corporal de {nombre}', nombre=astro.nombre) }}">
+        <defs>
+          <radialGradient id="vidrio" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#20284F"/><stop offset="100%" stop-color="#161B36"/></radialGradient>
+          <linearGradient id="piel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E3A7A"/><stop offset="1" stop-color="#1D2552"/></linearGradient>
+          <pattern id="escaneo" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0,5.5 H6" stroke="#9EB8FF" stroke-opacity="0.06" stroke-width="1"/></pattern>
+          <clipPath id="recorte-vidrio"><circle cx="280" cy="280" r="243"/></clipPath>
+        </defs>
+
+        <circle cx="280" cy="280" r="262" class="anillo-fondo"/>
+        <circle cx="280" cy="280" r="262" class="anillo-progreso" id="anillo-avance" transform="rotate(-90 280 280)"
+                stroke-dasharray="{{ anillo.avance }} {{ anillo.total }}"/>
+        <circle cx="280" cy="280" r="244" fill="url(#vidrio)" class="vidrio"/>
+        <circle id="anillo-hoy" cx="{{ anillo.hoy[0] }}" cy="{{ anillo.hoy[1] }}" r="9" fill="#ECEEF7" stroke="#151A33" stroke-width="3"><title>{{ _("Hoy: día {dia}", dia=mision.dia) }}</title></circle>
+        <g clip-path="url(#recorte-vidrio)"><rect x="36" y="36" width="488" height="488" fill="url(#escaneo)"/></g>
+
+            <g class="figura" transform="translate(154 46) scale(0.84)">
+            <path class="cuerpo-halo" d="M150.0,16.0 C155.0,16.0 160.8,16.7 165.0,19.0 C169.2,21.3 172.8,25.5 175.0,30.0 C177.2,34.5 177.7,40.7 178.0,46.0 C178.3,51.3 178.0,57.0 177.0,62.0 C176.0,67.0 174.2,71.8 172.0,76.0 C169.8,80.2 165.7,83.5 164.0,87.0 C162.3,90.5 161.7,94.2 162.0,97.0 C162.3,99.8 162.7,102.0 166.0,104.0 C169.3,106.0 176.5,107.3 182.0,109.0 C187.5,110.7 194.5,111.7 199.0,114.0 C203.5,116.3 206.7,118.7 209.0,123.0 C211.3,127.3 212.0,133.0 213.0,140.0 C214.0,147.0 214.2,155.7 215.0,165.0 C215.8,174.3 216.8,185.5 218.0,196.0 C219.2,206.5 220.7,217.7 222.0,228.0 C223.3,238.3 224.8,247.7 226.0,258.0 C227.2,268.3 228.2,280.7 229.0,290.0 C229.8,299.3 229.8,307.3 231.0,314.0 C232.2,320.7 235.0,324.3 236.0,330.0 C237.0,335.7 237.7,342.2 237.0,348.0 C236.3,353.8 234.2,360.8 232.0,365.0 C229.8,369.2 226.7,372.3 224.0,373.0 C221.3,373.7 217.8,372.5 216.0,369.0 C214.2,365.5 213.7,357.8 213.0,352.0 C212.3,346.2 212.5,340.0 212.0,334.0 C211.5,328.0 211.2,323.7 210.0,316.0 C208.8,308.3 206.7,297.7 205.0,288.0 C203.3,278.3 201.3,267.7 200.0,258.0 C198.7,248.3 197.8,240.0 197.0,230.0 C196.2,220.0 195.7,208.3 195.0,198.0 C194.3,187.7 193.8,176.0 193.0,168.0 C192.2,160.0 190.7,148.7 190.0,150.0 C189.3,151.3 189.7,166.7 189.0,176.0 C188.3,185.3 187.2,196.0 186.0,206.0 C184.8,216.0 182.8,228.0 182.0,236.0 C181.2,244.0 180.3,247.7 181.0,254.0 C181.7,260.3 184.2,267.0 186.0,274.0 C187.8,281.0 190.7,288.7 192.0,296.0 C193.3,303.3 193.8,309.3 194.0,318.0 C194.2,326.7 193.7,337.0 193.0,348.0 C192.3,359.0 191.2,372.3 190.0,384.0 C188.8,395.7 186.8,409.3 186.0,418.0 C185.2,426.7 184.7,428.7 185.0,436.0 C185.3,443.3 187.8,452.3 188.0,462.0 C188.2,471.7 187.5,484.0 186.0,494.0 C184.5,504.0 180.7,515.3 179.0,522.0 C177.3,528.7 175.2,530.0 176.0,534.0 C176.8,538.0 182.3,542.3 184.0,546.0 C185.7,549.7 187.5,553.5 186.0,556.0 C184.5,558.5 179.3,560.3 175.0,561.0 C170.7,561.7 163.2,562.0 160.0,560.0 C156.8,558.0 156.3,553.0 156.0,549.0 C155.7,545.0 157.2,543.8 158.0,536.0 C158.8,528.2 160.2,513.0 161.0,502.0 C161.8,491.0 163.0,479.7 163.0,470.0 C163.0,460.3 161.7,451.3 161.0,444.0 C160.3,436.7 159.0,434.3 159.0,426.0 C159.0,417.7 160.8,405.3 161.0,394.0 C161.2,382.7 160.8,368.3 160.0,358.0 C159.2,347.7 157.7,337.8 156.0,332.0 C154.3,326.2 152.0,323.0 150.0,323.0 C148.0,323.0 145.7,326.2 144.0,332.0 C142.3,337.8 140.8,347.7 140.0,358.0 C139.2,368.3 138.8,382.7 139.0,394.0 C139.2,405.3 141.0,417.7 141.0,426.0 C141.0,434.3 139.7,436.7 139.0,444.0 C138.3,451.3 137.0,460.3 137.0,470.0 C137.0,479.7 138.2,491.0 139.0,502.0 C139.8,513.0 141.2,528.2 142.0,536.0 C142.8,543.8 144.3,545.0 144.0,549.0 C143.7,553.0 143.2,558.0 140.0,560.0 C136.8,562.0 129.3,561.7 125.0,561.0 C120.7,560.3 115.5,558.5 114.0,556.0 C112.5,553.5 114.3,549.7 116.0,546.0 C117.7,542.3 123.2,538.0 124.0,534.0 C124.8,530.0 122.7,528.7 121.0,522.0 C119.3,515.3 115.5,504.0 114.0,494.0 C112.5,484.0 111.8,471.7 112.0,462.0 C112.2,452.3 114.7,443.3 115.0,436.0 C115.3,428.7 114.8,426.7 114.0,418.0 C113.2,409.3 111.2,395.7 110.0,384.0 C108.8,372.3 107.7,359.0 107.0,348.0 C106.3,337.0 105.8,326.7 106.0,318.0 C106.2,309.3 106.7,303.3 108.0,296.0 C109.3,288.7 112.2,281.0 114.0,274.0 C115.8,267.0 118.3,260.3 119.0,254.0 C119.7,247.7 118.8,244.0 118.0,236.0 C117.2,228.0 115.2,216.0 114.0,206.0 C112.8,196.0 111.7,185.3 111.0,176.0 C110.3,166.7 110.7,151.3 110.0,150.0 C109.3,148.7 107.8,160.0 107.0,168.0 C106.2,176.0 105.7,187.7 105.0,198.0 C104.3,208.3 103.8,220.0 103.0,230.0 C102.2,240.0 101.3,248.3 100.0,258.0 C98.7,267.7 96.7,278.3 95.0,288.0 C93.3,297.7 91.2,308.3 90.0,316.0 C88.8,323.7 88.5,328.0 88.0,334.0 C87.5,340.0 87.7,346.2 87.0,352.0 C86.3,357.8 85.8,365.5 84.0,369.0 C82.2,372.5 78.7,373.7 76.0,373.0 C73.3,372.3 70.2,369.2 68.0,365.0 C65.8,360.8 63.7,353.8 63.0,348.0 C62.3,342.2 63.0,335.7 64.0,330.0 C65.0,324.3 67.8,320.7 69.0,314.0 C70.2,307.3 70.2,299.3 71.0,290.0 C71.8,280.7 72.8,268.3 74.0,258.0 C75.2,247.7 76.7,238.3 78.0,228.0 C79.3,217.7 80.8,206.5 82.0,196.0 C83.2,185.5 84.2,174.3 85.0,165.0 C85.8,155.7 86.0,147.0 87.0,140.0 C88.0,133.0 88.7,127.3 91.0,123.0 C93.3,118.7 96.5,116.3 101.0,114.0 C105.5,111.7 112.5,110.7 118.0,109.0 C123.5,107.3 130.7,106.0 134.0,104.0 C137.3,102.0 137.7,99.8 138.0,97.0 C138.3,94.2 137.7,90.5 136.0,87.0 C134.3,83.5 130.2,80.2 128.0,76.0 C125.8,71.8 124.0,67.0 123.0,62.0 C122.0,57.0 121.7,51.3 122.0,46.0 C122.3,40.7 122.8,34.5 125.0,30.0 C127.2,25.5 130.8,21.3 135.0,19.0 C139.2,16.7 145.0,16.0 150.0,16.0 Z"/>
+            <path class="cuerpo" d="M150.0,16.0 C155.0,16.0 160.8,16.7 165.0,19.0 C169.2,21.3 172.8,25.5 175.0,30.0 C177.2,34.5 177.7,40.7 178.0,46.0 C178.3,51.3 178.0,57.0 177.0,62.0 C176.0,67.0 174.2,71.8 172.0,76.0 C169.8,80.2 165.7,83.5 164.0,87.0 C162.3,90.5 161.7,94.2 162.0,97.0 C162.3,99.8 162.7,102.0 166.0,104.0 C169.3,106.0 176.5,107.3 182.0,109.0 C187.5,110.7 194.5,111.7 199.0,114.0 C203.5,116.3 206.7,118.7 209.0,123.0 C211.3,127.3 212.0,133.0 213.0,140.0 C214.0,147.0 214.2,155.7 215.0,165.0 C215.8,174.3 216.8,185.5 218.0,196.0 C219.2,206.5 220.7,217.7 222.0,228.0 C223.3,238.3 224.8,247.7 226.0,258.0 C227.2,268.3 228.2,280.7 229.0,290.0 C229.8,299.3 229.8,307.3 231.0,314.0 C232.2,320.7 235.0,324.3 236.0,330.0 C237.0,335.7 237.7,342.2 237.0,348.0 C236.3,353.8 234.2,360.8 232.0,365.0 C229.8,369.2 226.7,372.3 224.0,373.0 C221.3,373.7 217.8,372.5 216.0,369.0 C214.2,365.5 213.7,357.8 213.0,352.0 C212.3,346.2 212.5,340.0 212.0,334.0 C211.5,328.0 211.2,323.7 210.0,316.0 C208.8,308.3 206.7,297.7 205.0,288.0 C203.3,278.3 201.3,267.7 200.0,258.0 C198.7,248.3 197.8,240.0 197.0,230.0 C196.2,220.0 195.7,208.3 195.0,198.0 C194.3,187.7 193.8,176.0 193.0,168.0 C192.2,160.0 190.7,148.7 190.0,150.0 C189.3,151.3 189.7,166.7 189.0,176.0 C188.3,185.3 187.2,196.0 186.0,206.0 C184.8,216.0 182.8,228.0 182.0,236.0 C181.2,244.0 180.3,247.7 181.0,254.0 C181.7,260.3 184.2,267.0 186.0,274.0 C187.8,281.0 190.7,288.7 192.0,296.0 C193.3,303.3 193.8,309.3 194.0,318.0 C194.2,326.7 193.7,337.0 193.0,348.0 C192.3,359.0 191.2,372.3 190.0,384.0 C188.8,395.7 186.8,409.3 186.0,418.0 C185.2,426.7 184.7,428.7 185.0,436.0 C185.3,443.3 187.8,452.3 188.0,462.0 C188.2,471.7 187.5,484.0 186.0,494.0 C184.5,504.0 180.7,515.3 179.0,522.0 C177.3,528.7 175.2,530.0 176.0,534.0 C176.8,538.0 182.3,542.3 184.0,546.0 C185.7,549.7 187.5,553.5 186.0,556.0 C184.5,558.5 179.3,560.3 175.0,561.0 C170.7,561.7 163.2,562.0 160.0,560.0 C156.8,558.0 156.3,553.0 156.0,549.0 C155.7,545.0 157.2,543.8 158.0,536.0 C158.8,528.2 160.2,513.0 161.0,502.0 C161.8,491.0 163.0,479.7 163.0,470.0 C163.0,460.3 161.7,451.3 161.0,444.0 C160.3,436.7 159.0,434.3 159.0,426.0 C159.0,417.7 160.8,405.3 161.0,394.0 C161.2,382.7 160.8,368.3 160.0,358.0 C159.2,347.7 157.7,337.8 156.0,332.0 C154.3,326.2 152.0,323.0 150.0,323.0 C148.0,323.0 145.7,326.2 144.0,332.0 C142.3,337.8 140.8,347.7 140.0,358.0 C139.2,368.3 138.8,382.7 139.0,394.0 C139.2,405.3 141.0,417.7 141.0,426.0 C141.0,434.3 139.7,436.7 139.0,444.0 C138.3,451.3 137.0,460.3 137.0,470.0 C137.0,479.7 138.2,491.0 139.0,502.0 C139.8,513.0 141.2,528.2 142.0,536.0 C142.8,543.8 144.3,545.0 144.0,549.0 C143.7,553.0 143.2,558.0 140.0,560.0 C136.8,562.0 129.3,561.7 125.0,561.0 C120.7,560.3 115.5,558.5 114.0,556.0 C112.5,553.5 114.3,549.7 116.0,546.0 C117.7,542.3 123.2,538.0 124.0,534.0 C124.8,530.0 122.7,528.7 121.0,522.0 C119.3,515.3 115.5,504.0 114.0,494.0 C112.5,484.0 111.8,471.7 112.0,462.0 C112.2,452.3 114.7,443.3 115.0,436.0 C115.3,428.7 114.8,426.7 114.0,418.0 C113.2,409.3 111.2,395.7 110.0,384.0 C108.8,372.3 107.7,359.0 107.0,348.0 C106.3,337.0 105.8,326.7 106.0,318.0 C106.2,309.3 106.7,303.3 108.0,296.0 C109.3,288.7 112.2,281.0 114.0,274.0 C115.8,267.0 118.3,260.3 119.0,254.0 C119.7,247.7 118.8,244.0 118.0,236.0 C117.2,228.0 115.2,216.0 114.0,206.0 C112.8,196.0 111.7,185.3 111.0,176.0 C110.3,166.7 110.7,151.3 110.0,150.0 C109.3,148.7 107.8,160.0 107.0,168.0 C106.2,176.0 105.7,187.7 105.0,198.0 C104.3,208.3 103.8,220.0 103.0,230.0 C102.2,240.0 101.3,248.3 100.0,258.0 C98.7,267.7 96.7,278.3 95.0,288.0 C93.3,297.7 91.2,308.3 90.0,316.0 C88.8,323.7 88.5,328.0 88.0,334.0 C87.5,340.0 87.7,346.2 87.0,352.0 C86.3,357.8 85.8,365.5 84.0,369.0 C82.2,372.5 78.7,373.7 76.0,373.0 C73.3,372.3 70.2,369.2 68.0,365.0 C65.8,360.8 63.7,353.8 63.0,348.0 C62.3,342.2 63.0,335.7 64.0,330.0 C65.0,324.3 67.8,320.7 69.0,314.0 C70.2,307.3 70.2,299.3 71.0,290.0 C71.8,280.7 72.8,268.3 74.0,258.0 C75.2,247.7 76.7,238.3 78.0,228.0 C79.3,217.7 80.8,206.5 82.0,196.0 C83.2,185.5 84.2,174.3 85.0,165.0 C85.8,155.7 86.0,147.0 87.0,140.0 C88.0,133.0 88.7,127.3 91.0,123.0 C93.3,118.7 96.5,116.3 101.0,114.0 C105.5,111.7 112.5,110.7 118.0,109.0 C123.5,107.3 130.7,106.0 134.0,104.0 C137.3,102.0 137.7,99.8 138.0,97.0 C138.3,94.2 137.7,90.5 136.0,87.0 C134.3,83.5 130.2,80.2 128.0,76.0 C125.8,71.8 124.0,67.0 123.0,62.0 C122.0,57.0 121.7,51.3 122.0,46.0 C122.3,40.7 122.8,34.5 125.0,30.0 C127.2,25.5 130.8,21.3 135.0,19.0 C139.2,16.7 145.0,16.0 150.0,16.0 Z"/>
+            <g class="anatomia" aria-hidden="true">
+            <path d="M150,104 L150,112"/>
+            <path d="M150,112 C140,110 126,111 112,116 M150,112 C160,110 174,111 188,116"/>
+            <path d="M150,114 L150,196"/>
+            <path d="M146,130 C132.0,128 120,134 118,142 M154,130 C168.0,128 180,134 182,142"/>
+            <path d="M146,144 C129.6,142 116,148 114,156 M154,144 C170.4,142 184,148 186,156"/>
+            <path d="M146,158 C129.0,156 115,162 113,170 M154,158 C171.0,156 185,162 187,170"/>
+            <path d="M146,172 C129.6,170 116,176 114,184 M154,172 C170.4,170 184,176 186,184"/>
+            <path d="M146,186 C132.0,184 120,190 118,198 M154,186 C168.0,184 180,190 182,198"/>
+            <path d="M150,206 L150,270"/>
+            <path d="M120,276 C130,300 140,312 150,318 C160,312 170,300 180,276"/>
+            <ellipse cx="131" cy="432" rx="7" ry="9"/><ellipse cx="169" cy="432" rx="7" ry="9"/>
+            </g>
+            <g class="zona nivel-{{ zonas.muscular.nivel }}" data-sistema="muscular" style="{{ zonas.muscular.estilo }}" tabindex="0" role="button" aria-label="{{ _('Músculos') }}"><title>{{ _("Músculos") }}</title><path d="M170.0,318.0 C172.5,316.7 177.7,322.3 180.0,328.0 C182.3,333.7 183.7,342.7 184.0,352.0 C184.3,361.3 183.2,374.3 182.0,384.0 C180.8,393.7 179.2,405.0 177.0,410.0 C174.8,415.0 171.2,416.3 169.0,414.0 C166.8,411.7 165.0,404.3 164.0,396.0 C163.0,387.7 162.8,374.0 163.0,364.0 C163.2,354.0 163.8,343.7 165.0,336.0 C166.2,328.3 167.5,319.3 170.0,318.0 Z"/><path d="M130.0,318.0 C127.5,316.7 122.3,322.3 120.0,328.0 C117.7,333.7 116.3,342.7 116.0,352.0 C115.7,361.3 116.8,374.3 118.0,384.0 C119.2,393.7 120.8,405.0 123.0,410.0 C125.2,415.0 128.8,416.3 131.0,414.0 C133.2,411.7 135.0,404.3 136.0,396.0 C137.0,387.7 137.2,374.0 137.0,364.0 C136.8,354.0 136.2,343.7 135.0,336.0 C133.8,328.3 132.5,319.3 130.0,318.0 Z"/><path d="M175.0,448.0 C177.2,449.0 180.8,455.7 182.0,462.0 C183.2,468.3 183.0,478.7 182.0,486.0 C181.0,493.3 178.2,503.7 176.0,506.0 C173.8,508.3 170.5,505.0 169.0,500.0 C167.5,495.0 167.0,483.3 167.0,476.0 C167.0,468.7 167.7,460.7 169.0,456.0 C170.3,451.3 172.8,447.0 175.0,448.0 Z"/><path d="M125.0,448.0 C122.8,449.0 119.2,455.7 118.0,462.0 C116.8,468.3 117.0,478.7 118.0,486.0 C119.0,493.3 121.8,503.7 124.0,506.0 C126.2,508.3 129.5,505.0 131.0,500.0 C132.5,495.0 133.0,483.3 133.0,476.0 C133.0,468.7 132.3,460.7 131.0,456.0 C129.7,451.3 127.2,447.0 125.0,448.0 Z"/><path d="M196.0,113.0 C197.7,111.0 204.3,116.5 207.0,120.0 C209.7,123.5 211.5,129.0 212.0,134.0 C212.5,139.0 211.5,148.0 210.0,150.0 C208.5,152.0 205.2,149.0 203.0,146.0 C200.8,143.0 198.2,137.5 197.0,132.0 C195.8,126.5 194.3,115.0 196.0,113.0 Z"/><path d="M104.0,113.0 C102.3,111.0 95.7,116.5 93.0,120.0 C90.3,123.5 88.5,129.0 88.0,134.0 C87.5,139.0 88.5,148.0 90.0,150.0 C91.5,152.0 94.8,149.0 97.0,146.0 C99.2,143.0 101.8,137.5 103.0,132.0 C104.2,126.5 105.7,115.0 104.0,113.0 Z"/><path d="M212.0,158.0 C213.3,160.0 215.2,169.0 216.0,176.0 C216.8,183.0 217.5,193.3 217.0,200.0 C216.5,206.7 214.7,215.0 213.0,216.0 C211.3,217.0 208.2,211.7 207.0,206.0 C205.8,200.3 205.8,189.0 206.0,182.0 C206.2,175.0 207.0,168.0 208.0,164.0 C209.0,160.0 210.7,156.0 212.0,158.0 Z"/><path d="M88.0,158.0 C86.7,160.0 84.8,169.0 84.0,176.0 C83.2,183.0 82.5,193.3 83.0,200.0 C83.5,206.7 85.3,215.0 87.0,216.0 C88.7,217.0 91.8,211.7 93.0,206.0 C94.2,200.3 94.2,189.0 94.0,182.0 C93.8,175.0 93.0,168.0 92.0,164.0 C91.0,160.0 89.3,156.0 88.0,158.0 Z"/></g>
+            <g class="zona zona-trazo nivel-{{ zonas.oseo.nivel }}" data-sistema="oseo" style="{{ zonas.oseo.estilo }}" tabindex="0" role="button" aria-label="{{ _('Huesos') }}"><title>{{ _("Huesos") }}</title><rect class="area-toque" x="140" y="106" width="20" height="180"/><path class="vertebras" d="M150,108 L150,282"/><path d="M150,276 C140,272 126,272 118,282 C122,296 134,304 146,304 M150,276 C160,272 174,272 182,282 C178,296 166,304 154,304"/><path d="M134,306 L139,424 M166,306 L161,424"/><path d="M140,444 L141,520 M160,444 L159,520"/><path d="M150,112 C140,110 126,111 112,116 M150,112 C160,110 174,111 188,116"/></g>
+            <g class="zona nivel-{{ zonas.respiratorio.nivel }}" data-sistema="respiratorio" style="{{ zonas.respiratorio.estilo }}" tabindex="0" role="button" aria-label="{{ _('Respiración') }}"><title>{{ _("Respiración") }}</title><path d="M146.0,124.0 C144.0,118.5 139.5,117.5 136.0,117.0 C132.5,116.5 127.8,117.8 125.0,121.0 C122.2,124.2 120.7,129.5 119.0,136.0 C117.3,142.5 115.7,152.0 115.0,160.0 C114.3,168.0 114.3,177.7 115.0,184.0 C115.7,190.3 116.3,194.8 119.0,198.0 C121.7,201.2 127.0,202.8 131.0,203.0 C135.0,203.2 140.3,201.8 143.0,199.0 C145.7,196.2 146.2,194.2 147.0,186.0 C147.8,177.8 148.2,160.3 148.0,150.0 C147.8,139.7 148.0,129.5 146.0,124.0 Z"/><path d="M154.0,124.0 C155.7,119.2 160.5,117.5 164.0,117.0 C167.5,116.5 172.2,117.8 175.0,121.0 C177.8,124.2 179.3,129.5 181.0,136.0 C182.7,142.5 184.3,152.0 185.0,160.0 C185.7,168.0 185.7,177.7 185.0,184.0 C184.3,190.3 183.7,194.8 181.0,198.0 C178.3,201.2 172.8,202.7 169.0,203.0 C165.2,203.3 160.2,202.2 158.0,200.0 C155.8,197.8 155.7,194.0 156.0,190.0 C156.3,186.0 159.8,181.0 160.0,176.0 C160.2,171.0 158.0,165.0 157.0,160.0 C156.0,155.0 154.5,152.0 154.0,146.0 C153.5,140.0 152.3,128.8 154.0,124.0 Z"/></g>
+            <g class="zona nivel-{{ zonas.nutricion.nivel }}" data-sistema="nutricion" style="{{ zonas.nutricion.estilo }}" tabindex="0" role="button" aria-label="{{ _('Nutrición y peso') }}"><title>{{ _("Nutrición y peso") }}</title><path d="M158.0,203.0 C158.8,201.5 164.8,199.7 168.0,200.0 C171.2,200.3 175.0,202.3 177.0,205.0 C179.0,207.7 180.2,212.2 180.0,216.0 C179.8,219.8 178.5,225.0 176.0,228.0 C173.5,231.0 168.8,233.2 165.0,234.0 C161.2,234.8 156.0,234.0 153.0,233.0 C150.0,232.0 147.5,229.8 147.0,228.0 C146.5,226.2 148.0,223.0 150.0,222.0 C152.0,221.0 156.5,223.0 159.0,222.0 C161.5,221.0 164.3,218.2 165.0,216.0 C165.7,213.8 164.2,211.2 163.0,209.0 C161.8,206.8 157.2,204.5 158.0,203.0 Z"/></g>
+            <g class="zona nivel-{{ zonas.urinario.nivel }}" data-sistema="urinario" style="{{ zonas.urinario.estilo }}" tabindex="0" role="button" aria-label="{{ _('Riñones y vías urinarias') }}"><title>{{ _("Riñones y vías urinarias") }}</title><path d="M127.0,240.0 C129.2,238.2 132.0,236.7 134.0,237.0 C136.0,237.3 138.3,240.2 139.0,242.0 C139.7,243.8 138.7,246.3 138.0,248.0 C137.3,249.7 135.0,250.3 135.0,252.0 C135.0,253.7 138.0,255.8 138.0,258.0 C138.0,260.2 136.8,263.7 135.0,265.0 C133.2,266.3 129.2,267.2 127.0,266.0 C124.8,264.8 123.0,261.0 122.0,258.0 C121.0,255.0 120.2,251.0 121.0,248.0 C121.8,245.0 124.8,241.8 127.0,240.0 Z"/><path d="M173.0,240.0 C170.8,238.2 168.0,236.7 166.0,237.0 C164.0,237.3 161.7,240.2 161.0,242.0 C160.3,243.8 161.3,246.3 162.0,248.0 C162.7,249.7 165.0,250.3 165.0,252.0 C165.0,253.7 162.0,255.8 162.0,258.0 C162.0,260.2 163.2,263.7 165.0,265.0 C166.8,266.3 170.8,267.2 173.0,266.0 C175.2,264.8 177.0,261.0 178.0,258.0 C179.0,255.0 179.8,251.0 179.0,248.0 C178.2,245.0 175.2,241.8 173.0,240.0 Z"/><path d="M150.0,284.0 C152.7,284.0 156.3,285.2 158.0,287.0 C159.7,288.8 160.5,292.5 160.0,295.0 C159.5,297.5 157.5,300.8 155.0,302.0 C152.5,303.2 147.5,303.2 145.0,302.0 C142.5,300.8 140.5,297.5 140.0,295.0 C139.5,292.5 140.3,288.8 142.0,287.0 C143.7,285.2 147.3,284.0 150.0,284.0 Z"/><path class="ureter" d="M134,264 C138,272 142,280 146,287 M166,264 C162,272 158,280 154,287"/></g>
+            <g class="zona nivel-{{ zonas.cardiovascular.nivel }}" data-sistema="cardiovascular" style="{{ zonas.cardiovascular.estilo }}" tabindex="0" role="button" aria-label="{{ _('Corazón y circulación') }}"><title>{{ _("Corazón y circulación") }}</title><path d="M147.0,151.0 C148.8,148.0 151.8,144.3 155.0,143.0 C158.2,141.7 162.8,141.8 166.0,143.0 C169.2,144.2 172.2,146.8 174.0,150.0 C175.8,153.2 177.3,157.8 177.0,162.0 C176.7,166.2 174.2,171.0 172.0,175.0 C169.8,179.0 166.7,185.0 164.0,186.0 C161.3,187.0 158.7,183.3 156.0,181.0 C153.3,178.7 150.0,175.3 148.0,172.0 C146.0,168.7 144.2,164.5 144.0,161.0 C143.8,157.5 145.2,154.0 147.0,151.0 Z"/><path class="aorta" d="M156,145 C155,133 166,128 173,135"/></g>
+            <g class="zona nivel-{{ zonas.inmune.nivel }}" data-sistema="inmune" style="{{ zonas.inmune.estilo }}" tabindex="0" role="button" aria-label="{{ _('Sistema inmune y radiación') }}"><title>{{ _("Sistema inmune y radiación") }}</title><ellipse cx="150" cy="128" rx="7" ry="5"/><circle cx="134" cy="98" r="3.6"/><circle cx="166" cy="98" r="3.6"/><circle cx="114" cy="148" r="3.6"/><circle cx="186" cy="148" r="3.6"/><circle cx="136" cy="304" r="3.6"/><circle cx="164" cy="304" r="3.6"/><circle cx="178" cy="220" r="3.6"/><path class="linfa" d="M134,98 C126,118 118,134 114,148 M166,98 C174,118 182,134 186,148 M114,148 C122,200 130,260 136,304 M186,148 C178,200 170,260 164,304"/><rect class="area-toque" x="104" y="138" width="20" height="20"/><rect class="area-toque" x="176" y="138" width="20" height="20"/></g>
+            <g class="zona zona-trazo nivel-{{ zonas.trombosis.nivel }}" data-sistema="trombosis" style="{{ zonas.trombosis.estilo }}" tabindex="0" role="button" aria-label="{{ _('Venas del cuello (trombosis)') }}"><title>{{ _("Venas del cuello (trombosis)") }}</title><rect class="area-toque" x="128" y="84" width="44" height="26"/><path d="M141,86 C140,94 139,102 136,110"/><path d="M159,86 C160,94 161,102 164,110"/></g>
+            <g class="zona nivel-{{ zonas.mental.nivel }}" data-sistema="mental" style="{{ zonas.mental.estilo }}" tabindex="0" role="button" aria-label="{{ _('Salud mental y sueño') }}"><title>{{ _("Salud mental y sueño") }}</title><path d="M150.0,26.0 C154.0,26.0 158.7,26.3 162.0,28.0 C165.3,29.7 168.3,32.8 170.0,36.0 C171.7,39.2 172.7,43.8 172.0,47.0 C171.3,50.2 169.7,53.3 166.0,55.0 C162.3,56.7 155.3,57.0 150.0,57.0 C144.7,57.0 137.7,56.7 134.0,55.0 C130.3,53.3 128.7,50.2 128.0,47.0 C127.3,43.8 128.3,39.2 130.0,36.0 C131.7,32.8 134.7,29.7 138.0,28.0 C141.3,26.3 146.0,26.0 150.0,26.0 Z"/><path class="surco" d="M150,28 L150,56 M138,36 C142,40 140,46 144,50 M162,36 C158,40 160,46 156,50"/></g>
+            <g class="zona nivel-{{ zonas.ojos.nivel }}" data-sistema="ojos" style="{{ zonas.ojos.estilo }}" tabindex="0" role="button" aria-label="{{ _('Ojos (SANS)') }}"><title>{{ _("Ojos (SANS)") }}</title><path d="M134,64 C137,60 143,60 146,64 C143,68 137,68 134,64 Z"/><path d="M154,64 C157,60 163,60 166,64 C163,68 157,68 154,64 Z"/></g>
+            </g>
+
+        <g id="mapa-etiquetas">
+        {% for e in etiquetas %}
+        <g class="etiqueta" data-sistema="{{ e.clave }}">
+          <polyline class="etiqueta-linea" points="{{ e.ancla[0] }},{{ e.ancla[1] }} {{ e.fin_linea[0] }},{{ e.fin_linea[1] }}" stroke="{{ e.color }}"/>
+          <circle class="etiqueta-punto" cx="{{ e.ancla[0] }}" cy="{{ e.ancla[1] }}" r="3.2" fill="{{ e.color }}"/>
+          <text class="etiqueta-valor" x="{{ e.texto[0] }}" y="{{ e.texto[1] }}" text-anchor="{{ e.lado }}" fill="{{ e.color }}">{{ e.puntaje }}</text>
+          <text class="etiqueta-nombre" x="{{ e.texto[0] }}" y="{{ e.texto[1] + 15 }}" text-anchor="{{ e.lado }}">{{ _(e.corto) }}</text>
+        </g>
+        {% endfor %}
+        </g>
+      </svg>
+    </div>
+    <div class="pie-escotilla">
+      <div class="estado-general">
+        <p class="estado-numero" id="estado-numero" style="color: {{ nivel_general.color }}">{{ general }}</p>
+        <p class="estado-texto"><span id="estado-texto">{{ _("Estado general: {nivel}", nivel=nivel_general.nombre | lower) }}</span><br><span class="tenue">{{ _("{nombre}, día {dia}", nombre=astro.nombre, dia=mision.dia) }}</span></p>
+      </div>
+      <ul class="leyenda-niveles">
+        <li><i class="punto normal"></i>{{ _("Normal") }}</li><li><i class="punto vigilar"></i>{{ _("Vigilar") }}</li>
+        <li><i class="punto atencion"></i>{{ _("Atención") }}</li><li><i class="punto critico"></i>{{ _("Crítico") }}</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================================================================== QUÉ HACER AHORA -->
+  <section class="bloque bloque-protocolos" aria-labelledby="t-protocolos">
+    <div class="cabecera-protocolos">
+      <h2 id="t-protocolos">{{ _("Qué hacer ahora") }}{% if protocolos %} ({{ protocolos | length }}){% endif %}</h2>
+      <a class="boton boton-secundario boton-mini" href="{{ url_for('nota', astronauta=astro.id, dia=dia) }}">{{ _("Nota para médicos") }}</a>
+    </div>
+    <ol class="lista-protocolos">
+      {% for p in protocolos %}
+      <li class="protocolo" style="--color: {{ p.color }}">
+        <div class="protocolo-cabeza"><h3>{{ p.titulo }}</h3><span class="protocolo-nivel">{{ p.nombre_nivel }}</span></div>
+        <p class="protocolo-motivo">{{ p.motivo }}</p>
+        <p class="protocolo-aviso aviso-{{ 'tierra' if p.avisar == 'tierra' else 'tripulacion' }}">{{ p.quien }}</p>
+        <details class="protocolo-detalle" {% if loop.first %}open{% endif %}>
+          <summary>{{ _("Qué hacer: {n} pasos", n=p.pasos | length) }}</summary>
+          <ol>{% for paso in p.pasos %}<li>{{ paso }}</li>{% endfor %}</ol>
+          {% if p.guia %}<p class="protocolo-fuente"><a href="{{ url_for('guia') }}#guia-{{ p.guia }}">{{ _("¿Cómo se mide?") }}</a></p>{% endif %}
+          {% if p.fuentes %}<p class="protocolo-fuente">{{ _("Fuentes del umbral:") }} {% with claves=p.fuentes %}{% include "partes/cita.html" %}{% endwith %}</p>{% endif %}
+          {% if p.riesgo %}<p class="protocolo-fuente">{{ _("Riesgo de NASA:") }} <a href="{{ p.riesgo.url }}" target="_blank" rel="noopener">{{ p.riesgo.nombre }}</a></p>{% endif %}
+        </details>
+        {% if p.plan %}
+        <form method="post" action="{{ url_for('crear_plan') }}">
+          <input type="hidden" name="tipo" value="{{ p.plan }}">
+          <input type="hidden" name="volver" value="{{ url_for('panel', astronauta=astro.id) }}">
+          <button class="boton boton-secundario boton-mini">{{ _("Crear plan: {plan}", plan=p.plan_nombre | minuscula) }}</button>
+        </form>
+        {% endif %}
+      </li>
+      {% else %}
+      <li class="vacio">{{ _("Sin protocolos activos. Sigue con tu registro diario.") }}</li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  <!-- ================================================================== SISTEMAS -->
+  <section class="bloque bloque-sistemas" aria-labelledby="t-sistemas">
+    <h2 id="t-sistemas">{{ _("Sistemas del cuerpo") }}</h2>
+    <p class="ayuda">{{ _("Puntaje de hoy y pronóstico a 30 días. Las letras son los peligros RIDGE de NASA.") }}
+      <a href="{{ url_for('acerca') }}#t-ridge">{{ _("¿Qué son?") }}</a></p>
+    <ul class="lista-sistemas">
+      {% for s in sistemas %}
+      {% set cambio = s.a30 - s.puntaje %}
+      <li><a class="sistema" data-sistema="{{ s.clave }}" href="{{ url_for('panel', astronauta=astro.id, sistema=s.clave, dia=dia) }}" {% if s.clave == elegido %}aria-current="true"{% endif %}>
+        <span class="sistema-nombre">{{ s.nombre }}
+          {% set letras = sistema_ridge[s.clave] %}
+          <small class="ridge" title="{{ _('Peligros RIDGE de NASA:') }} {% for l in letras %}{{ _(ridge[l]) }}{% if not loop.last %}, {% endif %}{% endfor %}">{{ letras | join(" ") }}</small></span>
+        <span class="sistema-barra"><i style="width: {{ s.puntaje }}%; --color: {{ s.nivel.color }}"></i></span>
+        <span class="sistema-puntaje" style="color: {{ s.nivel.color }}">{{ s.puntaje }}</span>
+        <span class="sistema-pronostico">
+          <span class="{% if cambio > 2 %}sube{% elif cambio < -2 %}baja{% endif %}">{% if cambio > 2 %}↑{% elif cambio < -2 %}↓{% else %}→{% endif %} {{ s.a30 }}</span>
+          <small>{% if astro.planes and s.a30_plan != s.a30 %}{{ _("con plan {n}", n=s.a30_plan) }}{% else %}{{ _("en 30 días") }}{% endif %}</small>
+        </span>
+      </a></li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- ================================================================== RUTINA -->
+  <section class="bloque bloque-rutina" aria-labelledby="t-rutina-panel">
+    <h2 id="t-rutina-panel">{{ _("Rutina de hoy") }}</h2>
+    <div class="marcador">
+      <div class="marcador-nivel">
+        <span class="nivel-numero">{{ rutina.nivel }}</span>
+        <span class="nivel-texto">{{ _("nivel") }}<br><span class="tenue">{{ _("{puntos} puntos", puntos=rutina.puntos | numero(",")) }}</span></span>
+      </div>
+      <div class="marcador-racha">
+        <span class="racha-numero">{{ rutina.racha }}</span>
+        <span class="nivel-texto">{{ _("días de racha") }}<br><span class="tenue">{{ _("rutina básica") }}</span></span>
+      </div>
+    </div>
+    <div class="barra-nivel" role="progressbar" aria-label="{{ _('Progreso al siguiente nivel') }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ (100 * rutina.en_nivel / rutina.por_nivel) | round | int }}">
+      <div class="barra-nivel-relleno" style="width: {{ (100 * rutina.en_nivel / rutina.por_nivel) | round | int }}%"></div>
+    </div>
+    <p class="ayuda">{{ _("{hechos} de {posibles} puntos hoy.", hechos=rutina.puntos_hoy, posibles=rutina.puntos_posibles_hoy) }}</p>
+    <div class="desplazable">
+      <ul class="lista-tareas">
+        {% for t in rutina.tareas %}
+        <li class="tarea{% if t.hecho %} hecha{% endif %}">
+
+          <span class="marca-auto{% if t.hecho %} cumplida{% endif %}" role="img" aria-label="{{ t.titulo }}"
+                title="{{ _('Márcala tú.') if t.manual else _('Se marca sola con tu registro.') }}">{{ "✓" if t.hecho else "○" }}</span>
+          <label><span class="tarea-titulo">{{ t.titulo }}</span></label>
+          <span class="tarea-puntos">+{{ t.puntos }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <p style="margin-top:10px"><a class="boton boton-secundario boton-mini" href="{{ url_for('rutina', astronauta=astro.id) }}">{{ _("Marcar tareas e insignias") }}</a></p>
+  </section>
+
+  <!-- ================================================================== TENDENCIA -->
+  <section class="bloque bloque-pronostico" aria-labelledby="t-pronostico">
+    <div class="encabezado-bloque">
+      <h2 id="t-pronostico">{{ _("Tendencia y pronóstico: {sistema}", sistema=nombre_elegido | minuscula) }}</h2>
+    </div>
+
+    <div class="selector-sistema" role="group" aria-label="{{ _('Sistema a graficar') }}">
+      {% for s in sistemas %}
+      <button type="button" class="chip" data-chip="{{ s.clave }}" aria-pressed="{{ 'true' if s.clave == elegido else 'false' }}">
+        <i class="punto {{ s.nivel.clave }}"></i>{{ s.nombre }}
+      </button>
+      {% endfor %}
+    </div>
+    <div class="grafica-alta"><canvas id="grafica" role="img" aria-label="{{ _('Gráfica de {sistema}', sistema=nombre_elegido) }}"></canvas></div>
+    <p class="ayuda" id="pronostico-resumen">{{ resumen }}</p>
+    <p class="ayuda fuentes-nasa" id="pronostico-riesgos" {% if not riesgos %}hidden{% endif %}>{{ _("Riesgos de NASA:") }}
+      <span>{% for r in riesgos %}<a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.nombre }}</a>{% if not loop.last %}; {% endif %}{% endfor %}</span>.</p>
+  </section>
+
+  <!-- ================================================================== RADIACIÓN -->
+  <section class="bloque bloque-radiacion" id="radiacion" aria-labelledby="t-radiacion">
+    <h2 id="t-radiacion">{{ _("Radiación") }}</h2>
+    <p class="dosis"><span class="dosis-numero" id="dosis-numero">{{ radiacion.acumulada }}</span> <span class="dosis-unidad">{{ _("mSv acumulados") }}</span></p>
+    <div class="barra-dosis"><div class="barra-relleno" id="dosis-barra" style="width: {{ [radiacion.porcentaje, 100] | min }}%; background: {% if radiacion.porcentaje >= 75 %}#F28C3B{% elif radiacion.porcentaje >= 40 %}#F0C24B{% else %}#9EB8FF{% endif %}"></div></div>
+    <p class="ayuda">{{ _("{pct} % del límite de carrera de NASA ({limite} mSv). Equivale a unos {anios} años de radiación natural en la Tierra (≈3 mSv al año).", pct=radiacion.porcentaje, limite=radiacion.limite, anios=radiacion.anios_tierra) }}</p>
+    <dl class="datos-cortos">
+      <div><dt>{{ _("Fase actual") }}</dt><dd class="dato-fase">{{ radiacion.fase }}</dd></div>
+      <div><dt>{{ _("Dosis de hoy") }}</dt><dd>{{ radiacion.hoy | numero }} mSv</dd></div>
+      <div><dt>{{ _("Al terminar la misión") }}</dt><dd>≈ {{ radiacion.fin }} mSv</dd></div>
+      <div><dt>{{ _("Ritmo diario") }}</dt><dd>{{ radiacion.ritmo | numero }} mSv</dd></div>
+    </dl>
+    <p class="protocolo-fuente">{{ _("Fuentes:") }} {% with claves=["nasa_radiacion_std", "nasa_rad_crucero"] %}{% include "partes/cita.html" %}{% endwith %}</p>
+
+    <h3 class="subtitulo">{{ _("Clima espacial real (NASA DONKI)") }}</h3>
+    {% if donki %}
+      <p class="ayuda">{% if donki.periodo %}{{ _("Consulta del {fecha} ({periodo}).", fecha=donki.consultado, periodo=donki.periodo) }}{% else %}{{ _("Sin consulta a NASA todavía: solo se muestran los eventos simulados.") }}{% endif %}
+        {% if donki.sep == 1 %}{{ _("Hubo 1 evento de partículas solares: en una misión activaría el refugio.") }}
+        {% elif donki.sep %}{{ _("Hubo {n} eventos de partículas solares: en una misión activarían el refugio.", n=donki.sep) }}{% endif %}</p>
+      <ul class="lista-eventos">
+        {% for e in donki.eventos[:6] %}
+
+        {% if e.tipo == 'SEP' %}{% set nombre_evento = _("Evento de partículas solares") %}
+        {% else %}{% set nombre_evento = _("Fulguración solar clase {clase}", clase=e.clase or e.nombre.split()[-1]) %}{% endif %}
+        <li class="{% if e.tipo == 'SEP' %}sep{% elif e.fuerte %}fuerte{% endif %}{% if e.simulado %} simulado{% endif %}">
+          <i class="punto"></i>
+          {% if e.enlace %}<a href="{{ e.enlace }}" target="_blank" rel="noopener">{{ nombre_evento }}</a>{% else %}<span>{{ nombre_evento }}</span>{% endif %}
+          <small>{{ e.fecha }} UTC{% if e.simulado %} · <b>{{ _("SIMULADO") }}</b>{% endif %}</small>
+        </li>
+        {% else %}
+        <li class="vacio">{{ _("No hubo fulguraciones ni eventos de partículas en ese periodo.") }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="ayuda">{{ _("Aún no se ha consultado. Pulsa el botón (necesita internet).") }}</p>
+    {% endif %}
+    <form method="post" action="{{ url_for('actualizar_donki') }}" style="margin-top:10px">
+      <button class="boton boton-secundario boton-mini">{{ _("Consultar NASA ahora") }}</button>
+    </form>
+
+    <form method="post" action="{{ url_for('clima_real') }}" class="clima-real">
+      <label class="interruptor">
+        <input type="checkbox" name="activo" {% if modo_clima.activo %}checked{% endif %} onchange="this.form.accion.value = this.checked ? 'activar' : 'apagar'; this.form.submit()">
+        {{ _("Usar el clima espacial real en la misión") }}
+      </label>
+      <input type="hidden" name="accion" value="activar">
+      <p class="ayuda">{{ _("Si NASA DONKI reporta una tormenta de partículas solares en las últimas 72 horas, la app avisa a la tripulación que vaya al refugio y suma la dosis del evento al avanzar la misión.") }}</p>
+      {% if sep_ensayo %}
+      <button class="boton boton-secundario boton-mini" name="accion" value="ensayo">{{ _("Ensayar con el último evento real") }}</button>
+      {% endif %}
+    </form>
+
+    <details class="simulador" {% if simulados %}open{% endif %}>
+      <summary>{{ _("Simulador de eventos (para la presentación)") }}</summary>
+      <p class="ayuda">{{ _("Si el día de la demostración no hay ninguna tormenta real, crea un evento de prueba. Queda marcado como SIMULADO en la lista, en la alerta y en el protocolo, para no confundirlo con los datos de NASA.") }}</p>
+      <form method="post" action="{{ url_for('clima_simular') }}" class="forma-simulador">
+        <label class="campo campo-corto">{{ _("Evento") }}
+          <select name="tipo">
+            {% for clave, t in tipos_simulados.items() %}<option value="{{ clave }}">{{ _(t.nombre) }}</option>{% endfor %}
+          </select>
+        </label>
+        <label class="campo campo-corto">{{ _("Ocurrió") }}
+          <select name="horas">
+            {% for horas, texto in cuando_simulado.items() %}<option value="{{ horas }}">{{ _(texto) }}</option>{% endfor %}
+          </select>
+        </label>
+        <button class="boton boton-mini">{{ _("Simular evento") }}</button>
+      </form>
+      {% if simulados %}
+      <form method="post" action="{{ url_for('clima_simular') }}">
+        <input type="hidden" name="accion" value="quitar">
+        <button class="boton boton-texto boton-mini">{{ _("Quitar los eventos simulados") }}</button>
+      </form>
+      {% endif %}
+    </details>
+    <p class="protocolo-fuente">{{ _("Fuente:") }} {% with claves=["nasa_donki"] %}{% include "partes/cita.html" %}{% endwith %}</p>
+  </section>
+
+  <!-- ================================================================== INDICADORES Y PLANES -->
+  <section class="bloque bloque-indicadores" aria-labelledby="t-ind-panel">
+    <h2 id="t-ind-panel">{{ _("Indicadores fuera de rango") }}</h2>
+    {% if fuera_de_rango %}
+    <ul class="lista-proximos">
+      {% for f in fuera_de_rango %}
+      <li><a href="{{ url_for('indicadores', astronauta=astro.id, indicador=f.clave) }}">{{ f.nombre }}</a>
+        <span><strong style="color: var(--vigilar)">{{ f.valor | numero(",.%df" % f.decimales) }}</strong> <span class="tenue">{{ f.unidad }} · {{ _("habitual {min}–{max}", min=f.rango[0] | numero(",.%df" % f.decimales), max=f.rango[1] | numero(",.%df" % f.decimales)) }}</span></span></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="ayuda">{{ _("Todos los indicadores de hoy están en su rango habitual.") }}</p>
+    {% endif %}
+    <p style="margin-top:auto; padding-top:12px"><a class="boton boton-secundario boton-mini" href="{{ url_for('indicadores', astronauta=astro.id) }}">{{ _("Ver todos con su gráfica") }}</a></p>
+  </section>
+
+  <section class="bloque bloque-planes-curso" aria-labelledby="t-planes-panel">
+    <h2 id="t-planes-panel">{{ _("Planes de acción") }}</h2>
+    {% if astro.planes %}
+    <ul class="lista-planes">
+      {% for p in astro.planes %}
+      <li class="plan"><span class="plan-nombre">{{ _(planes_nombre[p.tipo]) }}</span>
+        <span class="plan-detalle">{{ _("Días {inicio} a {fin}, adherencia {pct} %", inicio=p.inicio, fin=p.inicio + p.duracion - 1, pct=(p.adherencia * 100) | round | int) }}</span></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="ayuda">{{ _("Sin planes registrados. Un plan cambia el pronóstico y los días que se simulen después.") }}</p>
+    {% endif %}
+    <p style="margin-top:auto; padding-top:12px"><a class="boton boton-secundario boton-mini" href="{{ url_for('planes', astronauta=astro.id) }}">{{ _("Crear o quitar planes") }}</a></p>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  window.GRAFICA = {{ grafica | tojson }};
+  window.ASTRONAUTA = {{ astro.id | tojson }};
+  window.DIA = {{ dia | tojson }};
+  window.DIAS_TOTALES = {{ mision.dias_totales | tojson }};
+  window.SISTEMA = {{ elegido | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/chart.umd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pagina.js') }}"></script>
+{% endblock %}
