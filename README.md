@@ -386,7 +386,7 @@ cuándo avisar a tierra y cómo prevenirlo.
 
 ### Fuentes
 
-Las 51 referencias agrupadas por tipo, cada una con el dato exacto que se tomó de ella y en
+Las 52 referencias agrupadas por tipo, cada una con el dato exacto que se tomó de ella y en
 qué parte de la aplicación se usa.
 
 ### Cómo funciona
@@ -512,7 +512,7 @@ rutina.py              tareas diarias, puntos e insignias
 nota.py                nota SOAP para el médico de vuelo
 dictado.py             interpretación del habla, sin internet
 guia.py                las 20 fichas de la guía de salud
-fuentes.py             las 51 fuentes, en un solo lugar
+fuentes.py             las 52 fuentes, en un solo lugar
 riesgos_nasa.py        los riesgos oficiales y el marco RIDGE
 idiomas.py             los cuatro idiomas y el formato de números
 herramientas/          validador de traducciones, importador del reloj, generador del mapa
@@ -559,7 +559,7 @@ siempre.
 
 ## 16. Fuentes
 
-Las 51 referencias están en `fuentes.py`, se muestran en la página **Fuentes** de la
+Las 52 referencias están en `fuentes.py`, se muestran en la página **Fuentes** de la
 aplicación y en `FUENTES.md`, cada una con el dato que se tomó de ella y dónde se usa. Las
 principales:
 
@@ -613,7 +613,7 @@ reparto del trabajo fue el siguiente:
 
 **Del autor:**
 - La definición del problema, el alcance y el concepto del producto.
-- La investigación bibliográfica y la selección de las 51 fuentes.
+- La investigación bibliográfica y la selección de las 52 fuentes.
 - Todas las decisiones de diseño y de producto: qué sistemas incluir, cómo estructurar los
   protocolos, qué entornos ofrecer, qué dejar fuera.
 - Los datos reales de frecuencia cardiaca, medidos por el autor durante 16 meses.

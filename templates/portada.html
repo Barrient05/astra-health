@@ -29,14 +29,6 @@
 
   <main class="portada-cuerpo">
 
-    <div class="portada-trazo" aria-hidden="true">
-      <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <g class="trazo-mueve">
-          <path class="trazo-linea" d="M0,100 {% for i in range(12) %}h50 q10,-12 20,0 h12 l6,10 l8,-72 l8,84 l7,-22 h20 q14,-20 28,0 h41 {% endfor %}"/>
-        </g>
-      </svg>
-    </div>
-
     <section class="portada-texto">
       <p class="portada-sede">{{ _("NASA Space Apps Challenge 2026") }}</p>
       <h1 class="portada-nombre">{{ app_nombre }}</h1>
@@ -73,6 +65,14 @@
     </section>
 
   </main>
+
+  <div class="portada-trazo" aria-hidden="true">
+    <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <g class="trazo-mueve">
+        <path class="trazo-linea" d="M0,100 {% for i in range(12) %}h50 q10,-12 20,0 h12 l6,10 l8,-72 l8,84 l7,-22 h20 q14,-20 28,0 h41 {% endfor %}"/>
+      </g>
+    </svg>
+  </div>
 
   <footer class="portada-base">
     <ul class="portada-cifras">
