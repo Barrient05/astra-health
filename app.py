@@ -7,6 +7,7 @@ from flask import Flask, abort, flash, g, jsonify, redirect, render_template, re
 import clima
 import datos
 import reloj
+import tripulacion
 import nota as nota_clinica
 import rutina as rutina_diaria
 from dictado import interpretar
@@ -64,7 +65,7 @@ def tarjetas_tripulacion(estado, dia):
         general = Analisis.general(pts)
         peor = max(pts, key=pts.get)
         tarjetas.append({"id": a["id"], "nombre": a["nombre"], "rol": _(a["rol"]), "general": general,
-                         "nivel": nivel_de(general), "peor": _(datos.SISTEMAS[peor])})
+                         "nivel": nivel_de(general), "peor": _(datos.SISTEMAS[peor]), "puntajes": pts})
     return tarjetas
 
 
@@ -88,6 +89,7 @@ def fuentes_usadas():
                    ("reporte_equipo2", "Investigación del equipo"), ("nasa_hueso", "Pérdida ósea de 1.5 % al mes"),
                    ("nasa_ridge", "Cómo funciona: los 5 peligros RIDGE"), ("astra_health", "Dictado y nota clínica"),
                    ("reloj_personal", "Pulso en reposo medido, no simulado"),
+                   ("inegi_salud", "Cómo funciona: el mismo problema en la Tierra"),
                    ("soap", "Nota clínica en formato SOAP")]:
         if f in FUENTES:
             usos[f].append(_(uso))
@@ -208,9 +210,10 @@ def panel():
     resumen_rutina = rutina_diaria.resumen(astro, dia, mision["dia"])
     fuera_de_rango = [f for f in an.indicadores(dia) if f["fuera"]]
     donki = clima.guardado()
+    tarjetas = tarjetas_tripulacion(estado, dia)
     return render_template(
         "index.html", pagina="panel", rutina=resumen_rutina, fuera_de_rango=fuera_de_rango,
-        mision=mision, dia=dia, tarjetas=tarjetas_tripulacion(estado, dia), astro=astro,
+        mision=mision, dia=dia, tarjetas=tarjetas, astro=astro,
         general=r["general"]["puntaje"], nivel_general=r["general"]["nivel"], signos=an.signos(dia),
         sistemas=r["sistemas"], elegido=elegido, nombre_elegido=nombre_elegido, riesgos=riesgos_de(elegido),
         protocolos=r["protocolos"], zonas=zonas, etiquetas=etiquetas, anillo=anillo, radiacion=r["radiacion"],
@@ -219,6 +222,8 @@ def panel():
         tipos_simulados=clima.TIPOS_SIMULADOS, cuando_simulado=clima.CUANDO_SIMULADO,
         donki=donki, alerta=r["alerta"], modo_clima=mision["clima_real"], sep_ensayo=clima.ultimo_sep(donki),
         linea=linea_de_mision(astro, mision, dia), nave=entorno_nave(an, dia),
+        equipo=tripulacion.resumen(
+            tripulacion.estado(tarjetas, {x["id"]: x["rol"] for x in estado["tripulacion"]}), astro["id"]),
         planes_nombre={k: v[0] for k, v in datos.PLANES.items()},
     )
 

@@ -108,14 +108,24 @@
 {% endif %}
 
 <nav class="tripulacion" aria-label="{{ _('Tripulación') }}">
-  {% for t in tarjetas %}
+  {% for t in equipo.gente %}
   <a class="tripulante" href="{{ url_for('panel', astronauta=t.id) }}" {% if t.id == astro.id %}aria-current="true"{% endif %}>
-    <span class="tripulante-nombre">{{ t.nombre }}</span>
+    <span class="tripulante-nombre">{{ t.nombre }}
+      <b class="capacidad capacidad-{{ t.capacidad }}" title="{{ _('Capacidad para asistir a otro tripulante hoy') }}">{{ t.capacidad_txt }}</b></span>
     <span class="tripulante-rol">{{ _("{rol}. Mayor riesgo: {sistema}", rol=t.rol, sistema=t.peor) }}</span>
     <span class="tripulante-puntaje"><i class="punto {{ t.nivel.clave }}"></i>{{ t.general }}</span>
   </a>
   {% endfor %}
 </nav>
+
+<p class="barra-equipo nivel-{{ equipo.nivel }}">
+  <span class="etiqueta-nave">{{ _("Capacidad de la tripulación") }}</span>
+  <strong>{{ equipo.disponibles }}/{{ equipo.total }}</strong>
+  {{ equipo.aviso }}
+  {% if equipo.respaldo %}
+  <span class="tenue">{{ _("Si algo te pasa hoy, quien te asiste es {nombre} ({rol}).", nombre=equipo.respaldo.nombre, rol=equipo.respaldo.rol) }}</span>
+  {% endif %}
+</p>
 
 <div class="tablero tablero-curso">
   <!-- ================================================================== SIGNOS DE HOY -->

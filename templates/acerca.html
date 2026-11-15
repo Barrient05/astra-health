@@ -127,6 +127,18 @@
     <li><strong>{{ _("Parámetros y rangos:") }}</strong> {{ _("documentos técnicos de NASA, mediciones del instrumento RAD y referencias clínicas.") }} <a href="{{ url_for('fuentes') }}">{{ _("Ver la lista completa de fuentes") }}</a>.</li>
   </ul>
 
+  <h2>{{ _("Capacidad de la tripulación") }}</h2>
+  <p>{{ _("Los protocolos dicen «avisa a tu tripulación», pero eso supone que haya alguien entero del otro lado. La app lo comprueba: calcula quién está en condiciones de asistir hoy y avisa cuando la persona que te tocaría asistir está ella misma deteriorada.") }}</p>
+  <p>{{ _("La capacidad no sale del puntaje general sino de los sistemas que de verdad impiden asistir a otro: salud mental y sueño, corazón y circulación, trombosis y respiración. La pérdida ósea no te impide ayudar a un compañero; la falta de sueño y el tiempo de reacción, sí.") }}</p>
+  <p class="ayuda">{{ _("Supuesto del prototipo: los umbrales de capacidad (plena, limitada, reducida, no disponible) y la elección de esos cuatro sistemas son una propuesta propia, no una norma de NASA. La idea de fondo sí está respaldada: NASA señala el aislamiento como el mayor riesgo conductual en misiones largas, y en un viaje a Marte el apoyo tiene que estar a bordo.") }}</p>
+
+  <h2>{{ _("El mismo problema, en la Tierra") }}</h2>
+  <p>{{ _("El problema que resuelve esta app no es el espacio: es estar lejos de quien sabe y tener que decidir solo. Un tripulante a 24 minutos de la Tierra y una persona a cuatro horas de la clínica más cercana se hacen la misma pregunta: esto que siento, ¿puede esperar o no?") }}</p>
+  <p>{{ _("En México, el 34 % de la población —más de 40 millones de personas— no tenía acceso a servicios de salud en 2024, y la carencia golpea al 75 % de quienes viven en pobreza extrema.") }}
+     <span class="ayuda">{{ _("Fuente:") }} {% with claves=["inegi_salud"] %}{% include "partes/cita.html" %}{% endwith %}.</span></p>
+  <p>{{ _("Varias decisiones de esta app responden a ese problema y no al del espacio: funciona sin conexión y sin servidor; compara contra la línea base de cada persona y no contra tablas, lo que importa el doble donde nadie tiene historial médico archivado; cada protocolo dice quién actúa y cuánto tarda la respuesta; el pulso se puede medir sin ningún aparato y el registro se puede dictar por voz.") }}</p>
+  <p class="ayuda">{{ _("Lo que faltaría: las reglas de esta versión son espaciales y no sirven para una comunidad rural, donde importan la hipertensión, la diabetes, la salud materna y la deshidratación infantil. Un modo comunitario necesitaría su propia base de evidencia y validación por personal de salud. Se documenta como una ruta posible, no como una función del prototipo.") }}</p>
+
   <h2>{{ _("Límites y aviso") }}</h2>
   <p>{{ _("Este es un prototipo educativo. Los umbrales son aproximados y no sustituyen el criterio del equipo médico de la misión.") }}</p>
 </div>

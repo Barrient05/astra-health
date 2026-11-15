@@ -180,3 +180,17 @@ a.sistema.resaltada, a.ficha.resaltada { border-color: var(--acento); }
 .marca-auto { display: flex; align-items: center; justify-content: center; width: 20px; height: 20px;
   font-size: 0.95rem; line-height: 1; color: var(--texto-3); cursor: help; }
 .marca-auto.cumplida { color: var(--normal); font-weight: 700; }
+
+.capacidad { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  border-radius: 3px; padding: 1px 4px; margin-left: 5px; vertical-align: 1px; border: 1px solid; }
+.capacidad-plena { color: var(--normal); border-color: color-mix(in srgb, var(--normal) 55%, transparent); }
+.capacidad-limitada { color: #F0C24B; border-color: color-mix(in srgb, #F0C24B 55%, transparent); }
+.capacidad-reducida { color: var(--atencion); border-color: color-mix(in srgb, var(--atencion) 60%, transparent); }
+.capacidad-no_disponible { color: var(--critico); border-color: color-mix(in srgb, var(--critico) 60%, transparent); }
+.barra-equipo { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 10px 0 0;
+  color: var(--texto-2); font-size: 0.9rem; max-width: 120ch; }
+.barra-equipo strong { color: var(--texto); font-size: 1.05rem; }
+.barra-equipo .tenue { color: var(--texto-3); font-size: 0.86rem; }
+.barra-equipo.nivel-vigilar strong { color: #F0C24B; }
+.barra-equipo.nivel-atencion strong { color: var(--atencion); }
+.barra-equipo.nivel-critico strong { color: var(--critico); }

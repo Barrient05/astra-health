@@ -42,6 +42,12 @@ FUENTES = {
         "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars", "tipo": "nasa",
         "dato": "Dosis equivalente promedio de 0.67 mSv por día en la superficie de Marte.",
     },
+    "inegi_salud": {
+        "titulo": "Pobreza multidimensional 2024: carencia por acceso a los servicios de salud",
+        "autor": "INEGI, con la metodología del CONEVAL", "anio": "2025",
+        "url": "https://www.inegi.org.mx/programas/enigh/nc/2024/", "tipo": "estudio",
+        "dato": "En 2024, el 34 % de la población de México —más de 40 millones de personas— presentó carencia por acceso a los servicios de salud. La carencia afecta al 75 % de quienes viven en pobreza extrema y al 59 % de quienes viven en pobreza; ocho estados concentran el 40 % del total.",
+    },
     "reloj_personal": {
         "titulo": "Exportación de frecuencia cardiaca de un reloj inteligente (Mi Fitness)",
         "autor": "J. Barrientos (datos propios)", "anio": "2025–2026",
@@ -320,6 +326,7 @@ USOS = {
     "nasa_rad_crucero": ["Entorno: nave en tránsito (1.8 mSv/día)"],
     "nasa_rad_marte": ["Entorno: base en Marte (0.67 mSv/día)"],
     "nasa_co2": ["Rango de CO₂ (≤ 3 mmHg)", "Protocolo de CO₂", "Riesgo ocular y respiratorio"],
+    "inegi_salud": ["Impacto en la Tierra: acceso a servicios de salud"],
     "reloj_personal": ["Pulso en reposo del tripulante con reloj", "Su línea base de pulso"],
     "nasa_ruido": ["Rango de ruido (≤ 60 dBA)", "Protocolo de ruido en cabina"],
     "nasa_bhp": ["Indicadores de aislamiento", "Protocolo de contacto con la Tierra", "Protocolo de convivencia"],
