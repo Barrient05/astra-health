@@ -1,4 +1,5 @@
 import json
+import time
 from copy import deepcopy
 
 import reloj
@@ -348,6 +349,36 @@ def estado_inicial(dia_inicial=None):
 
 
 ARCHIVO = Path(__file__).parent / "datos" / "estado.json"
+SESIONES = Path(__file__).parent / "datos" / "sesiones"
+HORAS_DE_VIDA = 6
+_clave_de_sesion = None
+
+
+def usar_sesiones(funcion):
+    global _clave_de_sesion
+    _clave_de_sesion = funcion
+
+
+def archivo_estado():
+    if _clave_de_sesion is None:
+        return ARCHIVO
+    clave = _clave_de_sesion()
+    if not clave:
+        return ARCHIVO
+    SESIONES.mkdir(parents=True, exist_ok=True)
+    return SESIONES / f"{clave}.json"
+
+
+def limpiar_sesiones():
+    if not SESIONES.exists():
+        return
+    limite = time.time() - HORAS_DE_VIDA * 3600
+    for f in SESIONES.glob("*.json"):
+        try:
+            if f.stat().st_mtime < limite:
+                f.unlink()
+        except OSError:
+            pass
 
 
 def reparar(estado):
@@ -387,9 +418,10 @@ def reparar(estado):
 
 
 def cargar():
-    if ARCHIVO.exists():
+    archivo = archivo_estado()
+    if archivo.exists():
         try:
-            estado = json.loads(ARCHIVO.read_text(encoding="utf-8"))
+            estado = json.loads(archivo.read_text(encoding="utf-8"))
             estado, cambio = reparar(estado)
         except (ValueError, KeyError, TypeError) as error:
             print(f"[datos] No se pudo leer datos/estado.json ({error}). Se crea una misión nueva.")
@@ -403,8 +435,9 @@ def cargar():
 
 
 def guardar(estado):
-    ARCHIVO.parent.mkdir(exist_ok=True)
-    ARCHIVO.write_text(json.dumps(estado, ensure_ascii=False), encoding="utf-8")
+    archivo = archivo_estado()
+    archivo.parent.mkdir(parents=True, exist_ok=True)
+    archivo.write_text(json.dumps(estado, ensure_ascii=False), encoding="utf-8")
 
 
 def reiniciar(dia_inicial=None):

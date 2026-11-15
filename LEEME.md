@@ -17,7 +17,8 @@ Abre http://127.0.0.1:5000. Para apagarla: Ctrl + C en la terminal.
 
 | Dirección | Qué hay |
 |---|---|
-| `/` | **Panel**: mapa corporal animado, Ver día y Reproducir misión, qué hacer ahora, sistemas con sus peligros RIDGE, tendencia, radiación por fase y clima espacial real. |
+| `/portada` | **Portada**: la pantalla de entrada. |
+| `/` | **Panel**: mapa corporal animado, Reproducir misión, qué hacer ahora, sistemas con sus peligros RIDGE, tendencia, radiación por fase y clima espacial real. |
 | `/registro` | **Registro diario**: dictado, pulso por Bluetooth o a mano, prueba de reacción, prueba de pie, peso, ultrasonido y síntomas. |
 | `/rutina` | **Rutina**: tareas del día con puntos, nivel, racha e insignias. |
 | `/indicadores` | **Indicadores**: tabla con tu línea base y promedios, gráfica y cómo se mide cada uno. |
@@ -49,7 +50,7 @@ Abre http://127.0.0.1:5000. Para apagarla: Ctrl + C en la terminal.
 | `templates/base.html` | El marco de todas las páginas: cabecera, menú, idioma, tripulación y pie. Las demás plantillas lo heredan con `{% extends %}`. |
 | `templates/partes/cita.html` | Trozo reutilizable: escribe una cita "Autor (año)" con enlace. Se incluye con `{% include %}`. |
 | `static/css/estilos.css` | El diseño (el mismo del proyecto completo). `curso.css` agrega los ajustes de estas páginas. |
-| `static/js/pagina.js` | La gráfica del panel, el clic y el resaltado de los órganos, y Ver día / Reproducir misión: piden `/api/dia/<n>` y repintan sin recargar. |
+| `static/js/pagina.js` | La gráfica del panel, el clic y el resaltado de los órganos, y Reproducir misión: piden `/api/dia/<n>` y repintan sin recargar. |
 | `static/js/indicadores.js` | La gráfica de cada indicador, con su rango y tu línea base. |
 | `static/js/registro.js` | Prueba de reacción, dictado por voz y conteo manual de pulso: necesitan el navegador. |
 | `static/js/pulso_bluetooth.js` | Lee el pulso de un reloj o banda por Bluetooth (o lo simula) y lo pone en el campo de pulso. |
@@ -82,7 +83,7 @@ Si no hay internet, la página explica el motivo y conserva la última consulta 
 - Al pasar el cursor por un sistema de la lista, su órgano se resalta en el mapa, y al revés.
 - Los **botones de sistema** sobre la gráfica (y también la lista de sistemas y los órganos del mapa) cambian
   qué se grafica **sin recargar la página**: se piden los datos a Python y se redibuja la gráfica.
-- **Ver día** mueve la misión a cualquier día pasado y **Reproducir misión** la recorre como una película:
+- **La línea de la misión** lleva a cualquier día pasado y **Reproducir misión** la recorre como una película:
   JavaScript pide `/api/dia/<n>` y repinta el mapa, los signos, los sistemas, el anillo, la radiación y la gráfica.
   Python sigue haciendo todos los cálculos; el navegador solo pinta lo que recibe.
 

@@ -8,6 +8,8 @@
   const g = window.GRAFICA;
   let diaVisto = window.DIA;
   let sistema = window.SISTEMA;
+  const diaMax = window.DIA_MAX || window.DIA;
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const relleno = (n) => Array(n).fill(null);
 
@@ -29,7 +31,8 @@
     type: "line",
     data: datosGrafica(g),
     options: {
-      responsive: true, maintainAspectRatio: false, animation: false,
+      responsive: true, maintainAspectRatio: false,
+      animation: quieto ? false : { duration: 700, easing: "easeOutQuart" },
       interaction: { mode: "index", intersect: false },
       scales: {
         y: { min: 0, max: 100, grid: { color: "#343D72" } },
@@ -100,6 +103,7 @@
       }
     }
 
+    moverMarca(d.dia);
     $("#anillo-avance").setAttribute("stroke-dasharray", `${d.anillo.avance} ${d.anillo.total}`);
     $("#anillo-hoy").setAttribute("cx", d.anillo.hoy[0]);
     $("#anillo-hoy").setAttribute("cy", d.anillo.hoy[1]);
@@ -107,12 +111,18 @@
     $$("[data-signo]").forEach((caja, i) => {
       const s = d.signos[i];
       if (!s) return;
-      caja.className = `signo signo-${s.nivel}`;
+      caja.className = `signo signo-${s.nivel}` + (s.medido ? " signo-medido" : "") + (i === 0 ? " signo-pulso" : "");
       caja.querySelector(".signo-valor b").textContent = s.valor;
-      caja.querySelector(".signo-sub").textContent = s.referencia;
+      caja.querySelector(".signo-sub").textContent = s.medido || s.referencia;
+      if (i === 0) latir(s.valor);
     });
 
     const numero = $("#estado-numero");
+    if (!quieto && numero.textContent.trim() !== String(d.general)) {
+      numero.classList.remove("numero-cambia");
+      void numero.offsetWidth;
+      numero.classList.add("numero-cambia");
+    }
     numero.textContent = d.general;
     numero.style.color = d.nivel_general.color;
     $("#estado-texto").textContent = t("Estado general: {nivel}", { nivel: d.nivel_general.nombre.toLowerCase() });
@@ -165,14 +175,42 @@
     pintarDia(await r.json());
   }
 
-  const slider = $("#slider-dia");
+  const linea = $("#linea-mision");
+  const marca = linea && linea.querySelector(".hoy");
+
+  function moverMarca(dia) {
+    if (!linea) return;
+    if (marca) marca.style.left = (100 * (dia - 1)) / window.DIAS_TOTALES + "%";
+    linea.setAttribute("aria-valuenow", dia);
+    linea.setAttribute("aria-valuetext", t("Día {dia} de {total}", { dia, total: window.DIAS_TOTALES }));
+  }
+
+  const acotar = (dia) => Math.min(diaMax, Math.max(1, dia));
   let espera = null;
-  slider.addEventListener("input", (e) => {
-    const dia = Number(e.target.value);
+  let diaObjetivo = diaVisto;
+
+  function pedirDia(dia, demora = 0) {
+    dia = acotar(dia);
+    diaObjetivo = dia;
+    moverMarca(dia);
     $("#mision-dia").textContent = t("Día {dia} de {total}", { dia, total: window.DIAS_TOTALES });
     clearTimeout(espera);
-    espera = setTimeout(() => verDia(dia).catch(() => {}), 90);
-  });
+    espera = setTimeout(() => verDia(dia).catch(() => {}), demora);
+  }
+
+  if (linea && diaMax > 1) {
+    linea.addEventListener("click", (e) => {
+      const caja = linea.getBoundingClientRect();
+      const parte = (e.clientX - caja.left) / caja.width;
+      pedirDia(Math.round(parte * window.DIAS_TOTALES) + 1, 60);
+    });
+    linea.addEventListener("keydown", (e) => {
+      const saltos = { ArrowLeft: -1, ArrowRight: 1, ArrowDown: -1, ArrowUp: 1, PageDown: -7, PageUp: 7 };
+      if (e.key in saltos) { e.preventDefault(); pedirDia(diaObjetivo + saltos[e.key], 120); }
+      else if (e.key === "Home") { e.preventDefault(); pedirDia(1, 0); }
+      else if (e.key === "End") { e.preventDefault(); pedirDia(diaMax, 0); }
+    });
+  }
 
   const btn = $("#btn-reproducir");
   let reproduciendo = false;
@@ -181,16 +219,50 @@
     reproduciendo = true;
     btn.textContent = btn.dataset.pausar;
     btn.classList.add("reproduciendo");
-    const fin = Number(slider.max);
-    for (let dia = 1; dia <= fin && reproduciendo; dia = Math.min(fin, dia + 2)) {
+    document.body.classList.add("reproduciendo");
+    const salto = Math.max(1, Math.round(diaMax / 55));
+    for (let dia = 1; dia <= diaMax && reproduciendo; dia = Math.min(diaMax, dia + salto)) {
       const t0 = performance.now();
-      slider.value = dia;
-      try { await verDia(dia); } catch {  }
-      if (dia === fin) break;
-      await new Promise((r) => setTimeout(r, Math.max(0, 130 - (performance.now() - t0))));
+      moverMarca(dia);
+      try { await verDia(dia); } catch { }
+      if (dia === diaMax) break;
+      await new Promise((r) => setTimeout(r, Math.max(0, 120 - (performance.now() - t0))));
     }
     reproduciendo = false;
     btn.textContent = btn.dataset.reproducir;
     btn.classList.remove("reproduciendo");
+    document.body.classList.remove("reproduciendo");
   });
+
+  function latir(bpm) {
+    const caja = $(".signo-pulso");
+    if (!caja) return;
+    const n = parseFloat(String(bpm).replace(/[^\d.]/g, ""));
+    if (!n || n < 30 || n > 220) return;
+    caja.dataset.bpm = n;
+    caja.style.setProperty("--latido", (60 / n).toFixed(3) + "s");
+  }
+
+  function contar(nodo, hasta) {
+    const n = parseFloat(String(hasta).replace(/[^\d.-]/g, ""));
+    if (quieto || !isFinite(n)) { nodo.textContent = hasta; return; }
+    const entero = !String(hasta).includes(".");
+    const t0 = performance.now(), dura = 850;
+    const paso = (ahora) => {
+      const p = Math.min(1, (ahora - t0) / dura);
+      const suave = 1 - Math.pow(1 - p, 3);
+      nodo.textContent = entero ? Math.round(n * suave) : (n * suave).toFixed(1);
+      if (p < 1) requestAnimationFrame(paso); else nodo.textContent = hasta;
+    };
+    requestAnimationFrame(paso);
+  }
+
+  latir($(".signo-pulso") && $(".signo-pulso").dataset.bpm);
+
+  if (!quieto) {
+    document.body.classList.add("animar");
+    contar($("#estado-numero"), $("#estado-numero").textContent.trim());
+    contar($("#dosis-numero"), $("#dosis-numero").textContent.trim());
+    setTimeout(() => document.body.classList.remove("animar"), 2200);
+  }
 })();

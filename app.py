@@ -1,5 +1,10 @@
+import ast
+import inspect
 import math
+import os
+import textwrap
 from collections import defaultdict
+from uuid import uuid4
 from pathlib import Path
 
 from flask import Flask, abort, flash, g, jsonify, redirect, render_template, request, session, url_for
@@ -20,7 +25,11 @@ from riesgos_nasa import COBERTURA, RIESGOS, URL_HRP, URL_VTE, riesgos_de
 from salud import ETIQUETAS_MAPA, LIMITE_RADIACION, Analisis, nivel_de
 
 app = Flask(__name__)
-app.secret_key = "orbita-curso"
+app.secret_key = os.environ.get("SECRET_KEY") or "orbita-curso"
+
+MULTIUSUARIO = os.environ.get("ORBITA_MULTIUSUARIO") == "1"
+if MULTIUSUARIO:
+    datos.usar_sesiones(lambda: session.get("sid"))
 
 
 @app.before_request
@@ -29,6 +38,10 @@ def elegir_idioma():
     if pedido in IDIOMAS:
         session["idioma"] = pedido
     g.idioma = session.get("idioma", POR_DEFECTO)
+    if MULTIUSUARIO and "sid" not in session:
+        session["sid"] = uuid4().hex
+        session.permanent = False
+        datos.limpiar_sesiones()
 
 
 @app.context_processor
@@ -183,9 +196,47 @@ def entorno_nave(an, dia):
     return lecturas
 
 
+def contar_protocolos():
+    fuente = textwrap.dedent(inspect.getsource(Analisis.protocolos))
+    cuerpo = ast.parse(fuente).body[0]
+    return sum(1 for n in ast.walk(cuerpo)
+               if isinstance(n, ast.Call) and getattr(n.func, "id", "") == "agregar")
+
+
+PROTOCOLOS_TOTALES = contar_protocolos()
+
+
+def cifras_de_portada(estado):
+    medidas = reloj.resumen()
+    return {
+        "dias": datos.DIAS_TOTALES,
+        "dia": estado["mision"]["dia"],
+        "tripulantes": len(estado["tripulacion"]),
+        "indicadores": len(datos.INDICADORES),
+        "protocolos": PROTOCOLOS_TOTALES,
+        "fuentes": len(FUENTES),
+        "lecturas": medidas.get("lecturas", 0),
+        "dias_reloj": medidas.get("dias", 0),
+    }
+
+
+@app.get("/portada")
+def portada():
+    session.pop("vio_portada", None)
+    return render_template("portada.html", pagina="portada", cifras=cifras_de_portada(datos.cargar()))
+
+
+@app.get("/entrar")
+def entrar():
+    session["vio_portada"] = True
+    return redirect(url_for("panel"))
+
+
 @app.route("/")
 def panel():
     estado = datos.cargar()
+    if not session.get("vio_portada"):
+        return render_template("portada.html", pagina="portada", cifras=cifras_de_portada(estado))
     mision = estado["mision"]
     astro = elegir_astronauta(estado)
     dia = max(1, min(mision["dia"], request.args.get("dia", mision["dia"], type=int)))

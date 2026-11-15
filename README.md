@@ -310,14 +310,21 @@ declarada como supuesto del prototipo en la página «Cómo funciona», no una n
 
 ## 8. Las nueve páginas, una por una
 
+### Portada
+
+La primera pantalla de cada visita: el nombre, el problema del reto en dos líneas, las cifras del
+proyecto y un trazo de pulso que corre al ritmo real medido (65 lpm de línea base). «Entrar al
+panel» la cierra y no vuelve a salir en esa sesión; el enlace «Ver la portada» del panel la repite.
+
 ### Panel
 
 La pantalla principal. De arriba abajo:
 
-- **Control de la misión**: día actual de 180, entorno, retraso de comunicación. Un deslizador
-  para revisar cualquier día pasado sin recargar la página, un botón «Reproducir misión» que
-  la recorre sola como una película, botones para avanzar 1 o 7 días, y reinicio en el día 1
-  o en el 120.
+- **Control de la misión**: día actual de 180, entorno, retraso de comunicación. Un botón
+  «Reproducir misión» que la recorre sola como una película en unos ocho segundos, botones para
+  avanzar 1 o 7 días, reinicio en el día 1 o en el 120, y un enlace a la portada. La línea de la
+  misión que va debajo es además el control del tiempo: al tocar un punto, el panel entero se
+  repinta en ese día sin recargar la página (también con las flechas del teclado).
 - **La nave hoy**: CO₂ y ruido con su límite, en color según el estado.
 - **Alerta de clima espacial**, si hay un evento solar vigente.
 - **La tripulación**: cuatro astronautas con su puntaje de riesgo y su mayor problema del día.
@@ -530,6 +537,17 @@ Día 1 / Día 120»** del panel: el día 1 arranca sin historial, como el día d
 120 abre a la mitad del viaje, con tendencias y protocolos ya formados.
 
 `Astra_Health_guia_de_la_app.pdf` es una guía ilustrada de 11 páginas de toda la aplicación.
+
+### Publicarla en internet
+
+El repositorio incluye `render.yaml`, listo para desplegar en Render conectando este
+repositorio. La configuración activa `ORBITA_MULTIUSUARIO=1`, que le da **a cada visitante su
+propia misión**: si varias personas abren el enlace a la vez, una puede avanzar días o
+reiniciar sin tocar lo que ven las demás. Las misiones de los visitantes se guardan en
+`datos/sesiones/` y se borran solas a las 6 horas.
+
+En local esa variable no está, así que la aplicación usa un único `datos/estado.json`, como
+siempre.
 
 ---
 

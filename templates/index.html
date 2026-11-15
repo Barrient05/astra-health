@@ -28,13 +28,8 @@
       <noscript><button class="boton boton-mini">{{ _("Cambiar") }}</button></noscript>
     </form>
 
-    <label class="control-dia">
-      <span>{{ _("Ver día") }}</span>
-      <input type="range" id="slider-dia" min="1" max="{{ mision.dia }}" value="{{ dia }}"
-             aria-describedby="mision-dia" {% if mision.dia <= 1 %}disabled
-             title="{{ _('Solo hay un día registrado: avanza la misión para poder recorrerla.') }}"{% endif %}>
-    </label>
-    <button type="button" class="boton boton-secundario" id="btn-reproducir"
+    <button type="button" class="boton" id="btn-reproducir"
+            {% if mision.dia <= 1 %}disabled title="{{ _('Solo hay un día registrado: avanza la misión para poder recorrerla.') }}"{% endif %}
             data-reproducir="{{ _('Reproducir misión') }}" data-pausar="{{ _('Pausar') }}">{{ _("Reproducir misión") }}</button>
 
     {% if mision.dia >= mision.dias_totales %}
@@ -42,7 +37,7 @@
     {% else %}
     <form method="post" action="{{ url_for('avanzar') }}">
       <input type="hidden" name="dias" value="1">
-      <button class="boton">{{ _("Avanzar un día") }}</button>
+      <button class="boton boton-secundario">{{ _("Avanzar un día") }}</button>
     </form>
     <form method="post" action="{{ url_for('avanzar') }}">
       <input type="hidden" name="dias" value="7">
@@ -55,6 +50,8 @@
       <button class="boton boton-texto" name="dia" value="1" title="{{ _('La misión empieza desde cero: sin historial, todos los indicadores en su línea base.') }}">{{ _("Día 1") }}</button>
       <button class="boton boton-texto" name="dia" value="{{ mision.dias_totales // 2 + 30 }}" title="{{ _('Empieza a la mitad del viaje, con 120 días ya registrados: así se ve la app después de meses de misión.') }}">{{ _("Día 120") }}</button>
     </form>
+
+    <a class="boton boton-texto" href="{{ url_for('portada') }}">{{ _("Ver la portada") }}</a>
   </div>
 </section>
 
@@ -74,7 +71,10 @@
 </p>
 {% endif %}
 
-<div class="linea-mision" title="{{ _('Línea de la misión') }}">
+<div class="linea-mision" id="linea-mision" role="slider" tabindex="0"
+     aria-label="{{ _('Línea de la misión') }}" aria-valuemin="1" aria-valuemax="{{ mision.dia }}"
+     aria-valuenow="{{ dia }}" aria-valuetext="{{ _('Día {dia} de {total}', dia=dia, total=mision.dias_totales) }}"
+     title="{{ _('Toca la línea para ver cualquier día ya vivido de la misión.') }}">
   {% for t in linea.tramos %}
   <div class="segmento" style="left:{{ t.left }}%; width:{{ t.width }}%" title="{{ t.nombre }} ({{ _("días {a} a {b}", a=t.inicio, b=t.fin) }})"></div>
   {% endfor %}
@@ -132,7 +132,8 @@
   <section class="bloque bloque-signos" aria-label="{{ _('Signos de hoy') }}">
     <ul class="lista-signos">
       {% for s in signos %}
-      <li><div class="signo signo-{{ s.nivel }}{% if s.medido %} signo-medido{% endif %}" data-signo
+      <li><div class="signo signo-{{ s.nivel }}{% if s.medido %} signo-medido{% endif %}{% if loop.first %} signo-pulso{% endif %}" data-signo
+               {% if loop.first %}data-bpm="{{ s.valor }}"{% endif %}
                {% if s.medido %}title="{{ s.medido }}"{% endif %}>
         <span class="signo-nombre">{{ s.nombre }}{% if s.medido %} <b class="marca-real">{{ _("REAL") }}</b>{% endif %}</span>
         <span class="signo-valor"><b>{{ s.valor }}</b><small> {{ s.unidad }}</small></span>
@@ -442,6 +443,7 @@
   window.GRAFICA = {{ grafica | tojson }};
   window.ASTRONAUTA = {{ astro.id | tojson }};
   window.DIA = {{ dia | tojson }};
+  window.DIA_MAX = {{ mision.dia | tojson }};
   window.DIAS_TOTALES = {{ mision.dias_totales | tojson }};
   window.SISTEMA = {{ elegido | tojson }};
 </script>

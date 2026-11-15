@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{ idioma }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ app_nombre }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/curso.css') }}">
+</head>
+<body class="cuerpo-portada">
+
+<main class="portada">
+
+  <div class="portada-trazo" aria-hidden="true">
+    <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <g class="trazo-mueve">
+        <path class="trazo-linea" d="M0,100 {% for i in range(12) %}h50 q10,-12 20,0 h12 l6,10 l8,-72 l8,84 l7,-22 h20 q14,-20 28,0 h41 {% endfor %}"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="portada-centro">
+
+    <p class="portada-sede">{{ _("NASA Space Apps Challenge 2026") }} <span class="separador" aria-hidden="true">/</span> {{ _("Sede CDMX") }}</p>
+
+    <h1 class="portada-nombre">{{ app_nombre }}</h1>
+
+    <p class="portada-lema">{{ _("Monitoreo de salud para misiones de larga duración") }}</p>
+
+    <p class="portada-reto">{{ _("Hacia Marte la señal tarda hasta 22 minutos en llegar.") }}
+      {{ _("Nadie puede diagnosticar a la tripulación desde la Tierra: tiene que leer su propia salud y saber qué hacer hoy.") }}</p>
+
+    <ul class="portada-cifras">
+      <li><b class="cuenta" data-hasta="{{ cifras.dias }}" data-final="{{ cifras.dias | numero }}">0</b>
+        <span>{{ _("días de misión simulada") }}</span></li>
+      <li><b class="cuenta" data-hasta="{{ cifras.indicadores }}" data-final="{{ cifras.indicadores | numero }}">0</b>
+        <span>{{ _("indicadores de salud") }}</span></li>
+      <li><b class="cuenta" data-hasta="{{ cifras.protocolos }}" data-final="{{ cifras.protocolos | numero }}">0</b>
+        <span>{{ _("protocolos con umbral citado") }}</span></li>
+      <li><b class="cuenta" data-hasta="{{ cifras.fuentes }}" data-final="{{ cifras.fuentes | numero }}">0</b>
+        <span>{{ _("fuentes de NASA y literatura médica") }}</span></li>
+      <li class="cifra-real"><b class="cuenta" data-hasta="{{ cifras.lecturas }}" data-final="{{ cifras.lecturas | numero(',') }}">0</b>
+        <span>{{ _("lecturas reales de pulso ({dias} días de un reloj)", dias=cifras.dias_reloj) }}</span></li>
+    </ul>
+
+    <p class="portada-entrar">
+      <a class="boton boton-grande" href="{{ url_for('entrar') }}" id="portada-boton">{{ _("Entrar al panel") }}</a>
+      <small>{{ _("Día {dia} de la misión, con {n} tripulantes a bordo.", dia=cifras.dia, n=cifras.tripulantes) }}</small>
+    </p>
+
+  </div>
+
+  <p class="portada-pie">
+    <span>{{ _("Prototipo con datos simulados y un conjunto de datos reales de pulso. No es un dispositivo médico.") }}</span>
+    <a href="{{ url_for('entrar') }}">{{ _("Saltar") }}</a>
+  </p>
+
+</main>
+
+<script>
+  (() => {
+    "use strict";
+    const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    for (const n of document.querySelectorAll(".cuenta")) {
+      const hasta = Number(n.dataset.hasta) || 0;
+      const final = n.dataset.final;
+      if (quieto) { n.textContent = final; continue; }
+      const t0 = performance.now(), dura = 900;
+      const paso = (t) => {
+        const p = Math.min(1, (t - t0) / dura);
+        const suave = 1 - Math.pow(1 - p, 3);
+        n.textContent = Math.round(hasta * suave);
+        if (p < 1) requestAnimationFrame(paso); else n.textContent = final;
+      };
+      requestAnimationFrame(paso);
+    }
+    const boton = document.getElementById("portada-boton");
+    addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "Escape") { e.preventDefault(); boton.click(); }
+    });
+  })();
+</script>
+
+</body>
+</html>
