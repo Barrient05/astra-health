@@ -312,9 +312,16 @@ declarada como supuesto del prototipo en la página «Cómo funciona», no una n
 
 ### Portada
 
-La primera pantalla de cada visita: el nombre, el problema del reto en dos líneas, las cifras del
-proyecto y un trazo de pulso que corre al ritmo real medido (65 lpm de línea base). «Entrar al
-panel» la cierra y no vuelve a salir en esa sesión; el enlace «Ver la portada» del panel la repite.
+La primera pantalla de cada visita, pensada para quien llega sin saber nada del proyecto. Es una
+página de presentación con barra fija, selector de idioma y seis secciones: el nombre y el problema
+del reto sobre un trazo de pulso que corre al ritmo real medido (65 lpm de línea base), las cifras
+del proyecto, los cuatro peligros que nombra el reto y qué vigila la app de cada uno, cómo funciona
+en cuatro pasos, el conjunto de datos reales del reloj con su método, y de dónde sale cada umbral
+con el reparto de las 51 fuentes por tipo. Todas las cifras se calculan en vivo desde el código:
+los protocolos se cuentan recorriendo el árbol de sintaxis de `salud.py`, no están escritas a mano.
+
+«Entrar al panel» la cierra y no vuelve a salir en esa sesión; el enlace «Ver la portada» del panel
+la repite.
 
 ### Panel
 

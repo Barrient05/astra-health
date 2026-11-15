@@ -118,12 +118,8 @@
     });
 
     const numero = $("#estado-numero");
-    if (!quieto && numero.textContent.trim() !== String(d.general)) {
-      numero.classList.remove("numero-cambia");
-      void numero.offsetWidth;
-      numero.classList.add("numero-cambia");
-    }
-    numero.textContent = d.general;
+    if (reproduciendo || quieto) numero.textContent = d.general;
+    else contar(numero, String(d.general), 420);
     numero.style.color = d.nivel_general.color;
     $("#estado-texto").textContent = t("Estado general: {nivel}", { nivel: d.nivel_general.nombre.toLowerCase() });
     $$(".lista-sistemas .sistema").forEach((fila) => {
@@ -135,7 +131,8 @@
       p.textContent = s.puntaje; p.style.color = s.nivel.color;
     });
 
-    $("#dosis-numero").textContent = d.radiacion.acumulada;
+    if (reproduciendo || quieto) $("#dosis-numero").textContent = d.radiacion.acumulada;
+    else contar($("#dosis-numero"), String(d.radiacion.acumulada), 420);
     $("#dosis-barra").style.width = Math.min(100, d.radiacion.porcentaje) + "%";
 
     $("#t-pronostico").textContent = d.titulo_tendencia;
@@ -243,15 +240,17 @@
     caja.style.setProperty("--latido", (60 / n).toFixed(3) + "s");
   }
 
-  function contar(nodo, hasta) {
+  function contar(nodo, hasta, dura = 850) {
     const n = parseFloat(String(hasta).replace(/[^\d.-]/g, ""));
     if (quieto || !isFinite(n)) { nodo.textContent = hasta; return; }
+    const desde = parseFloat(nodo.textContent.replace(/[^\d.-]/g, "")) || 0;
     const entero = !String(hasta).includes(".");
-    const t0 = performance.now(), dura = 850;
+    const t0 = performance.now();
     const paso = (ahora) => {
       const p = Math.min(1, (ahora - t0) / dura);
       const suave = 1 - Math.pow(1 - p, 3);
-      nodo.textContent = entero ? Math.round(n * suave) : (n * suave).toFixed(1);
+      const v = desde + (n - desde) * suave;
+      nodo.textContent = entero ? Math.round(v) : v.toFixed(1);
       if (p < 1) requestAnimationFrame(paso); else nodo.textContent = hasta;
     };
     requestAnimationFrame(paso);
@@ -260,9 +259,10 @@
   latir($(".signo-pulso") && $(".signo-pulso").dataset.bpm);
 
   if (!quieto) {
-    document.body.classList.add("animar");
-    contar($("#estado-numero"), $("#estado-numero").textContent.trim());
-    contar($("#dosis-numero"), $("#dosis-numero").textContent.trim());
-    setTimeout(() => document.body.classList.remove("animar"), 2200);
+    const general = $("#estado-numero"), dosis = $("#dosis-numero");
+    const a = general.textContent.trim(), b = dosis.textContent.trim();
+    general.textContent = "0"; dosis.textContent = "0";
+    contar(general, a);
+    contar(dosis, b);
   }
 })();

@@ -9,32 +9,55 @@
 </head>
 <body class="cuerpo-portada">
 
-<main class="portada">
+<header class="barra-portada">
+  <a class="marca" href="{{ url_for('portada') }}">
+    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="13" cy="13" r="4" fill="#4FC48D"/></svg>
+    {{ app_nombre }}
+  </a>
+  <nav class="barra-portada-fin" aria-label="{{ _('Idioma') }}">
+    <span class="selector-idioma">
+      {% for codigo, nombre in idiomas.items() %}
+      <a href="{{ url_for('portada', lang=codigo) }}" lang="{{ codigo }}" hreflang="{{ codigo }}"
+         title="{{ nombre }}" aria-label="{{ nombre }}" {% if codigo == idioma %}aria-current="true"{% endif %}>{{ codigo | upper }}</a>
+      {% endfor %}
+    </span>
+    <a class="boton" href="{{ url_for('entrar') }}">{{ _("Entrar al panel") }}</a>
+  </nav>
+</header>
 
-  <div class="portada-trazo" aria-hidden="true">
-    <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
-      <g class="trazo-mueve">
-        <path class="trazo-linea" d="M0,100 {% for i in range(12) %}h50 q10,-12 20,0 h12 l6,10 l8,-72 l8,84 l7,-22 h20 q14,-20 28,0 h41 {% endfor %}"/>
-      </g>
-    </svg>
-  </div>
+<main id="contenido" class="portada">
 
-  <div class="portada-centro">
+  <section class="portada-hero">
+    <div class="portada-trazo" aria-hidden="true">
+      <svg viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <g class="trazo-mueve">
+          <path class="trazo-linea" d="M0,100 {% for i in range(12) %}h50 q10,-12 20,0 h12 l6,10 l8,-72 l8,84 l7,-22 h20 q14,-20 28,0 h41 {% endfor %}"/>
+        </g>
+      </svg>
+    </div>
 
-    <p class="portada-sede">{{ _("NASA Space Apps Challenge 2026") }} <span class="separador" aria-hidden="true">/</span> {{ _("Sede CDMX") }}</p>
+    <div class="portada-centro">
+      <p class="portada-sede">{{ _("NASA Space Apps Challenge 2026") }}</p>
+      <h1 class="portada-nombre">{{ app_nombre }}</h1>
+      <p class="portada-lema">{{ _("Monitoreo de salud para misiones de larga duración") }}</p>
+      <p class="portada-reto">{{ _("Hacia Marte la señal tarda hasta 22 minutos en llegar.") }}
+        {{ _("Nadie puede diagnosticar a la tripulación desde la Tierra: tiene que leer su propia salud y saber qué hacer hoy.") }}</p>
+      <p class="portada-entrar">
+        <a class="boton boton-grande" href="{{ url_for('entrar') }}" id="portada-boton">{{ _("Entrar al panel") }}</a>
+        <a class="boton boton-secundario boton-grande" href="#que-hace">{{ _("Ver qué hace") }}</a>
+      </p>
+      <p class="portada-dia">{{ _("Día {dia} de la misión, con {n} tripulantes a bordo.", dia=cifras.dia, n=cifras.tripulantes) }}</p>
+    </div>
+  </section>
 
-    <h1 class="portada-nombre">{{ app_nombre }}</h1>
-
-    <p class="portada-lema">{{ _("Monitoreo de salud para misiones de larga duración") }}</p>
-
-    <p class="portada-reto">{{ _("Hacia Marte la señal tarda hasta 22 minutos en llegar.") }}
-      {{ _("Nadie puede diagnosticar a la tripulación desde la Tierra: tiene que leer su propia salud y saber qué hacer hoy.") }}</p>
-
+  <section class="franja-cifras" aria-label="{{ _('El proyecto en cifras') }}">
     <ul class="portada-cifras">
       <li><b class="cuenta" data-hasta="{{ cifras.dias }}" data-final="{{ cifras.dias | numero }}">0</b>
         <span>{{ _("días de misión simulada") }}</span></li>
       <li><b class="cuenta" data-hasta="{{ cifras.indicadores }}" data-final="{{ cifras.indicadores | numero }}">0</b>
         <span>{{ _("indicadores de salud") }}</span></li>
+      <li><b class="cuenta" data-hasta="{{ cifras.sistemas }}" data-final="{{ cifras.sistemas | numero }}">0</b>
+        <span>{{ _("sistemas del cuerpo") }}</span></li>
       <li><b class="cuenta" data-hasta="{{ cifras.protocolos }}" data-final="{{ cifras.protocolos | numero }}">0</b>
         <span>{{ _("protocolos con umbral citado") }}</span></li>
       <li><b class="cuenta" data-hasta="{{ cifras.fuentes }}" data-final="{{ cifras.fuentes | numero }}">0</b>
@@ -42,18 +65,112 @@
       <li class="cifra-real"><b class="cuenta" data-hasta="{{ cifras.lecturas }}" data-final="{{ cifras.lecturas | numero(',') }}">0</b>
         <span>{{ _("lecturas reales de pulso ({dias} días de un reloj)", dias=cifras.dias_reloj) }}</span></li>
     </ul>
+  </section>
 
+  <section class="seccion" id="el-reto">
+    <div class="seccion-cabeza">
+      <h2>{{ _("Lo que una misión larga le hace al cuerpo") }}</h2>
+      <p>{{ _("El reto de NASA nombra cuatro peligros. Astra Health los vigila a los cuatro, no solo a la radiación.") }}</p>
+    </div>
+    <ul class="rejilla-peligros">
+      <li style="--color: var(--critico)">
+        <h3>{{ _("Radiación espacial") }}</h3>
+        <p>{{ _("Fuera del campo magnético de la Tierra la dosis se acumula todos los días y un evento solar puede sumar meses en horas.") }}</p>
+        <p class="peligro-mide">{{ _("La app lleva la dosis acumulada contra el límite de carrera de NASA y avisa cuando hay que ir al refugio.") }}</p>
+      </li>
+      <li style="--color: var(--atencion)">
+        <h3>{{ _("Aislamiento y confinamiento") }}</h3>
+        <p>{{ _("Meses con las mismas cuatro personas, sin familia y sin noticias inmediatas: el ánimo, el sueño y la relación con la tripulación se desgastan.") }}</p>
+        <p class="peligro-mide">{{ _("La app sigue el ánimo, el estrés, los días sin contacto personal y la actividad diaria.") }}</p>
+      </li>
+      <li style="--color: var(--vigilar)">
+        <h3>{{ _("Gravedad alterada") }}</h3>
+        <p>{{ _("Sin peso, el hueso se pierde, el músculo se encoge, los líquidos suben a la cabeza y el corazón se desacostumbra.") }}</p>
+        <p class="peligro-mide">{{ _("La app vigila hueso, músculo, presión al incorporarse, visión y riesgo de trombosis.") }}</p>
+      </li>
+      <li style="--color: var(--acento)">
+        <h3>{{ _("Entorno cerrado y hostil") }}</h3>
+        <p>{{ _("El aire, el ruido y el agua de la nave son parte de la salud de quien vive dentro.") }}</p>
+        <p class="peligro-mide">{{ _("La app mide el CO₂ de cabina y el ruido al dormir contra los límites de NASA, y los separa de lo que es tuyo.") }}</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="seccion" id="que-hace">
+    <div class="seccion-cabeza">
+      <h2>{{ _("Cómo funciona, en cuatro pasos") }}</h2>
+      <p>{{ _("Lo mismo que haría un médico en la Tierra, pero a bordo y sin esperar respuesta.") }}</p>
+    </div>
+    <ol class="pasos-portada">
+      <li>
+        <b>1</b>
+        <h3>{{ _("Mide") }}</h3>
+        <p>{{ _("{n} indicadores al día: signos vitales, sueño, agua, calorías, ánimo, ejercicio y el aire de la nave. Se registran a mano, por dictado o desde un reloj.", n=cifras.indicadores) }}</p>
+      </li>
+      <li>
+        <b>2</b>
+        <h3>{{ _("Compara contra tu línea base") }}</h3>
+        <p>{{ _("No usa un valor único para todos: compara cada dato con el tuyo antes de volar y con tu normal en vuelo, porque el cuerpo cambia en microgravedad.") }}</p>
+      </li>
+      <li>
+        <b>3</b>
+        <h3>{{ _("Dice qué hacer hoy") }}</h3>
+        <p>{{ _("{n} protocolos con pasos concretos. Cada umbral trae la fuente que lo respalda y dice a quién avisar: a ti, a la tripulación o al cirujano de vuelo.", n=cifras.protocolos) }}</p>
+      </li>
+      <li>
+        <b>4</b>
+        <h3>{{ _("Proyecta a 30 días") }}</h3>
+        <p>{{ _("Muestra a dónde lleva la tendencia si nada cambia, y cuánto cambia esa curva si la tripulación sigue un plan de acción.") }}</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="seccion seccion-datos">
+    <div class="seccion-cabeza">
+      <h2>{{ _("Con datos reales de un cuerpo real") }}</h2>
+      <p>{{ _("La misión es simulada, pero el pulso no: la app corre sobre la exportación completa de un reloj inteligente.") }}</p>
+    </div>
+    <div class="caja-datos">
+      <dl class="datos-reloj">
+        <div><dt>{{ _("Lecturas de pulso") }}</dt><dd>{{ cifras.lecturas | numero(',') }}</dd></div>
+        <div><dt>{{ _("Días medidos") }}</dt><dd>{{ cifras.dias_reloj | numero }}</dd></div>
+        <div><dt>{{ _("Pulso en reposo de base") }}</dt><dd>{{ cifras.linea_base | numero }} {{ _("lpm") }}</dd></div>
+        <div><dt>{{ _("Periodo") }}</dt><dd class="dato-periodo">{{ cifras.desde }} → {{ cifras.hasta }}</dd></div>
+      </dl>
+      <p class="metodo">{{ _("Cómo se calcula:") }}
+        {{ _("el pulso en reposo de cada día es la mediana del cuarto más bajo de las lecturas de madrugada.") }}</p>
+      <p class="metodo tenue">{{ _("En el panel, los días con medición real llevan la marca REAL. Todo lo demás está etiquetado como simulado: la app nunca mezcla lo medido con lo inventado sin decirlo.") }}</p>
+    </div>
+  </section>
+
+  <section class="seccion" id="evidencia">
+    <div class="seccion-cabeza">
+      <h2>{{ _("De dónde sale cada umbral") }}</h2>
+      <p>{{ _("Ningún número de la app es inventado por nosotros. Cada protocolo enlaza la fuente que fija su umbral.") }}</p>
+    </div>
+    <ul class="barras-fuentes">
+      {% for tipo, n in cifras.tipos %}
+      <li>
+        <span class="barra-fuente-nombre">{{ _(tipo) }}</span>
+        <span class="barra-fuente"><i style="width: {{ (100 * n / cifras.fuentes) | round(1) }}%"></i></span>
+        <span class="barra-fuente-n">{{ n }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <p class="ejemplos-fuentes">{{ _("Entre ellas: la norma NASA-STD-3001 y los informes técnicos de la OCHMO, la lista de riesgos del Human Research Program, el clima espacial de NASA DONKI, el experimento de aislamiento Mars-500 y referencias clínicas para la presión al incorporarse y la atención del sueño.") }}</p>
+  </section>
+
+  <section class="seccion seccion-cierre">
+    <h2>{{ _("Entra y recorre la misión") }}</h2>
+    <p>{{ _("El panel abre en el día {dia} de {total}, con meses de historial ya registrados. El botón «Reproducir misión» la recorre entera en unos segundos.", dia=cifras.dia, total=cifras.dias) }}</p>
     <p class="portada-entrar">
-      <a class="boton boton-grande" href="{{ url_for('entrar') }}" id="portada-boton">{{ _("Entrar al panel") }}</a>
-      <small>{{ _("Día {dia} de la misión, con {n} tripulantes a bordo.", dia=cifras.dia, n=cifras.tripulantes) }}</small>
+      <a class="boton boton-grande" href="{{ url_for('entrar') }}">{{ _("Entrar al panel") }}</a>
     </p>
+  </section>
 
-  </div>
-
-  <p class="portada-pie">
+  <footer class="portada-pie">
     <span>{{ _("Prototipo con datos simulados y un conjunto de datos reales de pulso. No es un dispositivo médico.") }}</span>
-    <a href="{{ url_for('entrar') }}">{{ _("Saltar") }}</a>
-  </p>
+  </footer>
 
 </main>
 
@@ -61,11 +178,12 @@
   (() => {
     "use strict";
     const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    for (const n of document.querySelectorAll(".cuenta")) {
+
+    function contar(n) {
       const hasta = Number(n.dataset.hasta) || 0;
       const final = n.dataset.final;
-      if (quieto) { n.textContent = final; continue; }
-      const t0 = performance.now(), dura = 900;
+      if (quieto) { n.textContent = final; return; }
+      const t0 = performance.now(), dura = 1100;
       const paso = (t) => {
         const p = Math.min(1, (t - t0) / dura);
         const suave = 1 - Math.pow(1 - p, 3);
@@ -74,9 +192,36 @@
       };
       requestAnimationFrame(paso);
     }
-    const boton = document.getElementById("portada-boton");
+
+    const cifras = [...document.querySelectorAll(".cuenta")];
+    if (quieto || !("IntersectionObserver" in window)) {
+      cifras.forEach(contar);
+    } else {
+      const ojo = new IntersectionObserver((es) => {
+        for (const e of es) if (e.isIntersecting) { ojo.unobserve(e.target); contar(e.target); }
+      }, { threshold: 0.4 });
+      cifras.forEach((n) => ojo.observe(n));
+
+      const partes = [...document.querySelectorAll(".seccion, .franja-cifras, .rejilla-peligros > li, .pasos-portada > li, .barras-fuentes > li")];
+      for (const n of partes) n.classList.add("revelar");
+      const ojo2 = new IntersectionObserver((es) => {
+        let i = 0;
+        for (const e of es) {
+          if (!e.isIntersecting) continue;
+          ojo2.unobserve(e.target);
+          e.target.style.animationDelay = Math.min(i++, 5) * 80 + "ms";
+          e.target.classList.remove("revelar");
+          e.target.classList.add("revelado");
+        }
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+      for (const n of partes) ojo2.observe(n);
+      setTimeout(() => {
+        for (const n of partes) if (n.classList.contains("revelar")) { n.classList.remove("revelar"); n.classList.add("revelado"); }
+      }, 3000);
+    }
+
     addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " " || e.key === "Escape") { e.preventDefault(); boton.click(); }
+      if (e.key === "Escape") { e.preventDefault(); location.href = document.getElementById("portada-boton").href; }
     });
   })();
 </script>

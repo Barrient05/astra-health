@@ -156,6 +156,13 @@
           <linearGradient id="piel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E3A7A"/><stop offset="1" stop-color="#1D2552"/></linearGradient>
           <pattern id="escaneo" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0,5.5 H6" stroke="#9EB8FF" stroke-opacity="0.06" stroke-width="1"/></pattern>
           <clipPath id="recorte-vidrio"><circle cx="280" cy="280" r="243"/></clipPath>
+          <linearGradient id="haz" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#9EB8FF" stop-opacity="0"/>
+            <stop offset="0.45" stop-color="#9EB8FF" stop-opacity="0.22"/>
+            <stop offset="0.5" stop-color="#C3D3FF" stop-opacity="0.4"/>
+            <stop offset="0.55" stop-color="#9EB8FF" stop-opacity="0.22"/>
+            <stop offset="1" stop-color="#9EB8FF" stop-opacity="0"/>
+          </linearGradient>
         </defs>
 
         <circle cx="280" cy="280" r="262" class="anillo-fondo"/>
@@ -192,6 +199,10 @@
             <g class="zona nivel-{{ zonas.mental.nivel }}" data-sistema="mental" style="{{ zonas.mental.estilo }}" tabindex="0" role="button" aria-label="{{ _('Salud mental y sueño') }}"><title>{{ _("Salud mental y sueño") }}</title><path d="M150.0,26.0 C154.0,26.0 158.7,26.3 162.0,28.0 C165.3,29.7 168.3,32.8 170.0,36.0 C171.7,39.2 172.7,43.8 172.0,47.0 C171.3,50.2 169.7,53.3 166.0,55.0 C162.3,56.7 155.3,57.0 150.0,57.0 C144.7,57.0 137.7,56.7 134.0,55.0 C130.3,53.3 128.7,50.2 128.0,47.0 C127.3,43.8 128.3,39.2 130.0,36.0 C131.7,32.8 134.7,29.7 138.0,28.0 C141.3,26.3 146.0,26.0 150.0,26.0 Z"/><path class="surco" d="M150,28 L150,56 M138,36 C142,40 140,46 144,50 M162,36 C158,40 160,46 156,50"/></g>
             <g class="zona nivel-{{ zonas.ojos.nivel }}" data-sistema="ojos" style="{{ zonas.ojos.estilo }}" tabindex="0" role="button" aria-label="{{ _('Ojos (SANS)') }}"><title>{{ _("Ojos (SANS)") }}</title><path d="M134,64 C137,60 143,60 146,64 C143,68 137,68 134,64 Z"/><path d="M154,64 C157,60 163,60 166,64 C163,68 157,68 154,64 Z"/></g>
             </g>
+
+        <g clip-path="url(#recorte-vidrio)" aria-hidden="true">
+          <rect class="barrido" x="36" y="0" width="488" height="110" fill="url(#haz)"/>
+        </g>
 
         <g id="mapa-etiquetas">
         {% for e in etiquetas %}

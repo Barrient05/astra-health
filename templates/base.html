@@ -75,6 +75,7 @@
 <footer class="pie">{{ _("Prototipo para NASA Space Apps Challenge 2026 (versión del curso). Datos de salud simulados; no sustituye el criterio del equipo médico.") }}</footer>
 
 <script>window.TEXTOS = {{ textos_js | tojson }};</script>
+<script src="{{ url_for('static', filename='js/vida.js') }}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

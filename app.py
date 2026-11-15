@@ -208,15 +208,24 @@ PROTOCOLOS_TOTALES = contar_protocolos()
 
 def cifras_de_portada(estado):
     medidas = reloj.resumen()
+    por_tipo = defaultdict(int)
+    for f in FUENTES.values():
+        por_tipo[f.get("tipo", "estudio")] += 1
+    tipos = sorted(((TIPOS.get(k, k), n) for k, n in por_tipo.items()), key=lambda x: -x[1])
     return {
         "dias": datos.DIAS_TOTALES,
         "dia": estado["mision"]["dia"],
         "tripulantes": len(estado["tripulacion"]),
         "indicadores": len(datos.INDICADORES),
+        "sistemas": len(datos.SISTEMAS),
         "protocolos": PROTOCOLOS_TOTALES,
         "fuentes": len(FUENTES),
+        "tipos": tipos,
         "lecturas": medidas.get("lecturas", 0),
         "dias_reloj": medidas.get("dias", 0),
+        "linea_base": medidas.get("linea_base", 0),
+        "desde": medidas.get("desde", ""),
+        "hasta": medidas.get("hasta", ""),
     }
 
 
